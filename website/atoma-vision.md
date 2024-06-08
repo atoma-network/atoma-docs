@@ -23,3 +23,15 @@ Requests include AI inference requests, or other types of general compute reques
 Through verifiability, Atoma's nodes can provide higher levels of functionality to smart contracts on any blockchain. Smart contracts can
 delegate heavy computations to Atoma nodes, in the form of requests for Atoma nodes to execute in a coordinated way, providing high assurance guarantees that computations were not tampered in any way. More concretely, smart contracts can offload AI computations, or other types of logic executions to Atoma. Atoma allows for the next Web3 applications to be built on top of its infrastructure, which
 includes AI content generation, AI predictions, protein folding, WASM smart contracts on any blockchain, etc. It is like smart contracts can become both truly smart (and intelligent) and can be enhanced through a decentralized AWS lambda infrastructure (similar to a wide range of Web2 applications, already).
+
+## Atoma as a general compute infrastructure layer
+
+The Atoma Network sits in the middle of a DePin and a decentralized market place for compute. Atoma Network aggregates decentralized
+compute in the form of a permissionless set of nodes, holding different types of hardware, similar a DePin network. However, there are fundamental differences with a DePin network. Usually, DePins are responsible for aggregating compute resources and managing payments
+for resource utilization. On the contrary, nodes on the Atoma Network are responsible to subscribe to very specific compute tasks. These
+tasks can be for example running AI compute on a given specific model (that the model specifies upon registring on the Atoma Network protocol), or running a protein folding algorithm inside a TEE. However, once a node subscribes to a given compute task, it cannot provide compute to different tasks (that it didn't subscribe to). In this regard, Atoma nodes provide the offer side of a market place,
+in which requests to the Atoma Network represent the demand side of the network. Moreover, nodes on the Atoma Network are subject
+to deposit collateral to participate onto the network. Moreover, the Atoma Network protocol puts forth both reputation and slashing
+mechanisms to make sure that nodes execute compute tasks, to which these have subscribed too, in the most performant and trusted possible way. Finally, the Atoma Network open source software provides infrastructure for compute serving. This means, that nodes only need to clone the Atoma's node infrastructure open source repository, build the binaries and execute them. The Atoma Network binaries allows nodes to listen to blockchain events, to execute requests, as well as providing all the infrastructure (including downloading AI model weights, WASM binaries, etc from external APIs) in a fully automatic way. Therefore, apart from the hardware and electricity costs, node
+operators have very little work to run nodes (except for monitoring and deal with potential causes of node shutdown, such as electricity shutdowns, etc).
+ 
