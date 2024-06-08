@@ -18,8 +18,13 @@ We have a current implementation of the Atoma contract on Sui. This contract is 
 8. `Request submission` - Every request to the Atoma Network (processed by Atoma tokens) is submitted via the Atoma's contract. Moreover, requests are paid in `TOMA` token.
 9. `Load balancing` - Based on fine grained echelon performance, the Atoma contract is responsible for balancing request total volume across suitable echelons (based on their total available compute) and each echelon total `amount of work` at each time.
 10. `Random sampling` - Each request submitted into the Atoma Network is processed across a finite number of nodes within the same suitable echelon. The Atoma contract is responsible for randomly selecting the requested number of nodes. We currently use Sui's on-chain random generation features.
-11. `Staking` - Registered nodes are entitled for staking rewards based on their average node performance, in each echelon (future feature).
-12. `Governance` - Will allow `TOMA` holders to vote and decide which models to operate on the Atoma Network, as well as other types of compute (future feature).
+11. `Timeouts` - The Atoma contract keeps a registry of each request time it takes to process each request. If a node does not submit a request on time, a time out is triggered and a percentage of the node's deposited collateral is slashed automatically.
+12. `Output commitment submission` - Upon generating a new output, for a given request, a node must submit a cryptographic commitment back
+to the Atoma contract. This commitment is used by the Atoma contract to check if there is `consensus on the state of the output`. Once consensus is reached, all nodes that generated a commitment, is entitled to accrue fees (paid by the user on request submission).
+13. `Dispute` - If consensus is not reached on the state of the output (that is, different nodes submit different commitments), a dispute
+mechanism is put forth by the Atoma contract, by selecting additional high reputation (running trusted hardware) to resolve the dispute.
+14. `Staking` - Registered nodes are entitled for staking rewards based on their average node performance, in each echelon (future feature).
+15. `Governance` - Will allow `TOMA` holders to vote and decide which models to operate on the Atoma Network, as well as other types of compute (future feature).
 
 ### Future features
 
@@ -27,7 +32,9 @@ Moreover, we plan to add other features to the Atoma contract. These include
 
 1. `Staking`;
 2. `Governance`;
-3. `General compute tasks`, this will include general WASM applications that can be run on Atoma nodes. Due to potential security issues for both the user and the node, we will require such applications to run in trusted execution environments (TEEs).
+3. `Dispute` - we are in the process of establishing different types of dispute resolving (BFT dispute resolution, trusted hardware
+oracle nodes, etc).s
+4. `General compute tasks`, this will include general WASM applications that can be run on Atoma nodes. Due to potential security issues for both the user and the node, we will require such applications to run in trusted execution environments (TEEs).
 
 ### Atoma contract documentation
 
@@ -197,6 +204,12 @@ sui client active-address
 sui client faucet
 ```
 
+#### `TOMA` token
+
+The `TOMA` token is used as collateral that nodes must lock up to participate.
+It's defined in the [`toma` package](./packages/toma).
+
+
 #### Node registration
 
 In order to register a node, it is required to deposit a given amount of collateral onto the Atoma contract, indexed in `TOMA` tokens. Therefore, a node must acquire enough `TOMA` tokens before registration. Currently, the required amount of `TOMA` tokens for collateral is `10_000`. 
@@ -265,3 +278,25 @@ Notice that once a node subscribes to a given model, it is entitled to execute r
 It the node doesn't host the model, node submission will timeout. This means that part of the node's submitted collateral 
 will be slashed for timeout. In order to avoid this, the node operator must be sure to subscribe to only host to models
 it currently hosts.
+
+The available list of supported models is:
+
+#### Atoma's request submission
+
+To submit a request to the Atoma network, a user can run the following command:
+
+TODO: replace with `text` or `image` requests.
+
+```sh
+./cli gate submit-tell-me-a-joke-prompt \
+    --package "your package id can be found when publishing" \
+    --model "llama"
+```
+
+
+<!-- List of References -->
+
+[github-sui-std]: https://github.com/MystenLabs/sui/blob/main/crates/sui-framework/packages/sui-framework/sources
+[sui-install]: https://docs.sui.io/guides/developer/getting-started/sui-install
+[sui-analyzer]: https://marketplace.visualstudio.com/items?itemName=MoveBit.sui-move-analyzer
+[sui-explorer]: https://explorer.sui.io
