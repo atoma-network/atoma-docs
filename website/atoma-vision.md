@@ -22,4 +22,4 @@ Requests include AI inference requests, or other types of general compute reques
 
 Through verifiability, Atoma's nodes can provide higher levels of functionality to smart contracts on any blockchain. Smart contracts can
 delegate heavy computations to Atoma nodes, in the form of requests for Atoma nodes to execute in a coordinated way, providing high assurance guarantees that computations were not tampered in any way. More concretely, smart contracts can offload AI computations, or other types of logic executions to Atoma. Atoma allows for the next Web3 applications to be built on top of its infrastructure, which
-includes AI content generation, AI predictions, protein folding, WASM smart contracts on any blockchain, etc. 
+includes AI content generation, AI predictions, protein folding, WASM smart contracts on any blockchain, etc. It is like smart contracts can become both truly smart (and intelligent) and can be enhanced through a decentralized AWS lambda infrastructure (similar to a wide range of Web2 applications, already).
