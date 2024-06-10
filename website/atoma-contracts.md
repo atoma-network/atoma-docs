@@ -1,4 +1,4 @@
-# Atoma's contracts
+# Atoma's Contracts
 
 Currently the Atoma Network protocol is supported on the Sui blockchain. We will expand Atoma's reach to both EVM chains and Solana.
 
@@ -10,33 +10,29 @@ We have a current implementation of the Atoma contract on Sui. This contract is 
 
 1. `Node registration` - Nodes operating on the Atoma Network should first register on the Atoma contract. Once registered on the Atoma contract, nodes can receive newly submitted requests and run the required computation to resolve the request. 
 2. `Submit collateral` - Upon registration, nodes should deposit a given amount of collateral. The collateral is indexed in Atoma's native token, the `TOMA` token. 
-3. `Accrue fees` - Nodes accrue fees, indexed in `TOMA` token, based on the number and the type of requests they process. Accrued fees can only be withdraw on the next two epochs on.
-4. `Subscribe to AI models and other forms of compute types` - Upon registration, nodes should specify which AI models these nodes subscribe too (i.e., which models do the node currently hosts). Once a node registers for a given set of models, it can't change these, unless it de-registers and registers a second type, specifying the new set of models.
-5. `Node unregistration` - Once a node decides to stop providing compute to the Atoma Network, it can deregister itself directly on the smart contract.
-6. `Specifying node hardware features` - The Atoma Network protocol runs on a `sampling consensus` mechanism. Such mechanism requires multiple different nodes to reach consensus on the execution of a given output state. In order to achieve this, it is required that nodes, on a selected `quorum`, generate outputs in a deterministic fashion. However, most AI requests are `non-deterministic in nature`. It is possible to achieve determinism, if the selected nodes for a given request, have the same GPU hardware. For this reason, nodes must submit the type of GPU card(s) these can hold.
-7. `Echelon specification` - Upon 5., the Atoma contract specifies compute `echelons`. These can be thought of shards of the network. Compute across echelons should be as homogeneous as possible. Both in terms of compute and memory requirements, process time and determinism. 
-8. `Request submission` - Every request to the Atoma Network (processed by Atoma tokens) is submitted via the Atoma's contract. Moreover, requests are paid in `TOMA` token.
+3. `Accrue fees` - Nodes accrue fees, indexed in `TOMA` token, based on the number and the type of requests they process. Accrued fees can only be withdrawn two epochs later.
+4. `Subscribe to AI models and other forms of compute types` - Upon registration, nodes should specify which AI models these nodes subscribe to (i.e., which models do the nodes currently host). Once a node registers for a given set of models, it can't change these, unless it deregisters and registers a second type, specifying the new set of models.
+5. `Node deregistration` - Once a node decides to stop providing compute to the Atoma Network, it can deregister itself directly on the smart contract.
+6. `Specifying node hardware features` - The Atoma Network protocol runs on a `sampling consensus` mechanism. This mechanism requires multiple different nodes to reach consensus on the execution of a given output state. To achieve this, it is required that nodes, on a selected `quorum`, generate outputs in a deterministic fashion. However, most AI requests are `non-deterministic in nature`. It is possible to achieve determinism, if the selected nodes for a given request, have the same GPU hardware with the same congifuration. For this reason, nodes must submit the type of GPU card(s) these can hold.
+7. `Echelon specification` - Upon 5., the Atoma contract specifies compute `echelons`. These can be thought of as shards of the network. Compute across echelons should be as homogeneous as possible in compute and memory requirements, process time, and determinism. 
+8. `Request submission` - Every request to the Atoma Network (processed by Atoma tokens) is submitted via the Atoma contract. Requests are paid in `TOMA` token.
 9. `Load balancing` - Based on fine grained echelon performance, the Atoma contract is responsible for balancing request total volume across suitable echelons (based on their total available compute) and each echelon total `amount of work` at each time.
 10. `Random sampling` - Each request submitted into the Atoma Network is processed across a finite number of nodes within the same suitable echelon. The Atoma contract is responsible for randomly selecting the requested number of nodes. We currently use Sui's on-chain random generation features.
-11. `Timeouts` - The Atoma contract keeps a registry of each request time it takes to process each request. If a node does not submit a request on time, a time out is triggered and a percentage of the node's deposited collateral is slashed automatically.
-12. `Output commitment submission` - Upon generating a new output, for a given request, a node must submit a cryptographic commitment back
-to the Atoma contract. This commitment is used by the Atoma contract to check if there is `consensus on the state of the output`. Once consensus is reached, all nodes that generated a commitment, is entitled to accrue fees (paid by the user on request submission).
-13. `Dispute` - If consensus is not reached on the state of the output (that is, different nodes submit different commitments), a dispute
-mechanism is put forth by the Atoma contract, by selecting additional high reputation (running trusted hardware) to resolve the dispute.
+11. `Timeouts` - The Atoma contract keeps a registry of the time it takes to process each request. If a node does not submit a request on time, a time out is triggered and a percentage of the node's deposited collateral is slashed automatically.
+12. `Output commitment submission` - Upon generating a new output for a given request, a node must submit a cryptographic commitment back to the Atoma contract. This commitment is used by the Atoma contract to check if there is `consensus on the state of the output`. Once consensus is reached, all nodes that generated a commitment are entitled to accrue fees (paid by the user on request submission).
+13. `Dispute` - If consensus is not reached on the state of the output (that is, different nodes submit different commitments), a dispute mechanism is put forth by the Atoma contract, by selecting additional high reputation (running trusted hardware) to resolve the dispute.
 14. `Staking` - Registered nodes are entitled for staking rewards based on their average node performance, in each echelon (future feature).
 15. `Governance` - Will allow `TOMA` holders to vote and decide which models to operate on the Atoma Network, as well as other types of compute (future feature).
 
-### Future features
-
-Moreover, we plan to add other features to the Atoma contract. These include
+### Future Features
+We plan to add other features to the Atoma contract. These include
 
 1. `Staking`;
 2. `Governance`;
-3. `Dispute` - we are in the process of establishing different types of dispute resolving (BFT dispute resolution, trusted hardware
-oracle nodes, etc).s
+3. `Dispute` - we are in the process of establishing different types of dispute resolving (i.e BFT dispute resolution and trusted hardware oracle nodes)
 4. `General compute tasks`, this will include general WASM applications that can be run on Atoma nodes. Due to potential security issues for both the user and the node, we will require such applications to run in trusted execution environments (TEEs).
 
-### Atoma contract documentation
+### Atoma Contract Documentation
 
 The following instructions provide a detailed description on how to interact with the Atoma contract, on the Sui blockchain.
 
