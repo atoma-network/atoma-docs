@@ -87,9 +87,19 @@ With $N = 10$, the probability becomes
 $P = \left(\frac{1}{3}\right)^{10} = 1.6935 \times 10^{-5},$
 
 We can see that even a small set of nodes, selected uniformly at random, can lead to very high trust guarantees that a given generated output has not been tampered with, in any possible form.
+That said, if a user requires high guarantee trust on the state of a given output, through Atoma, it must pay $N$ times the native cost. For many use cases such additional replication cost
+is not an issue. For example, if a the AI inference provides an automation trading strategy that can generate additional revenue for a given DeFi protocol, paying $N$ times the native execution
+to have full guarantee that the output is not maliciously generated is totally feasible, especially as processing such request natively might only cost a few cents. 
 
+We also want to highlight that every verifiability algorithm mentioned previously (including ZKML and OpML) leads to an higher cost compared to native execution. It is hypothesized that ZKML
+proof generation can be up to 10,000x  the cost of native execution for medium size models, and the future goal is to get up to a reduction to only 20x execution overhead cost. On the other hand,
+OpML requires at least one verifier to attest the computations being generated in the network. As mentioned above, if no disputes are being made in the protocol, the amount of additional reward for nodes needs to be high enough to be economically feasible for nodes to collectively verify each inference request in the network. 
 
-## Cross validation mechanism
+Finally, there are other use
+cases to which verifiability is still necessary, but paying such additional cost is not desirable. Such use cases amount to low to medium verifiability needs. For example, a chat-bot community
+application, an AI NFT enhancement protocol, etc. In order to tackle these examples and reduce costs, we have introduced the following two improvements on our original Sampling Consensus protocol:
+
+## Cross validation Sampling Consensus
 
 ## Node obfuscation
 
