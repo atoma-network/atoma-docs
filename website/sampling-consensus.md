@@ -119,9 +119,18 @@ by the initial node is considered to final. Otherwise, the selected $N$ nodes pr
 the result is considered to be final, otherwise, a dispute is set forth.
 3. Once the dispute is resolved, the collateral of maliciously generated output nodes is distributed among those nodes in the quorum of $N + 1$ (the original node plus the later selected $N$ nodes) that committed to the correct output.
 
-As explained above, the Cross Validation Sampling Consensus only relies on replication with rate $0 < p < 1$. This means, that a percentage of $(1-p)x100%$ of times, requests are executed
+As explained above, the Cross Validation Sampling Consensus only relies on replication with rate $0 < p < 1$. This means, that a percentage of $(1-p) \times 100$% of times, requests are executed
 by a single node. The interesting feature of this approach is that a node has no way to predict if its output will be attested by other $N$ nodes or not (unless the node has access to the
-random oracle used for random sampling).
+random oracle used for random sampling). That said, the disadvantage of this method is that it doesn't provide full verifiability for high security requests (a single request might be advantageous for a node to corrupt, and the node has a chance of $1-p$ of achieving it being malicious). This method also introduces additional latency into the system compared to the original Sampling Consensus protocol, as the time to finality is (in the happy path of no disputes) the at least twice that of native execution (whereas in the Sampling Consensus case was almost the native time of execution, up to some variability).
+
+## Game-theoretical considerations on Cross Validation Sampling Consensus
+
+It is possible however to show that, assuming all nodes are rational participants and do not wish to have collateral at risk if it is not economically sound to do so, such system reaches Nash
+equilibrium in the following case:
+
+1. If the original node is not malicious, the expected accrued rewards value can be expressed in the formula
+
+$(1-p) \times (R - C) + p * \sum_{i = 0}^N (N i) r^i (1 - r)^i * (i * \frac{R}{N} + R - C)$
 
 
 ## Node obfuscation
