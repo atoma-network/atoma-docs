@@ -76,15 +76,15 @@ As previously mentioned, the Atoma protocol can enforce determinism for executio
 
 Depending on the number of sampled nodes, different levels of output integrity are achieved. For example, assuming a dishonest participant of the Atoma Network controls a percentage r of the network, the probability, P, that a quorum of N > 0 selected nodes (including at least one of the dishonest participant nodes) is:
 
-\[ P = r^N. \]
+$ P = r^N. $
 
-In particular, if \( N = 5 \) nodes are selected and the dishonest participant controls one third of the network, that is \( r = \frac{1}{3} \), the probability above becomes
+In particular, if $ N = 5 $ nodes are selected and the dishonest participant controls one third of the network, that is $ r = \frac{1}{3} $, the probability above becomes
 
-\[ P = \left(\frac{1}{3}\right)^5 = 0.00411\ldots \]
+$ P = \left(\frac{1}{3}\right)^5 = 0.00411\ldots $
 
-With \( N = 10 \), the probability becomes
+With $ N = 10 $, the probability becomes
 
-\[ P = \left(\frac{1}{3}\right)^{10} = 1.6935 \times 10^{-5}, \]
+$ P = \left(\frac{1}{3}\right)^{10} = 1.6935 \times 10^{-5}, $
 
 We can see that even a small set of nodes, selected uniformly at random, can lead to very high trust guarantees that a given generated output has not been tampered with, in any possible form.
 
