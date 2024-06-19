@@ -84,7 +84,7 @@ $ P = \left(\frac{1}{3}\right)^5 = 0.00411\ldots $
 
 With $ N = 10 $, the probability becomes
 
-$ P = \left(\frac{1}{3}\right)^{10} = 1.6935 \times 10^{-5}, $
+$P = \left(\frac{1}{3}\right)^{10} = 1.6935 \times 10^{-5},$
 
 We can see that even a small set of nodes, selected uniformly at random, can lead to very high trust guarantees that a given generated output has not been tampered with, in any possible form.
 
