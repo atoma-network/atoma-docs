@@ -130,7 +130,7 @@ equilibrium in the following case:
 
 1. If the original node is not malicious, the expected accrued rewards value can be expressed in the formula
 
-$(1-p) \times (R - C) + p * \sum_{i = 0}^N (N i) r^i (1 - r)^i * (i * \frac{R}{N} + R - C)$
+$(1-p) \times (R - C) + p \times \sum_{i = 0}^N (N i) r^i (1 - r)^i \times (i \times \frac{R}{N} + R - C)$
 
 
 ## Node obfuscation
