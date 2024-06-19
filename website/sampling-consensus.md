@@ -80,7 +80,7 @@ $P = r^N.$
 
 In particular, if $N = 5$ nodes are selected and the dishonest participant controls one third of the network, that is $r = \frac{1}{3}$, the probability above becomes
 
-$P = \left(\frac{1}{3}\right)^5 = 0.00411\ldots$
+$P = \left(\frac{1}{3}\right)^5 = 4.11×10^{−3}\ldots$
 
 With $N = 10$, the probability becomes
 
