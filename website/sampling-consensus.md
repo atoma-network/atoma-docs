@@ -138,13 +138,20 @@ where $R$ is the reward being paid to nodes for performing computation, $C$ is t
 
 $(1-p) \times H + p \times r^N \times L + \sum_{i = 0}^{N-1} {N \choose i} \times r^i \times (1 - r)^{n-i} \times (i \times \frac{R}{N} - C - S)$,
 
-where $H$ is the total reward a dishonest node can gather and no selected nodes are chosen for verification (which happens with probability $1 - p$), and $L$ is the total reward a dishonest node can obtain if he acts dishonestly and $N$ nodes are selected for verification (which happens with probability $p$, and in this case the only possible way the node has to be rewarded is if all the $N$ selected nodes collude with it).
+where $H$ is the total reward a dishonest node can gather and no selected nodes are chosen for verification (which happens with probability $1 - p$), and $L$ is the total reward a dishonest node can obtain if he acts dishonestly and $N$ nodes are selected for verification (which happens with probability $p$, and in this case the only possible way the node has to be rewarded is if all the $N$ selected nodes collude with it). The variable $S$ stands for the amount of slashed collateral, in case the node is malicious and fails the dispute verification.
 
 It turns out, that under the assumption that nodes are rational and want to optimize their profits on the network, it is in the interest of a node to be honest if the following inequality holds
 
 $(1-p) \times (R - C) + p \times \sum_{i=0}^N {N \choose i} r^i (1 - r)^i \times (i \times \frac{R}{N} + R - C) > (1-p) \times H + p \times r^N \times L + \sum_{i = 0}^{N-1} {N \choose i} \times r^i \times (1 - r)^{n-i} \times (i \times \frac{R}{N} - C - S)$.
 
+It turns out that by substituting some of the values with concrete values, such as $r = 10%$, $N = 1$ (a single node to be selected for resolving disputes) and we assume that $H = R$ (that is the reward to be reaped is simply that of the fee paid by the protocol, which might not be always the case), $L = 2*R$, and assuming the total reward by the protocol to be $20$% compared to the native cost of compute $C$, we can have simplify the above inequality showing that the replication rate $p$ can be lower than $1$%. This means that, in this scenario, nodes are selected to verify an AI inference computation at most $1$% of the times, which minimizes substantially the replication needed to provide verifiability.
+
+We want to stress once more that even though this protocol works well for low to medium security applications, for example, when the only concern is if a node is using a less performant model to run a computation than the specified model by the request. Cross Validation Sampling Consensus breaks when a node can reap higher rewards than those provided by the Atoma protocol accrued fees (for example, if a node can exploit some DeFi protocol liquidity balancing for its own profit). In that case, it is preferable to use the simpler Sampling Consensus protocol, sketched above. Another scenario, in which is preferable to use Sampling Consensus is when no verifiability is needed, in that case the application developer can set $N = 1$ and simply pay native cost for AI compute. 
+
+Finally, we were informed that Hyperbolic Labs had developed similar ideas to Cross Validation Sampling Consensus on their own and had published a research [paper](https://arxiv.org/html/2405.00295v2) on the matter, independently. We also want to point out that even though our ideas were already matured at the time of publish, Hyperbolic Labs had formalized these prior to us.
+
 
 ## Node obfuscation
 
-
+In order to address the higher time to finality of Cross Validation Sampling Consensus, we propose a node obfuscation mechanism. Through cryptographic obfuscation methods, we can make sure that
+nodes have no information how many other nodes are in the selected quorum, other themselves (if that's the case). In this way, we can select $N + 1$ nodes once the request is submitted, thus removing one round of the Cross Validation Sampling Consensus protocol. The game theoretical analysis remains unchanged, and therefore this approach allows to have reduced latency overhead, while keeping the same security game theoretical guarantees.
