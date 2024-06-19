@@ -51,6 +51,17 @@ The Atoma Network's open-source software equips nodes with the tools and infrast
 
 They automatically provide all the necessary infrastructure, including downloading AI model weights and WASM binaries from external APIs. Therefore, aside from hardware and electricity costs, node operators have minimal work, mainly monitoring and handling potential shutdowns like power outages.
 
+## AI alignment 
+
+Recently, there have been extensive debates about AI alignment and potential arms race regarding next generation AGI capabilities, by companies and governments over the world. Such eventual arms race will tend to further centralize technology at the hands of a few, while
+further reducing data ownership and privacy from users and customers. Through Atoma, we plan to create an alternative to this
+potential dystopian future. We are putting forth serious efforts to bring full privacy to the Atoma Network, through TEEs and suitable
+cryptographic schemes, while facilitating both a data and intelligence economies, through a few solid partnerships with other builders
+in the space. Through the Atoma token, users publishing new models onto the Atoma Network can generate a continuous stream of revenue
+to compensate for the tremendous effort of training very large AI models. Moreover, through tokenomics it is possible to align multiple users with common interests and needs to incentivize data and compute owners to share their valuable resource for training new AI models.
+Moreover, users have a word to say in how they want AI to accommodate for their necessities (instead of the way around).
+
+
 ## Realizing the Next Generation Applications
 
 We envision that compute requirements will grow exponentially in the coming years, especially due to the advent of powerful generative AIs. Moreover, it is estimated that decentralized cloud/edge infrastructure is expected to grow substantially by 2027. That all said, it is a likely scenario that there will be substantial intersections between demand for compute, AI and decentralized infrastructure. In such scenario, Atoma is well positioned to lead the space and open the doors for the realization of the next generation decentralized applications. We believe Atoma will provide the infrastructure for the following applications to materialize:
@@ -68,3 +79,4 @@ privacy and data ownership. Further applications can be created using these feat
 5. Autonomous smart agents that can interact with blockchains and protocols. It is only possible to realize smart agents behaving on
 behalf of Web3 protocols, if these agents are themselves transparently automated and controlled in a decentralized environment. This is
 only possible through a decentralized AI inference protocol such as the Atoma Network.
+
