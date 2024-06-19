@@ -74,7 +74,7 @@ The Atoma Network sampling consensus protocol satisfies the following:
 
 As previously mentioned, the Atoma protocol can enforce determinism for execution workloads (a.k.a requests) by replicating compute. It does this by randomly selecting a given number of nodes to run the same compute.
 
-Depending on the number of sampled nodes, different levels of output integrity are achieved. For example, assuming a dishonest participant of the Atoma Network controls a percentage r of the network, the probability, P, that a quorum of N > 0 selected nodes (including at least one of the dishonest participant nodes) is:
+Depending on the number of sampled nodes, different levels of output integrity are achieved. For example, assuming a dishonest participant of the Atoma Network controls a percentage $r$ of the network, the probability, $P$, that a quorum of $N > 0$ selected nodes (including at least one of the dishonest participant nodes) is:
 
 $P = r^N.$
 
