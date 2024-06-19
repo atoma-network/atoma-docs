@@ -136,13 +136,13 @@ where $R$ is the reward being paid to nodes for performing computation, $C$ is t
 
 2. If the original node is malicious, then the expected accrued reward formula can be stated as: 
 
-$(1-p) \times H + p \times r^N \times L + \sum_{i = 0}^{N-1} {N \chooses i} \times r^i \times (1 - r)^{n-i} \times (i \times \frac{R}{N} - C - S)$,
+$(1-p) \times H + p \times r^N \times L + \sum_{i = 0}^{N-1} {N \choose i} \times r^i \times (1 - r)^{n-i} \times (i \times \frac{R}{N} - C - S)$,
 
 where $H$ is the total reward a dishonest node can gather and no selected nodes are chosen for verification (which happens with probability $1 - p$), and $L$ is the total reward a dishonest node can obtain if he acts dishonestly and $N$ nodes are selected for verification (which happens with probability $p$, and in this case the only possible way the node has to be rewarded is if all the $N$ selected nodes collude with it).
 
 It turns out, that under the assumption that nodes are rational and want to optimize their profits on the network, it is in the interest of a node to be honest if the following inequality holds
 
-$(1-p) \times (R - C) + p \times \sum_{i=0}^N {N \choose i} r^i (1 - r)^i \times (i \times \frac{R}{N} + R - C) > (1-p) \times H + p \times r^N \times L + \sum_{i = 0}^{N-1} {N \chooses i} \times r^i \times (1 - r)^{n-i} \times (i \times \frac{R}{N} - C - S)$.
+$(1-p) \times (R - C) + p \times \sum_{i=0}^N {N \choose i} r^i (1 - r)^i \times (i \times \frac{R}{N} + R - C) > (1-p) \times H + p \times r^N \times L + \sum_{i = 0}^{N-1} {N \choose i} \times r^i \times (1 - r)^{n-i} \times (i \times \frac{R}{N} - C - S)$.
 
 
 ## Node obfuscation
