@@ -68,7 +68,15 @@ The Atoma Network sampling consensus protocol satisfies the following:
 - This is especially relevant to enforce verifiable compute. 
 
 3.  Whenever two or more nodes are selected to execute a request, the selected nodes disagree if at least one of the nodes has been dishonest. 
-- In particular, an honest node will never agree on the state of a request output with the dishonest one.
+- In particular, an honest node will never agree on the state of a request output with a dishonest one. Finally, independent nodes can only come to consensus if all of them
+have performed the requested computation honestly.
+
+4. Each request specifies a given timeout period, in which case if a node times out, it gets some collateral percentage slashed.
+
+5. Atoma's Sampling Consensus has almost native finality times. Indeed, the fastest execution node in a sampled quorum can immediately share the output with the user (either via a web browser RTC connection, decentralized data storage, or even if a blockchain if the output is both public and small, etc). The final verifiability attestation (which ensures the computation was not
+tampered in any form) is provided at the time the slowest node commits to the output. From 1. it follows that nodes executing a request have similar hardware specifications, which in theory means that the difference between the fastest and slowest processing nodes should be mostly from bandwidth speed variability. This means that contrary to OpML, Atoma Sampling Consensus has no
+challenge period.
+
 
 ## Probabilistic Considerations for Atoma's Sampling Consensus
 
@@ -99,7 +107,22 @@ Finally, there are other use
 cases to which verifiability is still necessary, but paying such additional cost is not desirable. Such use cases amount to low to medium verifiability needs. For example, a chat-bot community
 application, an AI NFT enhancement protocol, etc. In order to tackle these examples and reduce costs, we have introduced the following two improvements on our original Sampling Consensus protocol:
 
-## Cross validation Sampling Consensus
+## Cross Validation Sampling Consensus
+
+In order to address the replication costs within the original `Sampling Consensus`, we have put forth a slightly different protocol algorithm which we refer to `Cross Validation Sampling Consensus` which allows for considerably lower costs, with a slight impact on verifiability.
+
+The way Cross Validation Sampling Consensus works is as follows:
+
+1. For each incoming request onto Atoma Network, a single randomly chosen node is assigned to execute the request.
+2. Once the node commits to the generated output, we select a quorum of $N$ nodes with probability $p$. If nodes are not selected (wit probability $1 - p$) then the committed output 
+by the initial node is considered to final. Otherwise, the selected $N$ nodes provide their own output commitments. If these agree with the original node's output commitment, then
+the result is considered to be final, otherwise, a dispute is set forth.
+3. Once the dispute is resolved, the collateral of maliciously generated output nodes is distributed among those nodes in the quorum of $N + 1$ (the original node plus the later selected $N$ nodes) that committed to the correct output.
+
+As explained above, the Cross Validation Sampling Consensus only relies on replication with rate $0 < p < 1$. This means, that a percentage of $(1-p)x100%$ of times, requests are executed
+by a single node. The interesting feature of this approach is that a node has no way to predict if its output will be attested by other $N$ nodes or not (unless the node has access to the
+random oracle used for random sampling).
+
 
 ## Node obfuscation
 
