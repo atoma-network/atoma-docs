@@ -71,11 +71,9 @@ The Atoma Network sampling consensus protocol satisfies the following:
 - In particular, an honest node will never agree on the state of a request output with a dishonest one. Finally, independent nodes can only come to consensus if all of them
 have performed the requested computation honestly.
 
-4. Each request specifies a given timeout period, in which case if a node times out, it gets some collateral percentage slashed.
+4. Each request specifies a given timeout period. In the case that a node times out, a percentage of collateral is slashed.
 
-5. Atoma's Sampling Consensus has almost native finality times. Indeed, the fastest execution node in a sampled quorum can immediately share the output with the user (either via a web browser RTC connection, decentralized data storage, or even if a blockchain if the output is both public and small, etc). The final verifiability attestation (which ensures the computation was not
-tampered in any form) is provided at the time the slowest node commits to the output. From 1. it follows that nodes executing a request have similar hardware specifications, which in theory means that the difference between the fastest and slowest processing nodes should be mostly from bandwidth speed variability. This means that contrary to OpML, Atoma Sampling Consensus has no
-challenge period.
+5. Atoma's Sampling Consensus has almost native finality times. The fastest execution node in a sampled quorum can immediately share the output with the user (either via a web browser RTC connection, decentralized data storage, or even a blockchain if the output is both public and small). The final verifiability attestation (which ensures the computation was not tampered with in any form) is provided at the time the slowest node commits to the output. From 1. it follows that nodes executing a request have similar hardware specifications, which in theory means that the difference between the fastest and slowest processing nodes should be mostly from bandwidth speed variability. This means that contrary to OpML, Atoma Sampling Consensus has no challenge period.
 
 
 ## Probabilistic Considerations for Atoma's Sampling Consensus
@@ -94,45 +92,41 @@ With $N = 10$, the probability becomes
 
 $P = \left(\frac{1}{3}\right)^{10} = 1.6935 \times 10^{-5},$
 
-We can see that even a small set of nodes, selected uniformly at random, can lead to very high trust guarantees that a given generated output has not been tampered with, in any possible form.
+We can see that even a small set of nodes, selected uniformly at random, can lead to very high trust guarantees that a given generated output has not been tampered with in any possible form.
 That said, if a user requires high guarantee trust on the state of a given output, through Atoma, it must pay $N$ times the native cost. For many use cases such additional replication cost
-is not an issue. For example, if a the AI inference provides an automation trading strategy that can generate additional revenue for a given DeFi protocol, paying $N$ times the native execution
-to have full guarantee that the output is not maliciously generated is totally feasible, especially as processing such request natively might only cost a few cents. 
+is not an issue. For example, if the AI inference provides an automated trading strategy that can generate additional revenue for a given DeFi protocol, paying $N$ times the native execution
+to have full guarantee that the output is not maliciously generated is totally feasible, especially as processing such request natively costs very little (i.e a few cents). 
 
-We also want to highlight that every verifiability algorithm mentioned previously (including ZKML and OpML) leads to an higher cost compared to native execution. It is hypothesized that ZKML
+It's important to highlight that every verifiability algorithm mentioned previously (including ZKML and OpML) leads to an higher cost compared to native execution. It is hypothesized that ZKML
 proof generation can be up to 10,000x  the cost of native execution for medium size models, and the future goal is to get up to a reduction to only 20x execution overhead cost. On the other hand,
 OpML requires at least one verifier to attest the computations being generated in the network. As mentioned above, if no disputes are being made in the protocol, the amount of additional reward for nodes needs to be high enough to be economically feasible for nodes to collectively verify each inference request in the network. 
 
 Finally, there are other use
-cases to which verifiability is still necessary, but paying such additional cost is not desirable. Such use cases amount to low to medium verifiability needs. For example, a chat-bot community
+cases to which verifiability is still necessary, but paying the additional cost is not desirable. These cases amount to low to medium verifiability needs. For example, a chat-bot community
 application, an AI NFT enhancement protocol, etc. In order to tackle these examples and reduce costs, we have introduced the following two improvements on our original Sampling Consensus protocol:
 
 ## Cross Validation Sampling Consensus
 
-In order to address the replication costs within the original `Sampling Consensus`, we have put forth a slightly different protocol algorithm which we refer to `Cross Validation Sampling Consensus` which allows for considerably lower costs, with a slight impact on verifiability.
+In order to address the replication costs within the original `Sampling Consensus`, we have put forth a slightly different protocol algorithm which we refer to `Cross Validation Sampling Consensus`. This allows for considerably lower costs with a slight impact on verifiability.
 
 The way Cross Validation Sampling Consensus works is as follows:
 
 1. For each incoming request onto Atoma Network, a single randomly chosen node is assigned to execute the request.
-2. Once the node commits to the generated output, we select a quorum of $N$ nodes with probability $p$. If nodes are not selected (wit probability $1 - p$) then the committed output 
-by the initial node is considered to final. Otherwise, the selected $N$ nodes provide their own output commitments. If these agree with the original node's output commitment, then
-the result is considered to be final, otherwise, a dispute is set forth.
+2. Once the node commits to the generated output, we select a quorum of $N$ nodes with probability $p$. If nodes are not selected (with probability $1 - p$) then the committed output by the initial node is considered to be final. Otherwise, the selected $N$ nodes provide their own output commitments. If these agree with the original node's output commitment, then the result is considered to be final, otherwise, a dispute is set forth.
 3. Once the dispute is resolved, the collateral of maliciously generated output nodes is distributed among those nodes in the quorum of $N + 1$ (the original node plus the later selected $N$ nodes) that committed to the correct output.
 
-As explained above, the Cross Validation Sampling Consensus only relies on replication with rate $0 < p < 1$. This means, that a percentage of $(1-p) \times 100$% of times, requests are executed
-by a single node. The interesting feature of this approach is that a node has no way to predict if its output will be attested by other $N$ nodes or not (unless the node has access to the
-random oracle used for random sampling). That said, the disadvantage of this method is that it doesn't provide full verifiability for high security requests (a single request might be advantageous for a node to corrupt, and the node has a chance of $1-p$ of achieving it being malicious). This method also introduces additional latency into the system compared to the original Sampling Consensus protocol, as the time to finality is (in the happy path of no disputes) the at least twice that of native execution (whereas in the Sampling Consensus case was almost the native time of execution, up to some variability).
+As explained above, the Cross Validation Sampling Consensus only relies on replication with rate $0 < p < 1$. This means, that a percentage of $(1-p) \times 100$% of times, requests are executed by a single node. The interesting feature of this approach is that a node has no way to predict if its output will be attested by other $N$ nodes or not (unless the node has access to the random oracle used for random sampling). That said, the disadvantage of this method is that it doesn't provide full verifiability for high security requests (a single request might be advantageous for a node to corrupt, and the node has a chance of $1-p$ of achieving it being malicious). This method also introduces additional latency into the system compared to the original Sampling Consensus protocol. The time to finality is (in the ideal path of no disputes) at least twice that of native execution (whereas in the Sampling Consensus case was almost the native time of execution, up to some variability).
 
 ## Game-theoretical considerations on Cross Validation Sampling Consensus
 
-It is possible however to show that, assuming all nodes are rational participants and do not wish to have collateral at risk if it is not economically sound to do so, such system reaches Nash
+Assuming all nodes are rational participants and do not wish to have collateral at risk if it is not economically sound to do so, it is possible to show that the system reaches Nash
 equilibrium in the following case:
 
 1. If the original node is not malicious, the expected accrued rewards value can be expressed in the formula
 
 $(1-p) \times (R - C) + p \times \sum_{i=0}^N {N \choose i} r^i (1 - r)^i \times (i \times \frac{R}{N} + R - C)$,
 
-where $R$ is the reward being paid to nodes for performing computation, $C$ is the native cost of execution and $r$ is the amount of the network the malicious node owns.
+where $R$ is the reward being paid to nodes for performing computation, $C$ is the native cost of execution, and $r$ is the amount of the network the malicious node owns.
 
 2. If the original node is malicious, then the expected accrued reward formula can be stated as: 
 
@@ -140,13 +134,13 @@ $(1-p) \times H + p \times r^N \times L + \sum_{i = 0}^{N-1} {N \choose i} \time
 
 where $H$ is the total reward a dishonest node can gather and no selected nodes are chosen for verification (which happens with probability $1 - p$), and $L$ is the total reward a dishonest node can obtain if he acts dishonestly and $N$ nodes are selected for verification (which happens with probability $p$, and in this case the only possible way the node has to be rewarded is if all the $N$ selected nodes collude with it). The variable $S$ stands for the amount of slashed collateral, in case the node is malicious and fails the dispute verification.
 
-It turns out, that under the assumption that nodes are rational and want to optimize their profits on the network, it is in the interest of a node to be honest if the following inequality holds
+It turns out, that under the assumption that nodes are rational and want to optimize their profits on the network, it is in the interest of a node to be honest if the following inequality holds:
 
 $(1-p) \times (R - C) + p \times \sum_{i=0}^N {N \choose i} r^i (1 - r)^i \times (i \times \frac{R}{N} + R - C) > (1-p) \times H + p \times r^N \times L + \sum_{i = 0}^{N-1} {N \choose i} \times r^i \times (1 - r)^{n-i} \times (i \times \frac{R}{N} - C - S)$.
 
-It turns out that by substituting some of the values with concrete values, such as $r = 10%$, $N = 1$ (a single node to be selected for resolving disputes) and we assume that $H = R$ (that is the reward to be reaped is simply that of the fee paid by the protocol, which might not be always the case), $L = 2*R$, and assuming the total reward by the protocol to be $20$% compared to the native cost of compute $C$, we can have simplify the above inequality showing that the replication rate $p$ can be lower than $1$%. This means that, in this scenario, nodes are selected to verify an AI inference computation at most $1$% of the times, which minimizes substantially the replication needed to provide verifiability.
+It turns out that by substituting some of the values with concrete values, such as $r = 10%$, $N = 1$ (a single node to be selected for resolving disputes) and we assume that $H = R$ (the reward is simply the fee paid by the protocol, which might not be always the case), $L = 2*R$, and assuming the total reward by the protocol to be $20$% compared to the native cost of compute $C$, we can simplify the above inequality showing that the replication rate $p$ can be lower than $1$%. This means that, in this scenario, nodes are selected to verify an AI inference computation at most $1$% of the times, which minimizes substantially the replication needed to provide verifiability.
 
-We want to stress once more that even though this protocol works well for low to medium security applications, for example, when the only concern is if a node is using a less performant model to run a computation than the specified model by the request. Cross Validation Sampling Consensus breaks when a node can reap higher rewards than those provided by the Atoma protocol accrued fees (for example, if a node can exploit some DeFi protocol liquidity balancing for its own profit). In that case, it is preferable to use the simpler Sampling Consensus protocol, sketched above. Another scenario, in which is preferable to use Sampling Consensus is when no verifiability is needed, in that case the application developer can set $N = 1$ and simply pay native cost for AI compute. 
+We want to stress again that even though this protocol works well for low to medium security applications when the only concern is if a node is using a less performant model to run a computation than the specified model by the request. Cross Validation Sampling Consensus breaks when a node can reap higher rewards than those provided by the Atoma protocol accrued fees (for example, if a node can exploit some DeFi protocol liquidity balancing for its own profit). In that case, it is preferable to use the simpler Sampling Consensus protocol, sketched above. Another scenario, in which is preferable to use Sampling Consensus is when no verifiability is needed, in that case the application developer can set $N = 1$ and simply pay native cost for AI compute. 
 
 Finally, we were informed that Hyperbolic Labs had developed similar ideas to Cross Validation Sampling Consensus on their own and had published a research [paper](https://arxiv.org/html/2405.00295v2) on the matter, independently. We also want to point out that even though our ideas were already matured at the time of publish, Hyperbolic Labs had formalized these prior to us.
 
@@ -154,4 +148,4 @@ Finally, we were informed that Hyperbolic Labs had developed similar ideas to Cr
 ## Node obfuscation
 
 In order to address the higher time to finality of Cross Validation Sampling Consensus, we propose a node obfuscation mechanism. Through cryptographic obfuscation methods, we can make sure that
-nodes have no information how many other nodes are in the selected quorum, other themselves (if that's the case). In this way, we can select $N + 1$ nodes once the request is submitted, thus removing one round of the Cross Validation Sampling Consensus protocol. The game theoretical analysis remains unchanged, and therefore this approach allows to have reduced latency overhead, while keeping the same security game theoretical guarantees.
+nodes have no information about how many other nodes are in the selected quorum. Therefore, we can select $N + 1$ nodes once the request is submitted, thus removing one round of the Cross Validation Sampling Consensus protocol. The game theoretical analysis remains unchanged, and therefore this approach allows to have reduced latency overhead, while keeping the same security game theoretical guarantees.
