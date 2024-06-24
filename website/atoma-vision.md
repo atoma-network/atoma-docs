@@ -69,7 +69,7 @@ Compute requirements will grow exponentially in the coming years, especially due
 Atoma is well positioned to lead the space and open the doors for the next generation of decentralized applications. We believe Atoma will provide the infrastructure for the following applications to materialize:
 
 1. User data privacy oriented applications. Through the use of TEEs for AI inference, we can provide a cheap infrastructure layer for
-private AI compute. Assuming that user data is private at rest (is stored encrypted), it is possible for Atoma Nodes to decrypt the data within a TEE, thus the node has no access to sensitive information. Once the output is generated, both the input data as well as the generated output can be encrypted once back and transmitted to the user, which can then decrypt those.
+private AI compute. Assuming that user data is private at rest (is stored encrypted), it is possible for Atoma Nodes to decrypt the data within a TEE, thus the node has no access to sensitive information. Once the output is generated, both the input data and the generated output can be encrypted again and transmitted to the user, who can then decrypt them.
 
 2. From 1., decentralized protocols can be built that interact with user owned vector embedding databases, which can be thought of as the user's digital footprint, while maintaining full privacy and data ownership. Further applications can be created using these features such as interactive browsers that can have fine access to user preferences without ever sharing sensitive user data with the exterior world.
 
@@ -77,5 +77,5 @@ private AI compute. Assuming that user data is private at rest (is stored encryp
 
 4. Generative AI content for Web3 applications. These include genetic NFTs that can adapt their features (through AI) on the users own blockchain activity or other personal/public available data.
 
-5. Autonomous smart agents that can interact with blockchains and protocols. It is only possible to achieve smart agents behaving on behalf of Web3 protocols if these agents are themselves transparently automated and controlled in a decentralized environment. This is only possible through a decentralized AI inference protocol such as the Atoma Network.
+5. Autonomous smart agents that can interact with blockchains and protocols. In order to build smart agents behaving on behalf of Web3 protocols, it is necessary that these are automated and controlled in a transparent decentralized environment. This is only possible through a decentralized AI inference protocol such as the Atoma Network.
 
