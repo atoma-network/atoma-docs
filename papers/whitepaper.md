@@ -1,14 +1,14 @@
 # Atoma Whitepaper
 
-## Jorge Antonio and Hisham Khan
+## Authored by Jorge Antonio and Hisham Khan
 
 ### Abstract
 
-Atoma is a permissionless decentralized protocol specialized for heavy verifiable compute. Atoma derives its features from compute providers, referred to as execution nodes (or simply nodes). Nodes on the Atoma Network are responsible for processing different types of compute requests. Atoma Network is specialized for AI inference compute, which includes deploying and serving AI compute (mostly in the form of AI inference) in a decentralized manner.
+Atoma is a permissionless decentralized protocol specialized for heavy verifiable compute. Atoma derives its features from compute providers, referred to as execution nodes (or simply nodes). Nodes on the Atoma Network are responsible for processing different types of compute requests. Atoma Network is specialized for AI inference compute, which includes deploying and serving AI compute (mostly in the form of AI inference) in a fully decentralized manner.
 
 AI inference requests often require running Large Language models (LLMs) on different types of inputs (text, images, video, audio, etc) and produce some form of output (either in text, video, or other formats for multi-modality capabilities). More traditional AI models will also be available on the Atoma Network, specially those that are well suited for time series forecasting, recommendation systems, etc.
 
-Due to the recent advances in the field of generative AI, the demand for AI compute is expected to grow exponentially in the coming years. It is expected that decentralized cloud/edge infrastructure will grow substantially in the coming years. Such tendency will foster new intersections between AI, compute, and decentralized infrastructure.
+Due to the recent advances in the field of generative AI, the demand for AI compute is expected to grow exponentially in the coming years. Such tendency will inevitably foster lead to a rise in the demand for compute and energy resources.
 
 That said, the rapid growth in AI model performance has been accompanied by an ever increasing number of model weight parameters, requiring higher amounts of memory to host such models. This trend is likely to continue, leading to higher compute resources necessities. For this reason, to run the best AI models at scale, it is crucial to have specialized powerful hardware, such as high caliber GPUs (such as the Hopper and Blackwell Nvidia GPU series). 
 
