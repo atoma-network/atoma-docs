@@ -18,7 +18,7 @@ Through the Atoma Network, new applications will be built. Applications that can
 
 That said, in order for the Atoma Network to become a full intelligence layer powering Web3 protocols, it is required to establish high integrity guarantees around AI inference compute. In practice, this means that AI generated outputs can be proved to have not been tampered in any possible form or, in other words, that no malicious actor could have interfered with the correct execution of an AI model. For this reason, we have established a novel sampling consensus protocol to ensure that Atoma Network nodes are able to provide high levels of verifiability for each AI compute request they process. Such sampling consensus protocol, referred to as `Sampling Consensus`, is based on the assumption that nodes are rational actors in a competing economic environment. Such protocol is optimized to achieve very high security guarantees, while having lower cost compared to other methods (such as zkML, opML, etc).
 
-For the above reasons, the Atoma Network is well positioned to lead the space of decentralized AI compute. It is our deepest wish to hope that the Atoma Network will open the doors for a more bright, transparent, innovative and democratic future where technology is fully aligned with users and communities needs.
+For the above reasons, the Atoma Network is well positioned to lead the space of decentralized AI compute. We deeply wish that through its development, the Atoma Network will open the doors for a more bright, transparent, innovative and democratic future where technology is fully aligned with users and communities needs.
 
 ### Introduction
 
