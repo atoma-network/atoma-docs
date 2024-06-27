@@ -78,3 +78,20 @@ The focus of the current text is to explore at a deeper level the Atoma's unique
 
 ### Atoma Network as a decentralized permissionless protocol for AI inference
 
+In this section, we will explore the Atoma Network architecture, including how nodes can register on the network, how they can subscribe to models, and how can they then process requests, accruing rewards for their contributions. At the heart of the Atoma Network lies our Atoma smart contract. Even though we wrote our smart contract to be deployed on the Sui blockchain, due to Sui Move's programming asset based model, together with Sui's high scalability, low latency and low fees, we plan to expand Atoma's reach to both EVM chains and Solana, in the relatively near future. Independently of the blockchain, the Atoma smart contract functionality is responsible for the following tasks:
+
+1. Node registration.
+2. Node collateral deposit and management.
+3. AI model subscription, by nodes.
+5. Submitting AI inference requests. 
+6. Transmitting AI inference requests to the nodes, through event subscriptions.
+7. Select randomly chosen node quorums to process AI inference requests.
+8. For each request and node quorum, either settle the output state (if all nodes withing the quorum agree on the state of the output) or start a dispute for the output state.
+9. Manage funds and rewards for nodes.
+10. Balancing the network's total load volume, allowing for a better utilization of compute resources.
+11. Keeping a node reputation registry, allowing for nodes to be penalized for misbehaving, through collateral slashing.
+
+We shall further explore each of the above tasks in detail, together with other topics such as governance, token emissions, etc.
+
+#### 1. Node registration
+
