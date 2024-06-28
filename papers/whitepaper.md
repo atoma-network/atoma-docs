@@ -26,7 +26,9 @@ For the above reasons, the Atoma Network is well positioned to lead the space of
 
 The past few years have seen the emergence of a tremendous amount of technological innovations. These include new generative AI capabilities, powered by large language models (LLMs), more powerful hardware models which allow for massive scaling computing power, etc.
 
-To put things into perspective, it is estimated that the global market for AI is expected to grow by $100 billion by 2027, with a compound annual growth rate of 10.5%. This growth will be accompanied by a rise in the demand for compute and energy resources. Over the recent months, we have seen a rise in the awareness by a few the experts around the need for governments and big tech companies to cooperate in order to build trillion dollar compute clusters, with the main goal of serving very large scale AI pipelines. We suggest the curious reader to read Leopold Aschenbrenner's most recent work on [Situational Awareness](https://situational-awareness.ai/wp-content/uploads/2024/06/situationalawareness.pdf).
+To put things into perspective, McKinsey estimates that generative AI could add the equivalent of $2.6 trillion to $4.4 trillion annually across the 63 use cases they analyzed. By comparison, the United Kingdom’s entire GDP in 2021 was $3.1 trillion. This would increase the impact of all artificial intelligence by 15% to 40%.
+
+This growth will be accompanied by a rise in the demand for compute and energy resources. Over the recent months, we have seen a rise in the awareness by a few the experts around the need for governments and big tech companies to cooperate in order to build trillion dollar compute clusters, with the main goal of serving very large scale AI pipelines. We suggest the curious reader to read Leopold Aschenbrenner's most recent work on [Situational Awareness](https://situational-awareness.ai/wp-content/uploads/2024/06/situationalawareness.pdf).
 
 If such trillion dollar compute clusters will materialize in the future, is yet to be seen. What is clear, however, is that the coming years will be accompanied by a tremendous rise in the demand for compute and energy resources, altogether.
 Moreover, it is important to notice that AI pipelines require specialized hardware, such as GPUs, TPUs, etc. Even though GPUs are widely accessible to the public, most for gaming purposes, the
@@ -89,7 +91,7 @@ In this section, we will explore the Atoma Network architecture, including how n
 8. For each request and node quorum, either settle the output state (if all nodes withing the quorum agree on the state of the output) or start a dispute for the output state.
 9. Manage funds and rewards for nodes.
 10. Balancing the network's total load volume, allowing for a better utilization of compute resources.
-11. Keeping a node reputation registry, allowing for nodes to be penalized for misbehaving, through collateral slashing.
+11. Maintaining a node reputation registry, allowing for nodes to be penalized for misbehaving, through collateral slashing.
 
 We shall further explore each of the above tasks in detail, together with other topics such as governance, token emissions, etc.
 
