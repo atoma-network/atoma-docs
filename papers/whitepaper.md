@@ -6,7 +6,7 @@
 
 Atoma is a permissionless decentralized protocol specialized for heavy verifiable compute. Atoma derives its features from compute providers, referred to as execution nodes (or simply nodes), which are responsible for processing different types of compute requests. Atoma Network is specialized for AI inference compute, which includes deploying and serving AI compute, (mostly in the form of AI inference), in a fully decentralized manner.
 
-AI inference requests are often processed through nodes that run Large Language models (LLMs) on different types of inputs (text, images, video, audio) to produce some form of output (which can be either text, or other formats for multi-modality capabilities). The Atoma Network will also support AI model architectures other than those based on the Transformer architectures (such as LLMs). These will include time series forecasting models, AI models for recommendation systems, etc.
+AI inference requests are often processed through nodes that run Large Language models (LLMs) on different types of inputs (text, images, video, audio) to produce some form of output (which can be either text, or other formats for multi-modality capabilities). The Atoma Network will support AI model architectures beyond just transformer architectures (such as LLMs). These include time series forecasting models, AI models for recommendations systems, and more.
 
 Due to the recent advances in the field of generative AI, the demand for AI compute is expected to grow exponentially in the coming years. Inevitably this will lead to a rise in the demand for compute and energy resources.
 
