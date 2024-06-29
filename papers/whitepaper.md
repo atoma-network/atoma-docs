@@ -1,3 +1,5 @@
+![Atoma Logo](https://github.com/atoma-network/atoma-paged-attention/blob/main/assets/atoma-symbol.jpg)
+
 # Atoma Whitepaper
 
 ## Authored by Jorge Antonio and Hisham Khan
