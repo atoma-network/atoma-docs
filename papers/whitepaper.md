@@ -145,7 +145,7 @@ On the other hand, if a node acts maliciously, it gets penalized with all of its
 
 On the other hand, for each processed request, a node is entitled to part of the fee paid by the user that initiated the request. Request fees are paid in `TOMA` tokens and their price is set by a fair free market mechanism. At the end of each epoch, the Atoma nodes bid the TOMA token fee value, per token, for the next epoch. Therefore, fees are computed in terms of the total number of tokens a given request requires to be processed. So for example, if a prompt text request has 100 input tokens, and its output response contains 200 tokens, the total fee amount paid to a node to process that request will be none other than:
 
-$(100 + 200) * \mathrm{token}\_\mathrm{fee} = 300 * \mathrm{token}\_\mathrm{fee}$.
+$(100 + 200) * \mathrm{token\_fee} = 300 * \mathrm{token\_fee}$.
 
 Nodes accrue fees per epoch. Moreover, nodes can only withdraw their accrued fees for a given epoch, once that epoch has ended.
 
