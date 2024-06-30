@@ -249,6 +249,8 @@ Even though achieving an astonishing 15 minute proof generation time for a singl
 
 Moreover, the zkLLM proving times were achieved using a setup of 124.5GB of memory, 12 CPU cores of an AMD EPYC 7413 (2.65 GHz with 128M cache L3), and an NVIDIA A100SMX4 GPU with 40GB of memory, which is a setup orders of magnitude more powerful than the actual hardware requirements to run native LLM inference for models up to 13 billion parameters.
 
+For larger models, such as 70 billion parameter Llama3, we are still yet to see any research work to provide zk proofs for such models inference. With the advent of larger LLMs, such as the 400 billion model parameter Llama3, zkML might not be practical for such large LLMs. 
+
 To add to that, LLM inference does not pertain solely to proving multiple forward passes. Often times, LLM inference uses techniques such as next token sampling, out of a list of highly likely logits, to actually generate the next token. This is especially relevant, if one needs to ensure some creativity of the LLM responses. If the full LLM inference is to be proved, it is necessary to provide zk proofs for the sampling process, as well. Each of these steps are to considered if one aspires to have a fully zk proving system for LLM inference, adding to its complexity and cost. 
 
 It is important to notice that zero knowledge proofs provide a very high level of security guarantees for LLM inference. Combined with the fact that zkML will continue to be a few times more expensive than native LLM inference, different verifiable requirements situations will not benefit from a more elastic verifiability strategy, contrary to techniques offering Nash equilibrium in the long run with considerably lower costs, such as our Cross Validation Sampling Consensus protocol.
@@ -281,6 +283,12 @@ Another advantage is that our Sampling Consensus protocol allows for elastic ver
 A drawback of our Sampling Consensus protocol faces compared to zkML is the fact that Sampling Consensus does not provide full privacy for model weights (indeed, a wide number of nodes on the network need to be able to access the model weights in order to run LLM inference on a given model). This can be widely mitigated by using TEEs, which then can enable full privacy for model weights and user data privacy. We believe, the use of TEEs combined with our Sampling Consensus protocol will lead to both full privacy and very high verifiability (even with Cross Validation Sampling Consensus). We will explore these synergies in a future paper.
 
 #### Comparison between opML and Sampling Consensus
+
+Contrary to zkML, OpML claims low computational overhead, with the caveat that opML may incur higher overhead during disputes. The zkML’s approach results in high computational overhead due to cryptographic processes. 
+
+Sampling consensus also requires low computational overhead. Moreover, even when multiple nodes are required to process a request (both for simple and Cross Validation Sampling Consensus) the overhead is very low. This is because multi-node runs only require the Atoma on-chain logic to compare a few hashes. Only when the hashes do not match, we need to resolve a dispute, which may incur high overhead during arbitration (even though, in an environment with rational agents, arbitration never occurs).
+
+Moreover, following the ideas in the [work](https://arxiv.org/pdf/2308.02880) for Rollup validators, we can derive a Nash equilibrium for opML, however, our approach reflects a lower probability of undetected fraud lower than that of opML, assuming that a malicious actor can control at most 10% of the network total compute power.
 
 ### Application layer on top of the Atoma Network
 
