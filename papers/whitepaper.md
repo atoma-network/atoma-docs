@@ -290,6 +290,8 @@ Sampling consensus also requires low computational overhead. Moreover, even when
 
 Moreover, following the ideas in the [work](https://arxiv.org/pdf/2308.02880) for Rollup validators, we can derive a Nash equilibrium for opML, however, our approach reflects a lower probability of undetected fraud lower than that of opML, assuming that a malicious actor can control at most 10% of the network total compute power.
 
+### Atoma's node optimizations
+
 ### Application layer on top of the Atoma Network
 
 ### Output management
