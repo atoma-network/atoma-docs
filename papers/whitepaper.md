@@ -238,6 +238,12 @@ That said, the opposite might be relevant for protocols built on top of the Atom
 
 ### Verifiable AI
 
+In this section we will explore the different methods for verifiable AI inference, and compare them with respect to our Sampling Consensus protocol, in terms of performance, cost and security guarantees. We are mostly interested in a formal comparison between zkML and OpML techniques, for verifiable AI.
+
+#### zkML
+
+The field of zkML has emerged after Zero Knowledge proofs have gained a prominent role in the cryptocurrency space, especially for scaling blockchains. To put it simply, zkML is a set of techniques based on Zero Knowledge cryptography applied to providing cryptographic proofs that attest any Machine Learning model inference computation. Over the past few years, some promising research has been published on the topic, such as [TensorPlonk](https://medium.com/@danieldkang/tensorplonk-a-gpu-for-zkml-delivering-1-000x-speedups-d1ab0ad27e1c), [trusted DNN](https://arxiv.org/abs/2210.08674), [zkCNN](https://eprint.iacr.org/2021/673), Modulus [Remainder](https://github.com/Modulus-Labs/Papers/blob/master/remainder-paper.pdf) protocol based on [GKR](https://github.com/Modulus-Labs/Papers/blob/master/remainder-paper.pdf), [SpaGKR](https://github.com/Modulus-Labs/Papers/blob/master/remainder-paper.pdf), [zkLLM](https://arxiv.org/pdf/2404.16109) to name a few.
+
 ### Application layer on top of the Atoma Network
 
 ### Output management
