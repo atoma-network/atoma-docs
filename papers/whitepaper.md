@@ -6,9 +6,10 @@
 
 ### Abstract
 
-Atoma is a permissionless decentralized protocol specialized for heavy verifiable compute. Atoma derives its features from compute providers, referred to as execution nodes (or simply nodes), which are responsible for processing different types of compute requests. Atoma Network is specialized for AI inference compute, which includes deploying and serving AI compute, (mostly in the form of AI inference), in a fully decentralized manner.
+The Atoma Network is a decentralized and permissionless protocol for verifiable AI inference. Atoma relies on compute providers, referred to as execution nodes (or simply nodes), which are responsible for hosting and running AI models, in order to process requests on specific user defined inputs, in a fully decentralized manner. 
 
-AI inference requests are often processed through nodes that run Large Language models (LLMs) on different types of inputs (text, images, video, audio) to produce some form of output (which can be either text, or other formats for multi-modality capabilities). The Atoma Network will support AI model architectures beyond just transformer architectures (such as LLMs). These include time series forecasting models, AI models for recommendations systems, and more.
+<!-- 
+AI inference requests are processed through nodes that run Large Language models (LLMs) on different types of inputs (text, images, video, audio) to produce some form of output (which can be either text, or other formats for multi-modality capabilities). The Atoma Network will support AI model architectures beyond just transformer architectures (such as LLMs). These include time series forecasting models, AI models for recommendations systems, and more.
 
 Due to the recent advances in the field of generative AI, the demand for AI compute is expected to grow exponentially in the coming years. Inevitably this will lead to a rise in the demand for compute and energy resources.
 
@@ -16,7 +17,9 @@ More precisely, the rapid growth in AI model performance has been accompanied by
 
 To account for the above phenomena, we have deliberately designed Atoma to provide the right financial incentives to compute providers to participate in the network and be able to monetize their hardware. This incentivizes compute providers to acquire better hardware which will allow nodes to accrue higher value in the long run.
 
-These financial incentives combined with a series of optimizations around AI inference will lead to nearly optimal node GPU utilization, allowing the Atoma Network to scale horizontally with the number of nodes, and also to scale vertically with better available hardware per node.
+These financial incentives combined with a series of optimizations around AI inference will lead to nearly optimal node GPU utilization, allowing the Atoma Network to scale horizontally with the number of nodes, and also to scale vertically with better available hardware per node. -->
+
+The Atoma Network is designed to rely on existing blockchains as compute resource coordination layers. This means, that the financial incentives to participate in the network, as a node, will be managed by Atoma's on-chain smart contracts. The data and compute layer is decoupled from blockchains, as these have very limited compute capabilities. For this reason, following the modular design space, the Atoma Network can be thought of as an AI coprocessor or a heavy compute execution layer on top of exiting blockchains. 
 
 New applications will be built through the Atoma Network that can leverage the immense potential of generative AI models in order to provide a new intelligence layer for Web3 protocols.
 
@@ -26,7 +29,7 @@ In a world where AI will play the role of our caretaker, tutor, personal assista
 
 That said, in order for the Atoma Network to become a full intelligence layer powering Web3 protocols, it is required to establish high integrity guarantees around AI inference compute. In practice, this means that AI generated outputs can be proved to have not been tampered with in any possible form; in other words, no malicious actor could have interfered with the correct execution of an AI model.
 
-The sampling consensus protocol, referred to as `Sampling Consensus`, is based on the assumption that nodes are rational actors in a competitive economic environment. The protocol is optimized to achieve very high security guarantees whilst having lower cost compared to other methods (such as zkML or opML).
+We have designed a novel consensus protocol, referred to as `Sampling Consensus`, exactly for this purpose. Our protocol is based on the assumption that nodes are rational actors in a competitive economic environment. The protocol is optimized to achieve very high security guarantees whilst having lower cost compared to other methods (such as zkML or opML).
 
 For the above reasons, the Atoma Network is well positioned to lead the space of decentralized AI compute. We see a future where the Atoma Network will open the doors for a more bright, transparent, innovative, and democratic future where technology is fully aligned with user and community needs.
 
