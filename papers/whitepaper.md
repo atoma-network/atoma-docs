@@ -27,7 +27,7 @@ The Atoma Network will be a natural framework to build innovative applications s
 
 In a world where AI will play the role of our caretaker, tutor, personal assistant, and coworker, it will be crucial that these applications will provide the high trust guarantees around AI inference.
 
-That said, in order for the Atoma Network to become a full intelligence layer powering Web3 protocols, it is required to establish high integrity guarantees around AI inference compute. In practice, this means that one needs high guarantees that AI generated have not been tampered with in any possible form; in other words, no malicious actor could have interfered with the correct execution of an AI model.
+That said, in order for the Atoma Network to become a full intelligence layer powering Web3 protocols, it is required to establish high integrity guarantees around AI inference compute. In practice, this means that one needs high certainties that AI generated outputs have not been tampered with in any possible form; in other words, no malicious actor could have interfered with the correct execution of an AI model.
 
 We have designed a novel consensus protocol, which we refer to as `Sampling Consensus`, exactly for this purpose. Our protocol is based on the assumption that nodes are rational actors in a competitive economic environment. The protocol is optimized to achieve very high security guarantees whilst having lower cost compared to other methods (such as zkML or opML).
 
