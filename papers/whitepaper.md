@@ -31,7 +31,7 @@ That said, in order for the Atoma Network to become a full intelligence layer po
 
 We have designed a novel consensus protocol, which we refer to as `Sampling Consensus`, exactly for this purpose. Our protocol is based on the assumption that nodes are rational actors in a competitive economic environment. The protocol is optimized to achieve very high security guarantees whilst having lower cost compared to other methods (such as zkML or opML).
 
-For the above reasons, the Atoma Network is well positioned to lead the space of decentralized AI compute. We see a future where the Atoma Network will open the doors for a more bright, transparent, innovative, and democratic future where technology is fully aligned with user and community needs.
+For the above reasons, the Atoma Network is well positioned to lead the space of decentralized AI compute. We see a future where the Atoma Network will open the doors for a more bright, transparent, innovative, and democratic future where technology is fully aligned with users and communities.
 
 ### Introduction
 
