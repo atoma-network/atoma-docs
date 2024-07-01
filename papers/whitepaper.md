@@ -37,7 +37,7 @@ For the above reasons, the Atoma Network is well positioned to lead the space of
 
 The past few years have seen the emergence of new generative AI capabilities powered by large language models (LLMs), more powerful hardware allowing for orders of magnitude more computing throughput, and a rise of highly scalable blockchains with lower transaction fees that utilize a combination of novel consensus, cryptography, and modularity techniques.
 
-Especially noticeable is the rapid growth in the field of AI and it is expected that this growth will just accelerate from now on. To put this into perspective, McKinsey estimates that generative AI could generate a revenue between $2.6 trillion to $4.4 trillion annually across a wide variety of use cases.By comparison, the United Kingdom’s entire GDP in 2021 was $3.1 trillion.
+Especially noticeable is the rapid growth in the field of AI and it is expected that this growth will just accelerate from now on. For example, McKinsey estimates that generative AI could generate a revenue between $2.6 trillion to $4.4 trillion annually across a wide variety of use cases.By comparison, the United Kingdom’s entire GDP in 2021 was $3.1 trillion.
  
 This growth will be accompanied by a rise in the demand for compute and energy resources. Through the first half of 2024, we have seen experts in the field highlight the need for governments and big tech companies to cooperate in order to build the trillion dollar compute cluster. We refer to the detailed analysis of this question by Leopold Aschenbrenner in his most recent work on Situational Awareness.
 
