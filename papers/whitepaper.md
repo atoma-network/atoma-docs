@@ -23,7 +23,7 @@ Moreover, the Atoma Network uses existing blockchains as compute resource coordi
 
 New applications will be built through the Atoma Network that can leverage the immense potential of generative AI models in order to provide a new intelligence layer for Web3 protocols.
 
-The Atoma Network will be a natural framework to support building innovative applications such as protocol based AI generated content, AI market predictions, Web3 AI enhanced wallets specialized for user intent interactions, knowledge bases as public goods, social discussion forums, DAO and Network States governance, etc.
+The Atoma Network will be a natural framework to build innovative applications such as protocol based AI generated content, AI market predictions, Web3 AI enhanced wallets specialized for user intent interactions, knowledge bases as public goods, social discussion forums, DAO and Network States governance, etc.
 
 In a world where AI will play the role of our caretaker, tutor, personal assistant, and coworker, it will be crucial that these applications will provide the high trust guarantees around AI inference.
 
