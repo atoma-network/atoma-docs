@@ -19,7 +19,7 @@ To account for the above phenomena, we have deliberately designed Atoma to provi
 
 These financial incentives combined with a series of optimizations around AI inference will lead to nearly optimal node GPU utilization, allowing the Atoma Network to scale horizontally with the number of nodes, and also to scale vertically with better available hardware per node. -->
 
-Moreover, the Atoma Network uses existing blockchains as compute resource coordination layers. That is, nodes financial incentives to participate in the network are managed by Atoma's own on-chain smart contracts. The data and compute are completely decoupled from blockchains, as the latter have very limited compute and storage capabilities. For this reason, the Atoma Network can be thought of as both an AI coprocessor or a heavy compute execution layer on top of existing blockchains. 
+Moreover, the Atoma Network leverages existing blockchains as compute coordination layers. This means that the financial incentives for nodes to participate in the network are managed by Atoma's own on-chain smart contracts. The data and compute resources are entirely decoupled from the blockchains, as the latter inherently have limited compute and storage capabilities. Consequently, the Atoma Network functions as both an AI coprocessor and a heavy compute execution layer that operates on top of existing blockchains.
 
 New applications will be built through the Atoma Network that can leverage the immense potential of generative AI models in order to provide a new intelligence layer for Web3 protocols.
 
