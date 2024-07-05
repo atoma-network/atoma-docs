@@ -34,10 +34,13 @@ The scale up is possible as the current data shows that the efficiency of effect
 
 ### LLama3 
 
-Llama3 presents as the leading open source LLM and currently operates models with 8B and 70B parameters. It was developed on 15 trillion tokens of training data from CommonCrawl dumps which contains 30 trillion token total dataset taken from available web data that covers 5 languages. This dataset is depulicated (from 100trillion+ raw tokens) meaning effectively Llama3 was trained on half of useable internet data. https://www.together.ai/blog/redpajama-data-v2
-https://ai.meta.com/blog/meta-llama-3/
+Llama3 is the leading open source LLM and currently operates models with 8B and 70B parameters. LLama3 is pretrained on over 15T tokens from publicly available sources with a training dataset seven times larger than what was used for Llama2, including four times more code. Previous generations of Llama were good at identifying high quality data and therefore Llama2 was used for text-qualifying qualifiers in powering Llama3. 
 
-The expectation is that LLama3 400B will reach parity with GPT-4. In order to serve a 400B model with bf16 precision requires ~5 Nvidia H100 80GBs. To reach the level of intelligence that GPT-4 has set the standard for in this case would only cost $155,000 for acquiring hardware.
+https://ai.meta.com/blog/meta-llama-3/
+https://llama.meta.com/llama3/
+https://engineering.fb.com/2024/03/12/data-center-engineering/building-metas-genai-infrastructure/
+
+The expectation is that LLama3 400B will reach parity with GPT-4. In order to serve a 400B model with bf16 precision requires ~5 Nvidia H100 80GBs. To reach the level of intelligence that GPT-4 has set the standard for in this case would only cost $155,000 for acquiring hardware. In terms of benchmarking, expectations of Meta Llama3400B+(Instruct) measures at 86.1 MMLU while GPT-4o averaged 88.7. 
 
 ### Benchmarking 
 
