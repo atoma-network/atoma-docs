@@ -1,37 +1,46 @@
 # Atoma's Contracts
 
-Currently the Atoma Network protocol is supported on the Sui blockchain. We will expand Atoma's reach to both EVM chains and Solana.
+The Atoma Network is supported by an on-chain smart contract on the Sui blockchain. That said, the Atoma protocol is chain agnostic, in particular, we have future plans to expand Atoma's functionality to other chains, such as EVM compatible chains, Solana, Near, etc. We will also explore the possibility of integrating as an EigenLayer AVS, or building our own L1/L2 for native payments.
 
-## Sui
+This document outlines the key features, upcoming developments, and usage instructions for interacting with Atoma's smart contracts on Sui.
+## Atoma Contract Features
 
-### Atoma Contract Features
+The Atoma contract on Sui implements the following key features:
 
-We have a current implementation of the Atoma contract on Sui. This contract is responsible for the following features:
+1. **Node Registration**: Nodes must register to participate in the Atoma Network and process requests.
 
-1. `Node registration` - Nodes operating on the Atoma Network should first register on the Atoma contract. Once registered on the Atoma contract, nodes can receive newly submitted requests and run the required computation to resolve the request. 
-2. `Submit collateral` - Upon registration, nodes should deposit a given amount of collateral. The collateral is indexed in Atoma's native token, the `TOMA` token. 
-3. `Accrue fees` - Nodes accrue fees, indexed in `TOMA` token, based on the number and the type of requests they process. Accrued fees can only be withdrawn two epochs later.
-4. `Subscribe to AI models and other forms of compute types` - Upon registration, nodes should specify which AI models these nodes subscribe to (i.e., which models do the nodes currently host). Once a node registers for a given set of models, it can't change these, unless it deregisters and registers a second type, specifying the new set of models.
-5. `Node deregistration` - Once a node decides to stop providing compute to the Atoma Network, it can deregister itself directly on the smart contract.
-6. `Specifying node hardware features` - The Atoma Network protocol runs on a `sampling consensus` mechanism. This mechanism requires multiple different nodes to reach consensus on the execution of a given output state. To achieve this, it is required that nodes, on a selected `quorum`, generate outputs in a deterministic fashion. However, most AI requests are `non-deterministic in nature`. It is possible to achieve determinism, if the selected nodes for a given request, have the same GPU hardware with the same congifuration. For this reason, nodes must submit the type of GPU card(s) these can hold.
-7. `Echelon specification` - Upon 5., the Atoma contract specifies compute `echelons`. These can be thought of as shards of the network. Compute across echelons should be as homogeneous as possible in compute and memory requirements, process time, and determinism. 
-8. `Request submission` - Every request to the Atoma Network (processed by Atoma tokens) is submitted via the Atoma contract. Requests are paid in `TOMA` token.
-9. `Load balancing` - Based on fine grained echelon performance, the Atoma contract is responsible for balancing request total volume across suitable echelons (based on their total available compute) and each echelon total `amount of work` at each time.
-10. `Random sampling` - Each request submitted into the Atoma Network is processed across a finite number of nodes within the same suitable echelon. The Atoma contract is responsible for randomly selecting the requested number of nodes. We currently use Sui's on-chain random generation features.
-11. `Timeouts` - The Atoma contract keeps a registry of the time it takes to process each request. If a node does not submit a request on time, a time out is triggered and a percentage of the node's deposited collateral is slashed automatically.
-12. `Output commitment submission` - Upon generating a new output for a given request, a node must submit a cryptographic commitment back to the Atoma contract. This commitment is used by the Atoma contract to check if there is `consensus on the state of the output`. Once consensus is reached, all nodes that generated a commitment are entitled to accrue fees (paid by the user on request submission).
-13. `Dispute` - If consensus is not reached on the state of the output (that is, different nodes submit different commitments), a dispute mechanism is put forth by the Atoma contract, by selecting additional high reputation (running trusted hardware) to resolve the dispute.
-14. `Staking` - Registered nodes are entitled for staking rewards based on their average node performance, in each echelon (future feature).
-15. `Governance` - Will allow `TOMA` holders to vote and decide which models to operate on the Atoma Network, as well as other types of compute (future feature).
+2. **Collateral Management**: Nodes deposit `TOMA` tokens as collateral upon registration.
 
-### Future Features
-We plan to add other features to the Atoma contract. These include
+3. **Fee Accrual**: Nodes earn fees in `TOMA` tokens based on processed requests, withdrawable after two epochs.
 
-1. `Staking`;
-2. `Governance`;
-3. `Dispute` - we are in the process of establishing different types of dispute resolving (i.e BFT dispute resolution and trusted hardware oracle nodes)
-4. `General compute tasks`, this will include general WASM applications that can be run on Atoma nodes. Due to potential security issues for both the user and the node, we will require such applications to run in trusted execution environments (TEEs).
+4. **Model Subscription**: Nodes specify which AI models they host and can process.
 
+5. **Node Deregistration**: Allows nodes to exit the network and withdraw collateral.
+
+6. **Hardware Specification**: Nodes declare their GPU configurations to ensure deterministic outputs within quorums.
+
+7. **Echelon System**: Organizes nodes into compute shards (echelons) based on hardware capabilities.
+
+8. **Request Handling**: Manages submission and payment (in `TOMA`) for network requests.
+
+9. **Load Balancing**: Distributes requests across suitable echelons based on performance and workload.
+
+10. **Random Node Sampling**: Selects a subset of nodes within an echelon to process each request.
+
+11. **Timeout Enforcement**: Monitors request processing times and slashes collateral for late responses.
+
+12. **Output Consensus**: Nodes submit cryptographic commitments of outputs to reach consensus.
+
+13. **Dispute Resolution**: Handles disagreements on output state using high-reputation nodes.
+
+### Upcoming Features
+
+1. **Staking**: Reward system for nodes based on performance within echelons.
+2. **Governance**: Voting mechanism for `TOMA` holders to influence network decisions.
+3. **Enhanced Dispute Resolution**: Implementing BFT and trusted hardware oracle solutions.
+4. **General Compute Tasks**: Support for WASM applications running inside Trusted Execution Environments (TEEs).
+
+This contract design ensures a robust, scalable, and secure decentralized compute network for AI and other intensive tasks.
 ### Atoma Contract Documentation
 
 The following instructions provide a detailed description on how to interact with the Atoma contract, on the Sui blockchain.
@@ -72,12 +81,29 @@ The Atoma contract emits various types of events:
 - `settlement::SettledEvent` is emitted when a ticket is settled and fee is distributed.
 - `settlement::NewlySampledNodesEvent` is emitted when a new set of nodes is sampled for a prompt because of timeout.
 
-#### Create a Sui wallet
+#### Create a Sui Wallet
 
-As a first step, in order to interact with the Atoma contract, a user must have a wallet on the Sui blockchain. If the reader already has one, it can skip to the next section, otherwise we recommend following the official Sui [docs](https://blog.sui.io/sui-wallets/).
+To interact with the Atoma contract on the Sui blockchain, you'll need a Sui wallet. If you already have one, you can skip to the next section. Otherwise, follow these steps to create a new wallet:
+
+1. Choose a Sui wallet:
+   - For browser extensions: [Sui Wallet](https://chrome.google.com/webstore/detail/sui-wallet/opcgpfmipidbgpenhmajoajpbobppdil) or [Ethos Wallet](https://chrome.google.com/webstore/detail/ethos-sui-wallet/mcbigmjiafegjnnogedioegffbooigli)
+   - For mobile: [Suiet](https://suiet.app/) or [Morphis Wallet](https://morphiswallet.com/)
+
+2. Install your chosen wallet and follow the setup instructions.
+
+3. Securely store your recovery phrase (seed words) in a safe place.
+
+4. Fund your wallet:
+   - For testnet: Use the [Sui Faucet](https://discord.com/channels/916379725201563759/971488439931392130) in the official Sui Discord.
+   - For mainnet: Purchase SUI tokens from a supported exchange.
+
+5. Verify your wallet balance using the Sui Explorer or your wallet interface.
+
+For more detailed instructions and additional wallet options, refer to the [official Sui documentation on wallets](https://docs.sui.io/learn/about-sui/sui-wallets).
 
 
-#### How to use the atoma protocol
+
+#### How to use the Atoma protocol
 
 To interact with the Atoma protocol, utilize the `gate` module within the `atoma` package, responsible for prompt submission.
 
@@ -100,12 +126,15 @@ As of now, the supported modalities are:
     We discuss pricing below.
   - `model`: a string identifier of the model for text-to-text generation.
     Refer to our website for supported models.
+  - `pre_prompt_tokens`: For in-context applications, this is the number of tokens already generated before the user's current prompt.
   - `prompt`: input text prompt.
     There's no limit to the prompt length at the protocol level, but a Sui transaction can be at most 128KB.
   - `random_seed`: any random number to seed the random generator for consistent output across nodes.
     Before Sui stabilizes random generator, you can use `atoma::utils::random_u64`.
   - `repeat_last_n`: instructs the model to avoid reusing tokens within the last `n` tokens.
   - `repeat_penalty`: a float number determining token repetition avoidance.
+  - `should_stream_output`: a boolean indicating whether the output should be streamed or not
+  to a suitable output destination.
   - `temperature`: a float number determining randomness in the output.
   - `top_k`: an integer determining token consideration for the next generation.
   - `top_p`: a float number determining token consideration for the next generation.
@@ -146,10 +175,17 @@ If no nodes can generate the prompt within the budget, the transaction fails.
 `submit_text2image_prompt` has a `max_fee_per_input_token` and `max_fee_per_output_token` parameters.
 These apply to input and output token prices, respectively.
 
-The last parameter is `nodes_to_sample`.
-It's optional and defaults to a sensible value.
-Higher number of nodes means higher confidence in the generated output.
-However, the price is also higher as nodes multiply the prompt price.
+The last parameter is `nodes_to_sample`, as an optional parameter. If specified, a
+higher number of nodes means higher confidence in the generated output, overall.
+However, the price is also higher as nodes multiply the prompt price. This behavior
+is part of our standard `Sampling Consensus` protocol.
+If the value of `nodes_to_sample` is not specified, then the protocol will advance
+with the Cross-Validation Sampling Consensus mechanism. That is, a single node will
+be sampled by the contract and once the node generates the response, the contract
+will sample more nodes to attest to the response's correctness, with some probability `p`,
+specified at the protocol level. This approach reduces the cost of verifiable inference,
+while guaranteeing that the protocol converges to game-theoretical Nash equilibrium, where
+honest nodes are incentivized to act honestly.
 
 Refer to the `atoma::prompts` module for sample implementations.
 If you are developing a custom smart contract for prompt submission, this module is a great starting point.
@@ -258,9 +294,77 @@ Current node echelons are the following (based on the node's type of GPU):
 | 34 | 2 x NVIDIA H100 (80GB) |
 | 35 | 4 x NVIDIA H100 (80GB) |
 | 36 | 8 x NVIDIA H100 (80GB) |
-| 100 | MACBOOK PRO M2 (Metal) |
-| 101 | MACBOOK PRO M3 (Metal) |
-| 200 | AMD |
+| 37 | 1 x NVIDIA RTX 2060 |
+| 38 | 2 x NVIDIA RTX 2060 |
+| 39 | 4 x NVIDIA RTX 2060 |
+| 40 | 1 x NVIDIA RTX 2070 |
+| 41 | 2 x NVIDIA RTX 2070 |
+| 42 | 4 x NVIDIA RTX 2070 |
+| 43 | 1 x NVIDIA RTX 2080 |
+| 44 | 2 x NVIDIA RTX 2080 |
+| 45 | 4 x NVIDIA RTX 2080 |
+| 46 | 1 x NVIDIA RTX 2080 Ti |
+| 47 | 2 x NVIDIA RTX 2080 Ti |
+| 48 | 4 x NVIDIA RTX 2080 Ti |
+| 49 | 1 x NVIDIA RTX 3060 |
+| 50 | 2 x NVIDIA RTX 3060 |
+| 51 | 4 x NVIDIA RTX 3060 |
+| 52 | 1 x NVIDIA RTX 3070 |
+| 53 | 2 x NVIDIA RTX 3070 |
+| 54 | 4 x NVIDIA RTX 3070 |
+| 55 | 1 x NVIDIA RTX 3080 |
+| 56 | 2 x NVIDIA RTX 3080 |
+| 57 | 4 x NVIDIA RTX 3080 |
+| 58 | 1 x NVIDIA Titan V (Volta) |
+| 59 | 2 x NVIDIA Titan V (Volta) |
+| 60 | 4 x NVIDIA Titan V (Volta) |
+| 61 | 1 x NVIDIA Quadro RTX 8000 (Turing) |
+| 62 | 2 x NVIDIA Quadro RTX 8000 (Turing) |
+| 63 | 4 x NVIDIA Quadro RTX 8000 (Turing) |
+| 64 | 1 x NVIDIA RTX 4060 |
+| 65 | 2 x NVIDIA RTX 4060 |
+| 66 | 4 x NVIDIA RTX 4060 |
+| 67 | 1 x NVIDIA RTX 4070 |
+| 68 | 2 x NVIDIA RTX 4070 |
+| 69 | 4 x NVIDIA RTX 4070 |
+| 70 | 1 x NVIDIA RTX 4070 Ti |
+| 71 | 2 x NVIDIA RTX 4070 Ti |
+| 72 | 4 x NVIDIA RTX 4070 Ti |
+| 1000 | 1 x AMD Radeon RX 6600 |
+| 1001 | 2 x AMD Radeon RX 6600 |
+| 1002 | 4 x AMD Radeon RX 6600 |
+| 1003 | 1 x AMD Radeon RX 6700 XT |
+| 1004 | 2 x AMD Radeon RX 6700 XT |
+| 1005 | 4 x AMD Radeon RX 6700 XT |
+| 1006 | 1 x AMD Radeon RX 6800 XT |
+| 1007 | 2 x AMD Radeon RX 6800 XT |
+| 1008 | 4 x AMD Radeon RX 6800 XT |
+| 1009 | 1 x AMD Radeon RX 6900 XT |
+| 1010 | 2 x AMD Radeon RX 6900 XT |
+| 1011 | 4 x AMD Radeon RX 6900 XT |
+| 1012 | 1 x AMD Radeon RX 7600 |
+| 1013 | 2 x AMD Radeon RX 7600 |
+| 1014 | 4 x AMD Radeon RX 7600 |
+| 1015 | 1 x AMD Radeon RX 7700 XT |
+| 1016 | 2 x AMD Radeon RX 7700 XT |
+| 1017 | 4 x AMD Radeon RX 7700 XT |
+| 1018 | 1 x AMD Radeon RX 7800 XT |
+| 1019 | 2 x AMD Radeon RX 7800 XT |
+| 1020 | 4 x AMD Radeon RX 7800 XT |
+| 1021 | 1 x AMD Radeon RX 7900 XT |
+| 1022 | 2 x AMD Radeon RX 7900 XT |
+| 1023 | 4 x AMD Radeon RX 7900 XT |
+| 1024 | 1 x AMD Radeon RX 7900 XTX |
+| 1025 | 2 x AMD Radeon RX 7900 XTX |
+| 1026 | 4 x AMD Radeon RX 7900 XTX |
+| 1027 | 1 x AMD Instinct MI100 |
+| 1028 | 2 x AMD Instinct MI100 |
+| 1029 | 4 x AMD Instinct MI100 |
+| 1030 | 1 x AMD Instinct MI200 |
+| 1031 | 2 x AMD Instinct MI200 |
+| 1032 | 4 x AMD Instinct MI200 |
+| 2000 | MACBOOK PRO M2 (Metal) |
+| 2001 | MACBOOK PRO M3 (Metal) |
 
 
 #### Node model subscription
@@ -269,7 +373,7 @@ In order to subscribe to a given model, the node operator can run the following 
 
 ```sh
 ./cli db add-node-to-model \
-    --package "TODO(add package id here)" \
+    --package "0x8fc663315a07208e86473b808d902c9b97a496a3d2c3779aa6839bd9d26272b8" \
     --model "MODEL" \
 ```
 
@@ -282,72 +386,124 @@ The available list of supported models is:
 
 | Model Type                         | Hugging Face model name                  |
 |------------------------------------|------------------------------------------|
-| falcon_7b                          | tiiuae/falcon-7b                         |
-| falcon_40b                         | tiiuae/falcon-40b                        |
-| falcon_180b                        | tiiuae/falcon-180b                       |
-| llama_v1                           | Narsil/amall-7b                          |
-| llama_v2                           | meta-llama/Llama-2-7b-hf                 |
-| llama_solar_10_7b                  | upstage/SOLAR-10.7B-v1.0                 |
-| llama_tiny_llama_1_1b_chat         | TinyLlama/TinyLlama-1.1B-Chat-v1.0       |
-| llama3_8b                          | meta-llama/Meta-Llama-3-8B               |
-| llama3_instruct_8b                 | meta-llama/Meta-Llama-3-8B-Instruct      |
-| llama3_70b                         | meta-llama/Meta-Llama-3-70B              |
-| mamba_130m                         | state-spaces/mamba-130m                  |
-| mamba_370m                         | state-spaces/mamba-370m                  |
-| mamba_790m                         | state-spaces/mamba-790m                  |
-| mamba_1-4b                         | state-spaces/mamba-1.4b                  |
-| mamba_2-8b                         | state-spaces/mamba-2.8b                  |
-| mistral_7bv01                      | mistralai/Mistral-7B-v0.1                |
-| mistral_7bv02                      | mistralai/Mistral-7B-v0.2                |
-| mistral_7b-instruct-v01            | mistralai/Mistral-7B-Instruct-v0.1       |
-| mistral_7b-instruct-v02            | mistralai/Mistral-7B-Instruct-v0.2       |
-| mixtral_8x7b                       | mistralai/Mixtral-8x7B-v0.1              |
-| phi_3-mini                         | microsoft/Phi-3-mini-4k-instruct         |
-| stable_diffusion_v1-5              | runwayml/stable-diffusion-v1-5           |
-| stable_diffusion_v2-1              | stabilityai/stable-diffusion-2-1         |
-| stable_diffusion_xl                | stabilityai/stable-diffusion-xl-base-1.0 |
-| stable_diffusion_turbo             | stabilityai/sdxl-turbo                   |
-| quantized_7b                       | TheBloke/Llama-2-7B-GGML                 |
-| quantized_13b                      | TheBloke/Llama-2-13B-GGML                |
-| quantized_70b                      | TheBloke/Llama-2-70B-GGML                |
-| quantized_7b-chat                  | TheBloke/Llama-2-7B-Chat-GGML            |
-| quantized_13b-chat                 | TheBloke/Llama-2-13B-Chat-GGML           |
-| quantized_70b-chat                 | TheBloke/Llama-2-70B-Chat-GGML           |
-| quantized_7b-code                  | TheBloke/CodeLlama-7B-GGUF               |
-| quantized_13b-code                 | TheBloke/CodeLlama-13B-GGUF              |
-| quantized_32b-code                 | TheBloke/CodeLlama-34B-GGUF              |
-| quantized_7b-leo                   | TheBloke/leo-hessianai-7B-GGUF           |
-| quantized_13b-leo                  | TheBloke/leo-hessianai-13B-GGUF          |
-| quantized_7b-mistral               | TheBloke/Mistral-7B-v0.1-GGUF            |
-| quantized_7b-mistral-instruct      | TheBloke/Mixtral-8x7B-Instruct-v0.1-GGUF |
-| quantized_7b-mistral-instruct-v0.2 | TheBloke/Mistral-7B-Instruct-v0.2-GGUF   |
-| quantized_7b-zephyr-a              | TheBloke/zephyr-7B-alpha-GGUF            |
-| quantized_7b-zephyr-b              | TheBloke/zephyr-7B-beta-GGUF             |
-| quantized_7b-open-chat-3.5         | TheBloke/openchat_3.5-GGUF               |
-| quantized_7b-starling-a            | TheBloke/Starling-LM-7B-alpha-GGUF       |
-| quantized_mixtral                  | TheBloke/Mixtral-8x7B-v0.1-GGUF          |
-| quantized_mixtral-instruct         | TheBloke/Mistral-7B-Instruct-v0.1-GGUF   |
-| quantized_llama3-8b                | QuantFactory/Meta-Llama-3-8B-GGUF        |
-| qwen_w0.5b                         | Qwen/Qwen1.5-0.5B                        |
-| qwen_w1.8b                         | Qwen/Qwen1.5-1.8B                        |
-| qwen_w4b                           | Qwen/Qwen1.5-4B                          |
-| qwen_w7b                           | qwen/Qwen1.5-7B                          |
-| qwen_w14b                          | qwen/Qwen1.5-14B                         |
-| qwen_w72b                          | qwen/Qwen1.5-72B                         |
-| qwen_moe_a2.7b                     | qwen/Qwen1.5-MoE-A2.7B                   |
-
+| falcon_7b_f16                      | tiiuae/falcon-7b                         |
+| falcon_7b_bf16                     | tiiuae/falcon-7b                         |
+| falcon_40b_f16                     | tiiuae/falcon-40b                        |
+| falcon_40b_bf16                    | tiiuae/falcon-40b                        |
+| falcon_180b_f16                    | tiiuae/falcon-180b                       |
+| falcon_180b_bf16                   | tiiuae/falcon-180b                       |
+| flux_dev_f16                       | black-forest-labs/FLUX.1-dev             |
+| flux_dev_bf16                      | black-forest-labs/FLUX.1-dev             |
+| flux_schnell_f16                   | black-forest-labs/FLUX.1-schnell         |
+| flux_schnell_bf16                  | black-forest-labs/FLUX.1-schnell         |
+| llama_v1_f16                       | Narsil/amall-7b                          |
+| llama_v1_bf16                      | Narsil/amall-7b                          |
+| llama_v2_f16                       | meta-llama/Llama-2-7b-hf                 |
+| llama_v2_bf16                      | meta-llama/Llama-2-7b-hf                 |
+| llama_solar_10_7b_f16              | upstage/SOLAR-10.7B-v1.0                 |
+| llama_solar_10_7b_bf16             | upstage/SOLAR-10.7B-v1.0                 |
+| llama_tiny_llama_1_1b_chat_f16     | TinyLlama/TinyLlama-1.1B-Chat-v1.0       |
+| llama_tiny_llama_1_1b_chat_bf16    | TinyLlama/TinyLlama-1.1B-Chat-v1.0       |
+| llama3_8b_f16                      | meta-llama/Meta-Llama-3-8B               |
+| llama3_8b_bf16                     | meta-llama/Meta-Llama-3-8B               |
+| llama3_instruct_8b_f16             | meta-llama/Meta-Llama-3-8B-Instruct      |
+| llama3_instruct_8b_bf16            | meta-llama/Meta-Llama-3-8B-Instruct      |
+| llama3_70b_f16                     | meta-llama/Meta-Llama-3-70B              |
+| llama3_70b_bf16                    | meta-llama/Meta-Llama-3-70B              |
+| mamba_130m_f16                     | state-spaces/mamba-130m                  |
+| mamba_130m_bf16                    | state-spaces/mamba-130m                  |
+| mamba_370m_f16                     | state-spaces/mamba-370m                  |
+| mamba_370m_bf16                    | state-spaces/mamba-370m                  |
+| mamba_790m_f16                     | state-spaces/mamba-790m                  |
+| mamba_790m_bf16                    | state-spaces/mamba-790m                  |
+| mamba_1-4b_f16                     | state-spaces/mamba-1.4b                  |
+| mamba_1-4b_bf16                    | state-spaces/mamba-1.4b                  |
+| mamba_2-8b_f16                     | state-spaces/mamba-2.8b                  |
+| mamba_2-8b_bf16                    | state-spaces/mamba-2.8b                  |
+| mistral_7bv01_f16                  | mistralai/Mistral-7B-v0.1                |
+| mistral_7bv01_bf16                 | mistralai/Mistral-7B-v0.1                |
+| mistral_7bv02_f16                  | mistralai/Mistral-7B-v0.2                |
+| mistral_7bv02_bf16                 | mistralai/Mistral-7B-v0.2                |
+| mistral_7b-instruct-v01_f16        | mistralai/Mistral-7B-Instruct-v0.1       |
+| mistral_7b-instruct-v01_bf16       | mistralai/Mistral-7B-Instruct-v0.1       |
+| mistral_7b-instruct-v02_f16        | mistralai/Mistral-7B-Instruct-v0.2       |
+| mistral_7b-instruct-v02_bf16       | mistralai/Mistral-7B-Instruct-v0.2       |
+| mixtral_8x7b_f16                   | mistralai/Mixtral-8x7B-v0.1              |
+| mixtral_8x7b_bf16                  | mistralai/Mixtral-8x7B-v0.1              |
+| phi_3-mini_f16                     | microsoft/Phi-3-mini-4k-instruct         |
+| phi_3-mini_bf16                    | microsoft/Phi-3-mini-4k-instruct         |
 
 #### Atoma's request submission
 
-To submit a request to the Atoma network, a user can run the following command:
 
-TODO: replace with `text` or `image` requests.
+##### Text Prompt Request
+
+To submit a text prompt request to the Atoma network, say on Llama3.18b instruct model, while sampling 3 nodes for verifiability, a user can run the following command:
 
 ```sh
-./cli gate submit-tell-me-a-joke-prompt \
+./cli gate send-prompt-to-ipfs \
     --package "your package id can be found when publishing" \
-    --model "llama"
+    --model "llama3_8b_instruct" \
+    --prompt "YOUR_PROMPT" \
+    --max-tokens 512 \
+    --max-fee-per-token 1 \
+    --nodes-to-sample 3
 ```
+
+The above command will submit a text prompt request to the Atoma network and print the corresponding transaction digest, the output text will be stored on IPFS and the user can retrieve it with the correct IPFS `cid`. We also
+support storage on Gateway. To do so, the user can run the following command:
+
+```sh
+./cli gate send-prompt-to-gateway \
+    --package "your package id can be found when publishing" \
+    --model "llama3_8b_instruct" \
+    --prompt "YOUR_PROMPT" \
+    --max-tokens 512 \
+    --max-fee-per-token 1 \
+    --gateway-user-id "YOUR_GATEWAY_USER_ID" \
+    --nodes-to-sample 3
+```
+
+Where you need to provide your Gateway user ID, which you have set once registering to Atoma Gateway portal.
+
+##### Image Prompt Request
+
+###### Image Prompt Request to IPFS
+
+To submit an image prompt request to the Atoma network, say on Flux-dev model, while sampling 3 nodes for verifiability, a user can run the following command:
+
+```sh
+./cli gate send-image-prompt-to-ipfs \
+    --package "your package id can be found when publishing" \
+    --model "flux_dev" \
+    --prompt "YOUR_PROMPT" \
+    --height 512 \
+    --width 512 \
+    --max_fee_per_input_token 1 \
+    --max_fee_per_output_token 1 \
+    --nodes-to-sample 3
+```
+
+where `max_fee_per_input_token` and `max_fee_per_output_token` are the maximum fees to be paid to nodes per text input token and output image pixel, respectively.
+
+###### Image Prompt Request to Gateway
+
+To submit an image prompt request to the Atoma network, say on Flux-dev model, while sampling 3 nodes for verifiability, a user can run the following command:
+
+```sh
+./cli gate send-image-prompt-to-gateway \
+    --package "your package id can be found when publishing" \
+    --model "flux_dev" \
+    --prompt "YOUR_PROMPT" \
+    --height 512 \
+    --width 512 \
+    --max_fee_per_input_token 1 \
+    --max_fee_per_output_token 1 \
+    --gateway-user-id "YOUR_GATEWAY_USER_ID" \
+    --nodes-to-sample 3
+```
+
+Where you need to provide your Gateway user ID, which you have set once registering to Atoma Gateway portal.
 
 
 <!-- List of References -->
