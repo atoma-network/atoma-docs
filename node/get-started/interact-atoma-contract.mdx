@@ -1,0 +1,62 @@
+---
+title: 'Interact with Atoma Contract'
+description: 'Learn how to manage tasks, nodes, and compute resources on the Atoma network'
+---
+
+Atoma testnet parameters:
+
+| Resource | ID |
+|----------|-----|
+| Package ID | `0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013` |
+| DB Object ID | `0x7b8f40e38698deb650519a51f9c1a725bf8cfdc074d1552a4dc85976c2b414be` |
+| TOMA Faucet Token | `0xa1b2ce1a52abc52c5d21be9da0f752dbd587018bc666c5298f778f42de26df1d` |
+
+## Prerequisites
+
+1. Clone the Atoma CLI repository:
+```bash
+git clone https://github.com/atoma-network/atoma-contracts
+cd atoma-contracts/sui/
+```
+
+## Register node
+
+```bash
+./dev/cli db register-node \
+  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013"
+```
+
+## Subscribe to Task
+{/* TODO: Refer all possible tasks here */}
+
+Available tasks:
+
+| Task Small ID  | Model Name                                   |
+| -------------- | -------------------------------------------- |
+| 1              | meta-llama/Llama-3.1-70B-Instruct            |
+| 2              | NousResearch/Hermes-3-Llama-3.1-70B          |
+| 3              | meta-llama/Llama-3.2-3B-Instruct             |
+| 4              | meta-llama/Llama-3.1-8B-Instruct             |
+| 5              | NousResearch/Hermes-3-Llama-3.1-8B           |
+| 6              | NousResearch/Hermes-3-Llama-3.1-405B         |
+| 7              | meta-llama/Llama-3.1-405B-Instruct           |
+| 8              | NousResearch/Hermes-3-Llama-3.1-70B-FP8      |
+
+1. Subscribe to Task
+
+| Parameter | Description |
+|-----------|-------------|
+| `task-small-id` | The Task small id, referring to a specific task on Atoma |
+| `price-per-compute-unit` | The price to which the node is willing to be paid for its compute |
+| `max-num-compute-units` | The maximum number of compute units that a node is willing to sell per Stack, the higher the better |
+
+```bash
+./dev/cli db subscribe-node-to-task \
+  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --task-small-id 1 \
+  --price-per-compute-unit 1 \
+  --max-num-compute-units 10000000
+```
+
+
+

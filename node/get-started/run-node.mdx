@@ -1,0 +1,30 @@
+---
+title: 'Run Atoma Node'
+description: 'Learn how to run Atoma Node'
+---
+
+
+## Prerequisites
+1. Clone the Atoma Node repository:
+```bash
+git clone https://github.com/atoma-network/atoma-node
+cd atoma-node
+```
+
+## Start services
+
+<Info>
+    To learn more about the inference services, refer to the [technical reference](/node/technical-reference/inference-services).
+</Info>
+
+```bash
+# Build and start all services
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up
+
+# Only start one service
+COMPOSE_PROFILES=chat_completions_vllm docker compose up
+
+# Run in detached mode
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up -d
+```
+

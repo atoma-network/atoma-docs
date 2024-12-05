@@ -1,0 +1,37 @@
+---
+title: 'Inference Services'
+description: 'Learn about the inference services available in Atoma Node'
+---
+
+
+## Chat Completions
+
+| Backend                                                  | Architecture/Platform | Docker Compose Profile           |
+| -------------------------------------------------------- | --------------------- | -------------------------------- |
+| [vLLM](https://github.com/vllm-project/vllm)             | CUDA                  | `chat_completions_vllm`          |
+| [vLLM](https://github.com/vllm-project/vllm)             | x86_64                | `chat_completions_vllm_cpu`      |
+| [vLLM](https://github.com/vllm-project/vllm)             | ROCm                  | `chat_completions_vllm_rocm`     |
+| [mistral.rs](https://github.com/EricLBuehler/mistral.rs) | x86_64, aarch64       | `chat_completions_mistralrs_cpu` |
+
+## Embeddings
+
+| Backend                                                                               | Architecture/Platform | Docker Compose Profile |
+| ------------------------------------------------------------------------------------- | --------------------- | ---------------------- |
+| [Text Embeddings Inference](https://github.com/huggingface/text-embeddings-inference) | CUDA                  | `embeddings_tei`       |
+
+## Image Generations
+
+| Backend                                                  | Architecture/Platform | Docker Compose Profile        |
+| -------------------------------------------------------- | --------------------- | ----------------------------- |
+| [mistral.rs](https://github.com/EricLBuehler/mistral.rs) | CUDA                  | `image_generations_mistralrs` |
+
+```bash
+# Build and start all services
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up --build
+
+# Only start one service
+COMPOSE_PROFILES=chat_completions_vllm docker compose up --build
+
+# Run in detached mode
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up -d --build
+```

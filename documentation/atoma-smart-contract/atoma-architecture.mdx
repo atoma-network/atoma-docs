@@ -1,0 +1,145 @@
+---
+title: "Atoma architecture"
+description: "A brief overview of Atoma's architecture for a scalable and secure decentralized AI network"
+---
+
+***
+
+## Atoma Protocol Overview
+
+Atoma is building the leading decentralized AI compute cloud, leveraging the Sui blockchain for cost-effective, efficient compute payments, and the Walrus layer for secure decentralized data availability and storage. Our aim is to deliver a decentralized, web3-native AI compute experience that rivals traditional web2 infrastructure in both performance and cost, with additional compute verifiability guarantees and both data and model privacy.
+
+This document provides an overview of Atoma’s key components, user interaction flow, security mechanisms, and cost analysis.
+
+### Atoma on the Sui Blockchain
+
+Atoma’s core logic is managed through smart contracts on the Sui blockchain, which coordinates compute resources and handles payments. The main components are:
+
+1. **AtomaDb**: Central object storing Atoma’s state, including:
+
+   * `nodes`: Information about each node.
+
+   * `models`: Available AI models.
+
+   * `tasks`: Registered tasks.
+
+   * `communal_treasury`: Balance of funds for nodes that complete compute actions.
+
+2. **Task Struct**: Represents AI compute tasks with fields like:
+
+   * `role`, `model_name`, `security_level`, and `price`.
+
+3. **Stack Struct**: Allows users to pre-purchase compute units for a specific task. Fields include:
+
+   * `max_price`, `total_compute_units`, and `task_id`.
+
+A user acquires a `Stack` by paying the Atoma contract in advance, enabling flexible compute payments while keeping blockchain interactions minimal.
+
+#### Atoma User Flow: Claiming Stack and Interacting with Nodes
+
+```
+sequenceDiagram
+    participant User
+    participant AtomaContract
+    participant Node
+
+    User->>AtomaContract: Request Stack for Task
+    AtomaContract-->>User: Return Stack
+
+    User->>Node: Request Compute (with Stack)
+    Node->>Node: Verify Stack
+    alt Stack Valid and Node Subscribed to Task
+        Node-->>User: Accept Request and Provide Compute
+        Node->>Node: Update Stack Credits
+    else Stack Invalid or Node Not Subscribed
+        Node-->>User: Reject Request
+    end
+```
+
+The diagram illustrates the user’s interaction with Atoma’s contract and network nodes. This direct user-node engagement reduces gas fees and enhances efficiency by minimizing blockchain transactions for routine tasks.
+
+#### Flexible Node Selection for Compute Requests
+
+1. **Single Node**: A specific node, selected at random.
+
+2. **Limited Nodes**: A finite set of nodes, chosen at random.
+
+3. **Any Subscribed Node**: User-selected based on performance criteria.
+
+A forwarding mechanism allows nodes to reassign requests, enhancing load management and network responsiveness.
+
+### Security and Data Availability with Walrus
+
+Atoma uses Walrus as a Data Availability Layer to address potential issues with node liveness and data integrity. Here’s how it works:
+
+1. User stores a signed request on Walrus.
+
+2. User sends the request’s `blob_id` to a node.
+
+3. Node verifies the request, then performs compute if conditions are met.
+
+#### Dispute Handling and Remote Attestation
+
+If a node fails to deliver, users can initiate a dispute. Nodes are required to provide proof via `blob_id` on Walrus. Failure results in collateral slashing.
+
+```
+sequenceDiagram
+participant User
+participant Walrus
+participant Node
+participant AtomaContract
+
+User->>Walrus: Store signed request hash in 'requests'
+User->>Node: Send signature and blob_id
+Node->>Walrus: Verify request in blob_id
+Node->>Node: Check availability, price, and Stack credits
+alt Request accepted
+    Node->>Node: Generate response
+    Node->>User: Send response directly
+    Node->>Walrus: Store signed response in 'responses'
+    Node->>User: Send proof of storage
+    opt If TEE required
+        Node->>AtomaContract: Submit Remote Attestation
+    end
+else Request rejected
+    Node->>User: Send rejection
+end
+opt If node fails to store response
+    User->>AtomaContract: Start dispute
+    AtomaContract->>Node: Request blob_id
+    alt Node provides blob_id
+        Node->>AtomaContract: Submit blob_id
+    else Node fails to provide blob_id
+        AtomaContract->>Node: Slash deposited collateral
+    end
+end
+```
+
+### Sampling Consensus and Verifiability
+
+Atoma combines **Sampling Consensus** and **Trusted Execution Environments (TEEs)** for secure, private, and verifiable inference:
+
+1. **Sampling Consensus**: A single node is selected to process requests, with others randomly verifying results.
+
+2. **TEE Integration**: If required, nodes execute requests in TEEs, ensuring secure, tamper-free processing.
+
+### Atoma Compute Cost Analysis
+
+|                                  |                                  |
+| -------------------------------- | -------------------------------- |
+| **Component**                    | **Cost**                         |
+| Renting H100 (80GB) per hour     | $2.5 - $3                        |
+| 1,000 tokens (Llama3.1-70B)      | $0.0006                          |
+| 1,000,000 tokens (Llama3.1-405B) | $5                               |
+| Sui Transaction                  | 0.01 Sui (\~$0.02)               |
+| Walrus Storage (1GB/year)        | \~$0.5 (estimated before launch) |
+
+#### Cost-Efficiency
+
+With competitive GPU pricing, minimal Sui gas fees, and low Walrus storage costs, Atoma offers a cost-effective AI compute solution.
+
+***
+
+This summary outlines Atoma's architecture, focusing on decentralized compute efficiency, verifiable processing, and transparent costs. For further technical details, refer to the [Atoma Whitepaper](https://github.com/atoma-network/atoma-docs/blob/main/papers/atoma_whitepaper.pdf).
+
+***

@@ -1,0 +1,119 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Atoma",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.svg",
+  "colors": {
+    "primary": "#C969FF",
+    "light": "#C969FF",
+    "dark": "#C969FF",
+    "anchors": {
+      "from": "#C969FF",
+      "to": "#07C983"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:hi@mintlify.com"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://dashboard.mintlify.com"
+  },
+  "tabs": [
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    },
+    {
+      "name": "Cloud",
+      "url": "cloud"
+    },
+    {
+      "name": "Cloud API Reference",
+      "url": "cloud-api-reference",
+      "openapi": "/cloud-api-reference/openapi.yml"
+    },
+    {
+      "name": "Node",
+      "url": "node"
+    },
+    {
+      "name": "Node API Reference",
+      "url": "node-api-reference",
+      "openapi": "/node-api-reference/openapi.yml"
+    }
+  ],
+  "anchors": [
+    {
+      "name": "Website",
+      "icon": "globe",
+      "url": "https://www.atoma.network"
+    },
+    {
+      "name": "Community",
+      "icon": "discord",
+      "url": "https://discord.gg/atoma"
+    },
+    {
+      "name": "Blog",
+      "icon": "newspaper",
+      "url": "https://atomanetwork.medium.com"
+    },
+    {
+      "name": "Github",
+      "icon": "github",
+      "url": "https://github.com/atoma-network"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "documentation/get-started/overview",
+        "documentation/get-started/atoma-basics",
+        "documentation/get-started/compute-layer",
+        "documentation/get-started/trust-and-privacy"
+      ]
+    },
+    {
+      "group": "Atoma Smart Contract",
+      "pages": [
+        "documentation/atoma-smart-contract/atoma-architecture"
+      ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [
+        "cloud/get-started/introduction"
+      ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [
+        "node/get-started/setup-node",
+        "node/get-started/interact-atoma-contract",
+        "node/get-started/configure-node",
+        "node/get-started/run-node"
+      ]
+    },
+    {
+      "group": "Technical Reference",
+      "pages": [
+        "node/technical-reference/atoma-contract",
+        "node/technical-reference/node-config",
+        "node/technical-reference/inference-services"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "x": "https://x.com/mintlify",
+    "github": "https://github.com/mintlify",
+    "linkedin": "https://linkedin.com/company/mintlify"
+  }
+}
