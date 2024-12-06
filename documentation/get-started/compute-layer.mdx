@@ -1,0 +1,160 @@
+---
+title: "Compute Layer"
+description: "Describes Atoma's compute AI cloud for private and verifiable AI"
+---
+
+## Introduction
+
+Atoma is revolutionizing the AI landscape with its innovative decentralized compute infrastructure. This section outlines the core components and unique features of Atoma's Compute Layer, highlighting how it addresses the growing demand for secure, efficient, and scalable AI services.
+
+## Atoma's decentralized Verifiable and Private AI Cloud
+
+Atoma's Compute Layer is powered by a decentralized network of execution nodes that handle AI workloads. This network pools compute power from permissionless nodes, equipped with GPUs or AI-specific hardware such as TPUs and XPUs. The architecture is designed to meet the growing demand for decentralized AI services, with a focus on performance and security tailored to AI computation.
+
+Atoma's Compute Layer is built for efficiency and is driven by a combination of economic incentives, robust tokenomics, and the increasing demand for decentralized AI services. Unlike conventional GPU-based DePiN networks, Atoma introduces advanced performance and security mechanisms tailored specifically to AI computation.
+
+We are aggregating compute from professional data centers equipped with the latest high-performance GPUs, as well as from retail-grade machines equipped with consumer retail GPUs, including Macbooks pros, by using MLX and Metal kernels, etc.
+
+## Key Differentiators from DePiN Networks
+
+While DePiN networks generally concentrate on pooling computational resources and managing transactions, Atoma adopts a more tailored strategy. Nodes within the Atoma Network opt into particular AI processing tasks, including AI inference (executing models on input data), model refinement, AI data embedding, and model development.
+
+Additionally, Atoma stands out with its robust security protocols. By utilizing a Sampling Consensus protocol and Trusted Execution Environments (TEEs), the network ensures that every computation is safeguarded from tampering. This is essential for the integrity of generative AI outputs, particularly for end-user-facing applications where reliable results are critical.
+
+## Atoma's Free Market for Compute
+
+Atoma implements a dynamic, efficient marketplace for AI compute resources:
+
+* **Intelligent Request Routing**: User requests are automatically directed to the most suitable nodes based on a multi-dimensional criteria set, which includes:
+
+  * Cost
+
+  * Uptime
+
+  * Privacy features
+
+  * Response times
+
+  * Hardware capabilities
+
+  * Current workload
+
+* **Optimized Performance**: This smart routing ensures each request is processed efficiently, balancing performance and cost-effectiveness. This will ultimately lead to a fairer market for having access to AI compute resources.
+
+* **Sampling Consensus for Trust**: Atoma's own Sampling Consensus algorithm combined with TEEs provides high-assurance verification of node reliability, fostering a trustworthy ecosystem.
+
+* **Transparent Pricing**: Node operators set competitive rates, while users benefit from clear, market-driven pricing. In this way, nodes can bid their compute power at a fair market price, while users can have the flexibility to pick and choose the best node for their needs.
+
+* **Flexible Resource Allocation**: The network adapts in real-time to fluctuating demand, scaling resources as needed.
+
+This approach creates a robust, decentralized marketplace for AI compute power, combining reliability, efficiency, and economic incentives for all participants.
+
+## Node Reputation and Incentives
+
+#### Node Reputation Mechanisms
+
+Atoma's network employs a sophisticated reputation system to ensure high-quality service and network integrity:
+
+* **Performance Metrics**: Nodes are evaluated on key factors including:
+
+  * Availability
+
+  * Execution speed
+
+  * Task completion rate
+
+  * Output accuracy
+
+  * Hardware capabilities
+
+* **Reward System**: Nodes earn rewards for:
+
+  * Successful task completion
+
+  * Maintaining high uptime
+
+  * Consistently meeting performance benchmarks
+
+* **Collateral Requirement**: Nodes must stake collateral to participate, which can be:
+
+  * Increased for higher-tier tasks
+
+  * Slashed for malicious behavior or repeated poor performance
+
+* **Dynamic Task Allocation**: Higher-reputation nodes receive priority for:
+
+  * More complex AI workloads
+
+  * Higher-value tasks
+
+  * Sensitive or privacy-focused computations
+
+#### Trust and Security Measures
+
+* **Sampling Consensus**: Randomly selected nodes verify computations, ensuring result integrity without centralized oversight.
+
+* **Trusted Execution Environments (TEEs)**: Hardware-level isolation protects sensitive data and ensures tamper-proof execution.
+
+* **Transparent Reporting**: Node performance metrics are publicly available, fostering trust and enabling informed user choices.
+
+This multi-faceted approach creates a self-regulating ecosystem that incentivizes high performance, security, and reliability across the Atoma network.
+
+## Atoma's optimized infrastructure
+
+Atoma leverages Rust's low-level speed and memory safety to power its decentralized AI infrastructure. Known for system efficiency, Rust is the de facto language for high-performance systems programming, integration with high security technologies such as TEEs, and integration with GPU programming frameworks such as CUDA and Metal programming. The combination of these features makes Rust the ideal language for Atoma's decentralized AI infrastructure. Moreover, instead of utilizing large legacy libraries such as PyTorch, which often leads to high memory usage and lower execution speed, Atoma adopts Candle, a lightweight, Rust-native AI framework maintained by HuggingFace. The compact binaries of Candle allow nodes, even at the network edge, to execute AI tasks with greater efficiency.
+
+For large-scale AI processing, such as processing large context-window LLM inference by the largest AI models, Atoma incorporates advanced techniques such as CUDA-based FlashAttention and PagedAttention, enhancing performance for both inference and training tasks. These optimizations ensure efficient scheduling of workloads, maximizing GPU utilization and enabling nodes to handle parallel requests seamlessly. Atoma's network scales both vertically and horizontally, supporting a growing number of nodes and cores to accommodate increasing computational demand.
+
+## Atoma at the Edge: Empowering Local AI
+
+Atoma extends its reach beyond decentralized cloud infrastructure to the edge, enabling powerful AI capabilities directly on users' devices:
+
+* **WASM and WebGPU Compatibility**: We are building a cutting-edge software stack that leverages WebAssembly (WASM) and WebGPU technologies, allowing for high-performance AI applications to run natively in browsers and on local devices.
+
+* **Edge LLM Deployment**: Users can run compact yet powerful Language Models directly on their devices, ensuring privacy and reducing latency for AI-driven tasks.
+
+* **Comprehensive SDK**: Atoma provides developers with a robust toolkit to create innovative edge AI applications that seamlessly integrate with our decentralized compute layer.
+
+* **Data Ownership and Monetization**: This edge-centric approach empowers users and developers to retain control over AI-generated data. Through Atoma's tokenomics, this data can be ethically monetized in decentralized data marketplaces.
+
+* **Fueling Next-Gen AI**: The aggregated edge data becomes a valuable resource for training future generations of AI models, creating a virtuous cycle of innovation within the Atoma ecosystem.
+
+By bridging edge computing with our decentralized infrastructure, Atoma is fostering a new paradigm of accessible, private, and user-centric AI applications.
+
+## Atoma's AI Infrastructure
+
+#### Inference, Text Embeddings, and Fine-tuning
+
+Atoma's infrastructure is fully optimized to handle AI tasks like inference, text embeddings, fine-tuning etc. The network implements advanced techniques to accelerate inference, including:
+
+* **Flash Attention 2 and 3**: These techniques reduce the number of reads and writes from HBM (High Bandwidth Memory) on GPUs, leading to significant speed improvements in AI inference and training workloads. This results in faster processing times and more efficient use of hardware resources, particularly for large language models (LLMs).
+
+* **vAttention**: A memory management mechanism that allocates large amounts of virtual memory for models, but efficiently assigns physical memory at runtime using minimal CPU and GPU resources. This allows for optimized memory usage, reducing overhead while running AI models.
+
+* **vLLM**: Inspired by OS pagination techniques, vLLM handles the memory management of AI inference requests more efficiently. It uses virtual memory to ensure that large model requests are processed smoothly.
+
+#### Multi-GPU Serving and Quantization Techniques
+
+Atoma enables multi-GPU serving, allowing the deployment of large language models (LLMs) across multiple GPUs to handle more extensive computations. This capability makes it possible to serve some of the largest available open-source models.
+
+To further enhance performance, the network utilizes various quantization techniques, such as:
+
+* INT8/INT4 Quantization
+
+* FP8/FP4 Quantization
+
+These techniques enable more efficient model execution by reducing memory usage and computation costs, all while maintaining high performance.
+
+#### RAG (Retrieval-Augmented Generation) Implementation
+
+Atoma will incorporate Retrieval-Augmented Generation (RAG) to enhance AI model performance by combining data retrieval with content generation. This approach improves the accuracy of AI outputs by using relevant external data during inference, making responses more contextually rich and reliable.
+
+## Future Roadmap: Decentralized AI Training and Data Production
+
+#### Integration of Decentralized AI Training
+
+Atoma plans to introduce decentralized AI training, leveraging the latest NVIDIA GPUs, such as the Hopper and Blackwell families, integrated with TEEs to ensure secure and efficient AI training processes.
+
+#### Real and Synthetic Data Production
+
+Through the Atoma Network, vast amounts of real and synthetic data will be generated. Such data can be utilized for decentralized AI training. This data will be carefully labeled and curated through specialized mechanisms, further supporting the network's long-term AI training initiatives.
