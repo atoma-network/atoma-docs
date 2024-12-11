@@ -7,7 +7,7 @@ description: 'Overview of the Atoma Node'
 graph TB
     subgraph Atoma Node
         AS[Atoma Service] --> |Handles API Requests| Auth[Authentication Middleware]
-        AS --> |Manages Models| CCS[Confidential Compute Service]
+        AS --> |Encryption/Decryption| CCS[Confidential Compute Service]
         
         SM[State Manager] --> |Manages State| DB[(PostgreSQL)]
         
@@ -39,13 +39,17 @@ graph TB
    - Main entry point for client requests
    - Handles API endpoints for inference, embeddings, and image generation
    - Manages request routing and response handling
-   - Integrates with external AI services
+   - Integrates with the inference services
+
+2. **Inference Services**
+   - Containerized services that perform the actual AI inference
+   - See more in the [Inference Services](/node/technical-reference/inference-services) section
 
 2. **Authentication Middleware**
-   - Verifies client requests
-   - Manages cryptographic signatures
-   - Handles access control
-   - Integrates with Sui wallet
+   - Verifies client signatures using Sui wallet
+   - Manages cryptographic operations
+   - Handles access control and request validation
+   - Integrates with confidential compute service
 
 3. **State Manager**
    - Maintains node state and synchronization
@@ -81,12 +85,7 @@ graph TB
 
 ### External Integrations
 
-8. **AI Services**
-   - Inference Service: Handles LLM inference requests
-   - Embeddings Service: Processes text embedding operations
-   - Image Generation Service: Manages image generation tasks
-
-9. **Database**
+8. **Database**
    - Stores node state and configuration
    - Maintains task and compute records
    - Tracks settlements and disputes
