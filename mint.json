@@ -47,6 +47,10 @@
       "name": "Node API Reference",
       "url": "node-api-reference",
       "openapi": "/node-api-reference/openapi.yml"
+    },
+    {
+      "name": "Changelog",
+      "url": "changelog"
     }
   ],
   "anchors": [
@@ -84,7 +88,7 @@
     {
       "group": "Atoma Smart Contract",
       "pages": [
-        "documentation/atoma-smart-contract/atoma-architecture"
+        "documentation/atoma-smart-contract/atoma-architecture-overview"
       ]
     },
     {
@@ -96,6 +100,7 @@
     {
       "group": "Get Started",
       "pages": [
+        "node/get-started/overview",
         "node/get-started/setup-node",
         "node/get-started/interact-atoma-contract",
         "node/get-started/configure-node",
@@ -105,9 +110,18 @@
     {
       "group": "Technical Reference",
       "pages": [
+        "node/technical-reference/overview",
         "node/technical-reference/atoma-contract",
         "node/technical-reference/node-config",
         "node/technical-reference/inference-services"
+      ]
+    },
+    {
+      "group": "Changelog",
+      "pages": [
+        "changelog/overview",
+        "changelog/cloud",
+        "changelog/node"
       ]
     }
   ],
