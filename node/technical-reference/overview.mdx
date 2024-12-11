@@ -1,0 +1,94 @@
+---
+title: 'Overview'
+description: 'Overview of the Atoma Node'
+---
+
+```mermaid
+graph TB
+    subgraph Atoma Node
+        AS[Atoma Service] --> |Handles API Requests| Auth[Authentication Middleware]
+        AS --> |Encryption/Decryption| CCS[Confidential Compute Service]
+        
+        SM[State Manager] --> |Manages State| DB[(PostgreSQL)]
+        
+        Sub[Sui Event Subscriber] --> |Events| SM
+        Sub --> |Blockchain Events| BC[Sui Blockchain]
+        
+        AD[Atoma Daemon] --> |Node Operations| SM
+        AD --> |Blockchain Operations| BC
+        
+        CCS --> |Secure Processing| Auth
+        Auth --> |Verify Access| SM
+
+        subgraph Inference Services
+            vLLM[vLLM Service] --> |Chat Completions| AS
+            TEI[Text Embeddings] --> |Embeddings| AS
+            MRS[Mistral.rs] --> |Image Generations| AS
+        end
+    end
+
+    Client[External Client] --> |Purchase Stacks| BC[Sui Blockchain]
+    Client --> |API Requests| AS
+```
+
+## Component Overview
+
+### Core Components
+
+1. **Atoma Service**
+   - Main entry point for client requests
+   - Handles API endpoints for inference, embeddings, and image generation
+   - Manages request routing and response handling
+   - Integrates with the inference services
+
+2. **Inference Services**
+   - Containerized services that perform the actual AI inference
+   - See more in the [Inference Services](/node/technical-reference/inference-services) section
+
+2. **Authentication Middleware**
+   - Verifies client signatures using Sui wallet
+   - Manages cryptographic operations
+   - Handles access control and request validation
+   - Integrates with confidential compute service
+
+3. **State Manager**
+   - Maintains node state and synchronization
+   - Manages database operations
+   - Handles task queuing and execution
+   - Tracks compute units and settlements
+
+4. **Sui Event Subscriber**
+   - Listens to blockchain events
+   - Processes on-chain state changes
+   - Manages node registration and task assignments
+   - Handles settlement verification
+
+5. **Confidential Compute Service**
+   - Provides secure enclave operations
+   - Manages encryption/decryption of sensitive data
+   - Ensures privacy guarantees for compute tasks
+   - Handles attestation proofs
+
+6. **Atoma Daemon**
+   - Manages node operations and maintenance
+   - Handles node registration and subscriptions
+   - Processes stack settlements
+   - Manages node rewards and claims
+
+### Supporting Components
+
+7. **Sui Client**
+   - Interfaces with Sui blockchain
+   - Manages transaction submissions
+   - Handles smart contract interactions
+   - Processes blockchain events
+
+### External Integrations
+
+8. **Database**
+   - Stores node state and configuration
+   - Maintains task and compute records
+   - Tracks settlements and disputes
+   - Manages node subscriptions
+
+This architecture ensures secure, scalable, and verifiable AI compute operations while maintaining decentralization through blockchain integration and confidential computing capabilities.
