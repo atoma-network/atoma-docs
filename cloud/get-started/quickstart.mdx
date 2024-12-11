@@ -1,0 +1,79 @@
+---
+title: 'Quickstart'
+description: 'Quickstart guide for Atoma Proxy'
+---
+
+## Prerequisites
+
+Before deploying Atoma Proxy, ensure you have:
+
+- Docker and Docker Compose installed
+- Sui wallet configured (see [Sui installation guide](https://docs.sui.io/build/install))
+- Hugging Face API token (for accessing gated models)
+
+
+## Clone the repository:
+
+```bash
+git clone https://github.com/atoma-network/atoma-proxy.git
+cd atoma-proxy
+```
+
+## Configure `.env` :
+
+1. Create a `.env` from the `.env.example` file:
+
+```bash
+cp .env.example .env
+```
+
+2. Fill in the values for the environment variables. You need to at least set the following mandatory variables:
+
+- `POSTGRES_DB`
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+
+## Configure `config.toml`:
+
+1. Create a `config.toml` from the `config.example.toml` file:
+
+```bash
+cp config.example.toml config.toml
+```
+
+2. Fill in the values for the configuration variables. You need to at least set the following mandatory variables:
+
+- `database_url`: The URL of the PostgreSQL database. Use the values from the `.env` file.
+- `models`: The list of models to supported by the proxy.
+
+## Start the containers:
+
+```bash
+# Build and start all services
+docker compose up --build
+
+# Or run in detached mode
+docker compose up -d --build
+```
+
+- Check service status:
+
+```bash
+docker compose ps
+```
+
+- Test the health endpoint:
+
+```bash
+curl http://localhost:8080/health
+```
+
+- View available models:
+
+```bash
+curl http://localhost:8080/v1/models
+```
+
+## API Documentation
+
+See the [API Reference](/cloud-api-reference) for more details.

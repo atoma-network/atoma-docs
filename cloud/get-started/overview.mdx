@@ -1,0 +1,62 @@
+---
+title: 'Overview'
+description: 'Overview of Atoma Proxy'
+---
+
+## What is Atoma Proxy?
+
+Atoma Proxy is a critical component of the Atoma Network that acts as a smart traffic controller for AI workloads. Think of it as an intelligent middleman that helps manage and distribute AI tasks across a network of computers.
+
+The proxy implements an OpenAI-compatible API, making it easy to use with existing OpenAI client libraries and tools. You can use the same API calls you're familiar with from OpenAI to interact with Atoma's distributed AI infrastructure.
+
+## Key Features
+
+### 1. OpenAI Compatibility
+- Drop-in replacement for OpenAI API
+- Supports standard endpoints:
+  - `/v1/chat/completions`
+  - `/v1/embeddings` 
+  - `/v1/images/generations`
+  - `/v1/models`
+
+### 2. Load Balancing
+- Distributes AI workloads evenly across different computers
+- Prevents any single machine from getting overwhelmed
+- Ensures efficient resource usage
+
+### 3. Smart Routing
+- Directs AI requests to the most suitable computers
+- Considers factors like:
+  - Model availability
+  - Current workload
+  - Performance capabilities
+
+### 4. High Availability
+- Keeps the service running smoothly
+- Has backup plans if something goes wrong
+- Prevents service interruptions
+
+### 5. Security
+- Implements authentication for API access
+- Supports confidential computing
+- Protects sensitive data during processing
+
+## How It Works
+
+1. **Request Reception**
+   - Receives AI task requests using OpenAI-compatible endpoints
+   - Validates the requests and authentication
+
+2. **Task Distribution**
+   - Analyzes the network's current state
+   - Picks the best computer to handle the task
+   - Routes the request to the chosen computer
+
+3. **Monitoring**
+   - Keeps track of all ongoing tasks
+   - Monitors system health
+   - Collects performance metrics
+
+## Getting Started
+
+The easiest way to run Atoma Proxy is using Docker:
