@@ -47,6 +47,10 @@
       "name": "Node API Reference",
       "url": "node-api-reference",
       "openapi": "/node-api-reference/openapi.yml"
+    },
+    {
+      "name": "Changelog",
+      "url": "changelog"
     }
   ],
   "anchors": [
@@ -110,6 +114,14 @@
         "node/technical-reference/atoma-contract",
         "node/technical-reference/node-config",
         "node/technical-reference/inference-services"
+      ]
+    },
+    {
+      "group": "Changelog",
+      "pages": [
+        "changelog/overview",
+        "changelog/cloud",
+        "changelog/node"
       ]
     }
   ],
