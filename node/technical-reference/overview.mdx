@@ -21,9 +21,9 @@ graph TB
         Auth --> |Verify Access| SM
 
         subgraph Inference Services
-            vLLM[vLLM Service] --> |LLM Inference| AS
+            vLLM[vLLM Service] --> |Chat Completions| AS
             TEI[Text Embeddings] --> |Embeddings| AS
-            MRS[Mistral.rs] --> |Image Generation| AS
+            MRS[Mistral.rs] --> |Image Generations| AS
         end
     end
 
