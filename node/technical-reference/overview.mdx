@@ -19,6 +19,12 @@ graph TB
         
         CCS --> |Secure Processing| Auth
         Auth --> |Verify Access| SM
+
+        subgraph Inference Services
+            vLLM[vLLM Service] --> |LLM Inference| AS
+            TEI[Text Embeddings] --> |Embeddings| AS
+            MRS[Mistral.rs] --> |Image Generation| AS
+        end
     end
 
     Client[External Client] --> |Purchase Stacks| BC[Sui Blockchain]
