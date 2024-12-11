@@ -6,7 +6,7 @@ description: 'Overview of the Atoma Node'
 ```mermaid
 graph TB
     subgraph Atoma Node
-        AS[Atoma Service] --> |Handles API Requests| Auth[Authentication]
+        AS[Atoma Service] --> |Handles API Requests| Auth[Authentication Middleware]
         AS --> |Manages Models| CCS[Confidential Compute Service]
         
         SM[State Manager] --> |Manages State| DB[(PostgreSQL)]
@@ -35,37 +35,37 @@ graph TB
    - Manages request routing and response handling
    - Integrates with external AI services
 
-2. **State Manager**
+2. **Authentication Middleware**
+   - Verifies client requests
+   - Manages cryptographic signatures
+   - Handles access control
+   - Integrates with Sui wallet
+
+3. **State Manager**
    - Maintains node state and synchronization
    - Manages database operations
    - Handles task queuing and execution
    - Tracks compute units and settlements
 
-3. **Sui Event Subscriber**
+4. **Sui Event Subscriber**
    - Listens to blockchain events
    - Processes on-chain state changes
    - Manages node registration and task assignments
    - Handles settlement verification
 
-4. **Confidential Compute Service**
+5. **Confidential Compute Service**
    - Provides secure enclave operations
    - Manages encryption/decryption of sensitive data
    - Ensures privacy guarantees for compute tasks
    - Handles attestation proofs
 
-5. **Atoma Daemon**
+6. **Atoma Daemon**
    - Manages node operations and maintenance
    - Handles node registration and subscriptions
    - Processes stack settlements
    - Manages node rewards and claims
 
 ### Supporting Components
-
-6. **Authentication**
-   - Verifies client requests
-   - Manages cryptographic signatures
-   - Handles access control
-   - Integrates with Sui wallet
 
 7. **Sui Client**
    - Interfaces with Sui blockchain
