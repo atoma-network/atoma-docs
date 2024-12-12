@@ -10,14 +10,9 @@ servers:
 paths:
   /health:
     get:
-      tags: []
-      summary: Handles the health check request.
-      description: |-
-        This endpoint is used to check the health of the atoma proxy service.
-
-        # Returns
-
-        Returns a JSON response with the status "ok".
+      tags:
+      - Health
+      summary: Health
       operationId: health
       responses:
         '200':
@@ -29,8 +24,9 @@ paths:
           description: Service is unhealthy
   /node/registration:
     post:
-      tags: []
-      summary: Handles the registration of a node's public address.
+      tags:
+      - Node Public Address Registration
+      summary: Register node
       description: |-
         This endpoint allows nodes to register or update their public address in the system.
         When a node comes online or changes its address, it can use this endpoint to ensure
@@ -61,12 +57,6 @@ paths:
         }
         ```
       operationId: node_public_address_registration
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/NodePublicAddressAssignment'
-        required: true
       responses:
         '200':
           description: Node public address registered successfully
@@ -77,32 +67,33 @@ paths:
           description: Failed to register node public address
   /v1/chat/completions:
     post:
-      tags: []
-      summary: Handles the chat completions request.
+      tags:
+      - Chat Completions
+      summary: Create chat completion
       description: |-
-        This function handles the chat completions request by processing the payload
-        and sending the request to the appropriate node for processing.
-        1) Check the authentication of the request.
-        2) Get the model from the payload.
-        3) Get the stacks for the model.
-        4) In case no stacks are found, get the tasks for the model and acquire a new stack entry.
-        5) Get the public address of the selected node.
-        6) Send the OpenAI API request to the selected node.
-        7) Return the response from the OpenAI API.
+        This function processes chat completion requests by determining whether to use streaming
+        or non-streaming response handling based on the request payload. For streaming requests,
+        it configures additional options to track token usage.
 
         # Arguments
 
-        * `state`: The shared state of the application.
-        * `headers`: The headers of the request.
-        * `payload`: The payload of the request.
+        * `metadata`: Extension containing request metadata (node address, ID, compute units, etc.)
+        * `state`: The shared state of the application
+        * `headers`: The headers of the request
+        * `payload`: The JSON payload containing the chat completion request
 
         # Returns
 
-        Returns the response from the OpenAI API or an error status code.
+        Returns a Response containing either:
+        - A streaming SSE connection for real-time completions
+        - A single JSON response for non-streaming completions
 
         # Errors
 
-        Returns an error status code if the authentication fails, the model is not found, no tasks are found for the model, no node address is found, or an internal server error occurs.
+        Returns an error status code if:
+        - The request processing fails
+        - The streaming/non-streaming handlers encounter errors
+        - The underlying inference service returns an error
       operationId: chat_completions_handler
       requestBody:
         content:
@@ -123,29 +114,21 @@ paths:
           description: Internal server error
   /v1/embeddings:
     post:
-      tags: []
-      summary: Handles incoming embeddings requests by authenticating, processing, and forwarding them to the appropriate node.
+      tags:
+      - Embeddings
+      summary: Create embeddings
       description: |-
         This endpoint follows the OpenAI API format for generating vector embeddings from input text.
-        The handler performs several key operations:
+        The handler receives pre-processed metadata from middleware and forwards the request to
+        the selected node.
 
-        1. Authentication and validation:
-           - Validates the API key and permissions
-           - Ensures the request payload is properly formatted
-
-        2. Request processing:
-           - Extracts and validates the model name
-           - Parses the input text for embedding generation
-           - Estimates token usage for billing purposes
-
-        3. Node selection and routing:
-           - Selects an appropriate processing node based on load and availability
-           - Forwards the request to the chosen node
-           - Handles node communication and response processing
+        Note: Authentication, node selection, and initial request validation are handled by middleware
+        before this handler is called.
 
         # Arguments
+        * `metadata` - Pre-processed request metadata containing node information and compute units
         * `state` - The shared proxy state containing configuration and runtime information
-        * `headers` - HTTP headers from the incoming request, including authentication
+        * `headers` - HTTP headers from the incoming request
         * `payload` - The JSON request body containing the model and input text
 
         # Returns
@@ -153,8 +136,6 @@ paths:
         * `Err(StatusCode)` - An error status code if any step fails
 
         # Errors
-        * `BAD_REQUEST` - Invalid payload format or unsupported model
-        * `UNAUTHORIZED` - Invalid or missing authentication
         * `INTERNAL_SERVER_ERROR` - Processing or node communication failures
       operationId: embeddings_handler
       requestBody:
@@ -176,27 +157,26 @@ paths:
           description: Internal server error
   /v1/images/generations:
     post:
-      tags: []
-      summary: Handles incoming requests for AI image generation.
+      tags:
+      - Image Generations
+      summary: Create image generation
       description: |-
-        This endpoint processes requests to generate images using AI models. It performs the following steps:
-        1. Validates and parses the incoming request payload
-        2. Authenticates the request and processes billing/compute units
-        3. Forwards the request to the appropriate AI node for image generation
+        This endpoint processes requests to generate images using AI models by forwarding them
+        to the appropriate AI node. The request metadata and compute units have already been
+        validated by middleware before reaching this handler.
 
         # Arguments
+        * `metadata` - Extension containing pre-processed request metadata (node address, compute units, etc.)
         * `state` - Application state containing configuration and shared resources
         * `headers` - HTTP headers from the incoming request
-        * `payload` - JSON payload containing image generation parameters (model, size, number of images)
+        * `payload` - JSON payload containing image generation parameters
 
         # Returns
-        * `Result<Response<Body>, StatusCode>` - Either a successful response containing the generated
-          images or an error status code
+        * `Result<Response<Body>, StatusCode>` - The processed response from the AI node or an error status
 
         # Errors
-        * `BAD_REQUEST` - If the request payload is invalid or missing required fields
-        * `UNAUTHORIZED` - If authentication fails
-        * `INTERNAL_SERVER_ERROR` - If there's an error processing the request or communicating with the AI node
+        * Returns various status codes based on the underlying `handle_image_generation_response`:
+          - `INTERNAL_SERVER_ERROR` - If there's an error communicating with the AI node
 
         # Example Payload
         ```json
@@ -226,8 +206,9 @@ paths:
           description: Internal server error
   /v1/models:
     get:
-      tags: []
-      summary: Handles requests to list available AI models.
+      tags:
+      - Models
+      summary: List models
       description: |-
         This endpoint mimics the OpenAI models endpoint format, returning a list of
         available models with their associated metadata and permissions. Each model
@@ -295,38 +276,17 @@ paths:
               schema: {}
         '500':
           description: Failed to retrieve list of available models
-components:
-  schemas:
-    NodePublicAddressAssignment:
-      type: object
-      description: |-
-        Represents the payload for the node public address registration request.
-
-        This struct represents the payload for the node public address registration request.
-      required:
-      - node_small_id
-      - public_address
-      properties:
-        node_small_id:
-          type: integer
-          format: int64
-          description: Unique small integer identifier for the node
-          minimum: 0
-        public_address:
-          type: string
-          description: The public address of the node
+components: {}
 tags:
-- name: health
+- name: Health
   description: Health check
-- name: chat
+- name: Chat Completions
   description: Chat completions
-- name: models
+- name: Models
   description: Models
-- name: node-public-address-registration
+- name: Node Public Address Registration
   description: Node public address registration
-- name: chat-completions
-  description: OpenAI's API chat completions v1 endpoint
-- name: embeddings
+- name: Embeddings
   description: OpenAI's API embeddings v1 endpoint
-- name: image-generations
+- name: Image Generations
   description: OpenAI's API image generations v1 endpoint

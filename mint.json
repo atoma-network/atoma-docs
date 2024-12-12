@@ -94,7 +94,8 @@
     {
       "group": "Get Started",
       "pages": [
-        "cloud/get-started/introduction"
+        "cloud/get-started/overview",
+        "cloud/get-started/quickstart"
       ]
     },
     {
