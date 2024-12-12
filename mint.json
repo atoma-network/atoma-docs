@@ -37,7 +37,7 @@
     {
       "name": "Cloud API Reference",
       "url": "cloud-api-reference",
-      "openapi": "/cloud-api-reference/openapi.yml"
+      "openapi": "https://raw.githubusercontent.com/atoma-network/atoma-proxy/main/atoma-proxy/docs/openapi.yml"
     },
     {
       "name": "Node",
@@ -46,7 +46,7 @@
     {
       "name": "Node API Reference",
       "url": "node-api-reference",
-      "openapi": "/node-api-reference/openapi.yml"
+      "openapi": "https://raw.githubusercontent.com/atoma-network/atoma-node/main/atoma-daemon/docs/openapi.yml"
     },
     {
       "name": "Changelog",
