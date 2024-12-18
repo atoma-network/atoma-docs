@@ -2,27 +2,27 @@
 title: "Trust and Privacy"
 ---
 
-## Private and secure AI inference compute
+## Private and Secure AI Inference Compute
 
-In a permissionless network, two critical challenges arise when running AI inference: trust in the accuracy of the output and privacy of both user data and model weights.
+In a permissionless network, two critical challenges arise during AI inference: ensuring output accuracy and protecting the privacy of both user data and model weights.
 
 #### Trust in Output Accuracy
 
-When requesting inference using a large model like Llama3.1-405B (405 billion model weight parameters), how can we be assured that the network isn't actually using a smaller model like LLama3.1-8B (8 billion parameters), or a highly quantized version of the original model? \*\*Verifiable AI\*\* inference aims to provide high guarantees that the generated output was correctly derived from the desired model and inputs.
+When requesting inference using a large model like Llama3.1-405B (405 billion model weight parameters), how can we ensure that the network isn't actually using a smaller model like LLama3.1-8B (8 billion parameters), or a highly quantized version of the original model? \*\*Verifiable AI\*\* inference ensures that the generated output is correctly derived from the specified model and inputs.
 
-This challenge is similar to what Web3 users encounter with blockchain technologies, which often rely on high compute replication to ensure transaction integrity. Blockchains typically have hundreds or thousands of validators, with each transaction being executed by at least a supermajority of nodes (often two-thirds of the network).
+This challenge is similar to what Web3 users encounter with blockchain technologies, which often rely on high compute replication to ensure transaction integrity. Blockchains typically have hundreds or thousands of validators, with each transaction executed by a supermajority of nodes (usually two-thirds of the network).
 
-However, while blockchain transactions are typically limited to a few kilobytes, modern AI models require gigabytes of memory. This makes it infeasible to run AI inference on-chain due to the tremendous cost of replication, necessitating alternative verification methods.
+However, while blockchain transactions are typically limited to a few kilobytes, modern AI models require gigabytes of memory. This makes it unfeasible to run AI inference on-chain due to the high cost of replication, necessitating alternative verification methods.
 
 #### Privacy Concerns
 
 Equally important is the need to protect the privacy of both user data and model weights throughout the inference process. This includes:
 
-1. Data in transit: Ensuring that user inputs and model outputs are encrypted during transmission between the user and the network nodes.
+1. **Data in transit**: Ensuring that user inputs and model outputs are encrypted during transmission between the user and the network nodes.
 
-2. Data at rest: Protecting stored user data, ideally in encrypted format, and model weights from unauthorized access when not in use.
+2. **Data at rest**: Protecting stored user data, ideally in encrypted format, and model weights from unauthorized access when not in use.
 
-3. Data during execution: Safeguarding user inputs and model weights while they are being processed in memory, through the use secure enclaves (TEEs).
+3. **Data during execution**: Safeguarding user inputs and model weights while they are processed in memory through the use of secure enclaves (TEEs).
 
 Privacy preservation is crucial for several reasons:
 
@@ -32,7 +32,7 @@ Privacy preservation is crucial for several reasons:
 
 * **Regulatory compliance:** Many jurisdictions have strict data protection laws that require safeguarding personal information.
 
-Addressing both trust and privacy concerns is essential for building a robust, secure, and widely adopted AI compute network. The following sections will explore various approaches to tackling these challenges, including Atoma's novel Sampling Consensus protocol and the use of TEEs on the Atoma Network.
+Addressing both trust and privacy concerns is essential for building a robust, secure, and widely adopted AI compute network. The following sections explore various approaches to tackling these challenges, including Atoma’s novel Sampling Consensus protocol and the use of TEEs on the Atoma Network.
 
 ## Overview of common Verifiable Computation Algorithms
 
