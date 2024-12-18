@@ -18,29 +18,29 @@ However, while blockchain transactions are typically limited to a few kilobytes,
 
 Equally important is the need to protect the privacy of both user data and model weights throughout the inference process. This includes:
 
-1. **Data in transit**: Ensuring that user inputs and model outputs are encrypted during transmission between the user and the network nodes.
+1. **Data in Transit**: Ensuring that user inputs and model outputs are encrypted during transmission between the user and the network nodes.
 
-2. **Data at rest**: Protecting stored user data, ideally in encrypted format, and model weights from unauthorized access when not in use.
+2. **Data at Rest**: Protecting stored user data, ideally in encrypted format, and model weights from unauthorized access when not in use.
 
-3. **Data during execution**: Safeguarding user inputs and model weights while they are processed in memory through the use of secure enclaves (TEEs).
+3. **Data During Execution**: Safeguarding user inputs and model weights while they are processed in memory through the use of secure enclaves (TEEs).
 
 Privacy preservation is crucial for several reasons:
 
-* **User trust:** Users need assurance that their potentially sensitive inputs won't be exposed or misused.
+* **User Trust:** Users need assurance that their potentially sensitive inputs won't be exposed or misused.
 
-* **Intellectual property protection:** Model owners must be confident that their valuable AI models won't be reverse-engineered or stolen.
+* **Intellectual Property Protection:** Model owners must be confident that their valuable AI models won't be reverse-engineered or stolen.
 
-* **Regulatory compliance:** Many jurisdictions have strict data protection laws that require safeguarding personal information.
+* **Regulatory Compliance:** Many jurisdictions have strict data protection laws that require safeguarding personal information.
 
 Addressing both trust and privacy concerns is essential for building a robust, secure, and widely adopted AI compute network. The following sections explore various approaches to tackling these challenges, including Atoma’s novel Sampling Consensus protocol and the use of TEEs on the Atoma Network.
 
-## Overview of common Verifiable Computation Algorithms
+## Overview of Common Verifiable Computation Algorithms
 
 #### Byzantine Fault Tolerant Protocols
 
-Byzantine Fault Tolerant (BFT) consensus refers to a class of algorithms used in distributed systems to agree on the state of a global ledger being altered by a given transaction. These protocols ensure consensus among nodes even if a proportion of the nodes in the system are unreliable or malicious. BFT consensus guarantees that the system as a whole can still make reliable and unanimous decisions, even in the presence of faulty or malicious actors.
+Byzantine Fault Tolerant (BFT) consensus refers to a class of algorithms used in distributed systems to agree on the state of a global ledger modified by a given transaction. These protocols ensure consensus among nodes even if a proportion of the nodes in the system are unreliable or malicious. BFT consensus guarantees that the system as a whole can still make reliable and unanimous decisions, even in the presence of faulty or malicious actors.
 
-Key characteristics of BFT protocols:
+**Key Characteristics of BFT Protocols:**
 
 * Typically require agreement from a supermajority (usually around 2/3) of nodes
 
@@ -48,41 +48,41 @@ Key characteristics of BFT protocols:
 
 * Can tolerate up to f faulty nodes in a system of 3f+1 total nodes
 
-Challenges in applying BFT to AI inference:
+**Challenges in Applying BFT to AI Inference:**
 
-1. **Computational overhead:** Each node must independently perform the same computations, leading to significant redundancy.
+1. **Computational Overhead:** Each node must independently perform the same computations, leading to significant redundancy.
 
-2. **Communication complexity:** Multiple rounds of communication are required among a supermajority of nodes, increasing latency.
+2. **Communication Complexity:** Multiple rounds of communication are required among a supermajority of nodes, increasing latency.
 
-3. **Scalability issues:** As the number of nodes increases, the communication overhead grows quadratically.
+3. **Scalability Issues:** As the number of nodes increases, the communication overhead grows quadratically.
 
-4. **State explosion:** AI compute pipelines generate large amounts of intermediate state data, exacerbating the above issues.
+4. **State Explosion:** AI compute pipelines generate large amounts of intermediate state data, exacerbating the above issues.
 
 While BFT protocols offer strong security guarantees, their application to AI inference faces significant challenges in terms of computational power, latency, and scalability. These limitations make BFT less suitable for large-scale, high-performance AI inference tasks.
 
 #### Zero Knowledge Machine Learning (ZKML)
 
-Zero Knowledge Machine Learning (ZKML) applies zero knowledge proofs (ZKPs) to AI and machine learning models. This approach ensures the correctness of machine learning model outputs while maintaining the confidentiality of the model itself (e.g., weights and architecture).
+Zero Knowledge Machine Learning (ZKML) applies zero knowledge proofs (ZKPs) to AI and machine learning models. This approach ensures the correctness of machine learning model outputs while maintaining model confidentiality (e.g., weights and architecture).
 
-Key features of ZKML:
+**Key Features of ZKML:**
 
-* Model privacy: Owners can keep models self-hosted without disclosing internal details.
+* **Model Privacy:** Owners can keep models self-hosted without disclosing internal details.
 
-* Verifiable correctness: ZK proofs provide near-absolute certainty of correct execution.
+* **Verifiable Correctness:** ZK proofs provide near-absolute certainty of correct execution.
 
-* Non-interactive proofs: Once generated, proofs can be verified quickly without further interaction.
+* **Non-interactive Proofs:** Once generated, proofs can be verified quickly without further interaction.
 
-Challenges and limitations:
+**Challenges and Limitations:**
 
-1. **Computational overhead:** Generating ZK proofs for AI models incurs significant computational costs, often orders of magnitude higher than native execution.
+1. **Computational Overhead:** Generating ZK proofs for AI models incurs significant computational costs, often orders of magnitude higher than native execution.
 
 2. **Complexity:** Compiling neural networks into ZK circuits is extremely complex and resource-intensive.
 
-3. **Scalability issues:** Current ZKML techniques struggle with large models, particularly LLMs.
+3. **Scalability Issues:** Current ZKML techniques struggle with large models, particularly LLMs.
 
-4. **Lack of practical implementations:** As of now, there are no deployments of ZK proof generation for large language models.
+4. **Lack of Practical Implementations:** As of now, there are no deployments of ZK proof generation for large language models.
 
-5. **Lack of support for floating point arithemtic:** Current ZK proving systems are not tailored to prove native floating point arithmetic operations, making these unsuitable for proving highly optimized AI workflows.
+5. **Lack of Support for Floating Point Arithemtic:** Current ZK proving systems are not tailored to prove native floating point arithmetic operations, making these unsuitable for proving highly optimized AI workflows.
 
 While ZKML can potentially offer verifiability guarantees, its current state makes it impractical for most real-world AI inference tasks due to performance and scalability limitations. However, ongoing research in this field may lead to more efficient implementations in the future.
 
@@ -90,31 +90,31 @@ While ZKML can potentially offer verifiability guarantees, its current state mak
 
 Optimistic Machine Learning (OpML) adopts an "optimistic" approach to verification, assuming computations are correct unless proven otherwise. This method aims to balance efficiency with security by avoiding immediate verification costs.
 
-Key concepts of OpML:
+**Key Concepts of OpML:**
 
-* **Assume-valid execution:** Initial computations are accepted without immediate verification.
+* **Assume-valid Execution:** Initial computations are accepted without immediate verification.
 
-* **Challenge periods:** Time windows where participants can contest the validity of computations.
+* **Challenge Periods:** Time windows where participants can contest the validity of computations.
 
-* **Dispute resolution:** Mechanisms to correct errors when valid challenges are raised.
+* **Dispute Resolution:** Mechanisms to correct errors when valid challenges are raised.
 
-Advantages:
+**Advantages:**
 
-1. **Reduced upfront costs:** Avoiding immediate verification can improve efficiency for most transactions.
+1. **Reduced Upfront Costs:** Avoiding immediate verification can improve efficiency for most transactions.
 
 2. **Scalability:** Can handle a higher throughput of computations compared to always-verify approaches.
 
-Challenges and limitations:
+**Challenges and Limitations:**
 
-1. **Delayed finality:** Challenge periods introduce delays in confirming the final state of computations.
+1. **Delayed Finality:** Challenge periods introduce delays in confirming the final state of computations.
 
-2. **Inconsistent states:** The possibility of successful challenges can lead to state reversions and inconsistencies.
+2. **Inconsistent States:** The possibility of successful challenges can lead to state reversions and inconsistencies.
 
-3. **Complex incentives:** Verifiers must compute results to check validity but are only rewarded for successful challenges.
+3. **Complex Incentives:** Verifiers must compute results to check validity but are only rewarded for successful challenges.
 
-4. **Security trade-offs:** Relies on economic incentives and the assumption that malicious behavior will be caught and punished.
+4. **Security Trade-offs:** Relies on economic incentives and the assumption that malicious behavior will be caught and punished.
 
-Practical considerations:
+**Practical Considerations:**
 
 * Suitable for scenarios where immediate finality is less critical and the cost of occasional reversions is acceptable.
 
