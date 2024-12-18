@@ -111,17 +111,17 @@ Atoma’s network scales both vertically and horizontally, supporting a growing 
 
 ## Atoma at the Edge: Empowering Local AI
 
-Atoma extends its reach beyond decentralized cloud infrastructure to the edge, enabling powerful AI capabilities directly on users' devices:
+Atoma extends its reach beyond decentralized cloud infrastructure to the edge, delivering powerful AI capabilities directly on users' devices:
 
-* **WASM and WebGPU Compatibility**: We are building a cutting-edge software stack that leverages WebAssembly (WASM) and WebGPU technologies, allowing for high-performance AI applications to run natively in browsers and on local devices.
+* **WASM and WebGPU Compatibility**: We are building a cutting-edge software stack that leverages WebAssembly (WASM) and WebGPU technologies, enabling high-performance AI applications to run natively in browsers and on local devices.
 
 * **Edge LLM Deployment**: Users can run compact yet powerful Language Models directly on their devices, ensuring privacy and reducing latency for AI-driven tasks.
 
-* **Comprehensive SDK**: Atoma provides developers with a robust toolkit to create innovative edge AI applications that seamlessly integrate with our decentralized compute layer.
+* **Comprehensive SDK**: Atoma provides developers with a robust toolkit to create edge AI applications that that integrate with our decentralized compute layer.
 
-* **Data Ownership and Monetization**: This edge-centric approach empowers users and developers to retain control over AI-generated data. Through Atoma's tokenomics, this data can be ethically monetized in decentralized data marketplaces.
+* **Data Ownership and Monetization**: This edge-centric approach empowers users and developers to retain control over AI-generated data. Through Atoma’s tokenomics, this data can be monetized in decentralized data marketplaces.
 
-* **Fueling Next-Gen AI**: The aggregated edge data becomes a valuable resource for training future generations of AI models, creating a virtuous cycle of innovation within the Atoma ecosystem.
+* **Fueling Next-Gen AI**: Aggregated edge data becomes a valuable resource for training future AI models, driving continuous innovation within the Atoma ecosystem.
 
 By bridging edge computing with our decentralized infrastructure, Atoma is fostering a new paradigm of accessible, private, and user-centric AI applications.
 
@@ -129,25 +129,25 @@ By bridging edge computing with our decentralized infrastructure, Atoma is foste
 
 #### Inference, Text Embeddings, and Fine-tuning
 
-Atoma's infrastructure is fully optimized to handle AI tasks like inference, text embeddings, fine-tuning etc. The network implements advanced techniques to accelerate inference, including:
+Atoma’s infrastructure is fully optimized to handle AI tasks such as inference, text embeddings, and fine-tuning. The network implements advanced techniques to accelerate inference, including:
 
-* **Flash Attention 2 and 3**: These techniques reduce the number of reads and writes from HBM (High Bandwidth Memory) on GPUs, leading to significant speed improvements in AI inference and training workloads. This results in faster processing times and more efficient use of hardware resources, particularly for large language models (LLMs).
+* **Flash Attention 2 and 3**: These techniques reduce the number of reads and writes to and from HBM (High Bandwidth Memory) on GPUs, significantly improving speed in AI inference and training workloads. This results in faster processing times and more efficient use of hardware resources, particularly for large language models (LLMs).
 
-* **vAttention**: A memory management mechanism that allocates large amounts of virtual memory for models, but efficiently assigns physical memory at runtime using minimal CPU and GPU resources. This allows for optimized memory usage, reducing overhead while running AI models.
+* **vAttention**: A memory management mechanism that allocates large amounts of virtual memory for models, and efficiently assigns physical memory at runtime using minimal CPU and GPU resources.
 
-* **vLLM**: Inspired by OS pagination techniques, vLLM handles the memory management of AI inference requests more efficiently. It uses virtual memory to ensure that large model requests are processed smoothly.
+* **vLLM**: Inspired by OS pagination techniques, vLLM efficiently manages the memory of AI inference requests. It uses virtual memory to ensure that large model requests are processed smoothly.
 
 #### Multi-GPU Serving and Quantization Techniques
 
-Atoma enables multi-GPU serving, allowing the deployment of large language models (LLMs) across multiple GPUs to handle more extensive computations. This capability makes it possible to serve some of the largest available open-source models.
+Atoma enables multi-GPU serving, allowing large language models (LLMs) to be deployed across multiple GPUs for handling complex computations. This capability supports the deployment of some of the largest available open-source models.
 
 To further enhance performance, the network utilizes various quantization techniques, such as:
 
-* INT8/INT4 Quantization
+* **INT8/INT4 Quantization**: Techniques that reduce the precision of model weights to minimize memory usage while maintaining accuracy.
 
-* FP8/FP4 Quantization
+* **FP8/FP4 Quantization**: Methods that use lower-precision floating-point formats for faster computation and reduced hardware requirements.
 
-These techniques enable more efficient model execution by reducing memory usage and computation costs, all while maintaining high performance.
+These techniques enable more efficient model execution by reducing memory usage and computation costs while maintaining high performance.
 
 #### RAG (Retrieval-Augmented Generation) Implementation
 
