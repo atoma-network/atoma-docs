@@ -347,49 +347,47 @@ NVIDIA's approach to TEEs is particularly significant for the AI industry, as it
 
 1. **NVIDIA Hopper Architecture:**
 
-   * Introduces Confidential Computing features in the H100 GPU
+   * Introduces Confidential Computing features in the H100 and H200 GPUs.
 
-   * Provides hardware-based isolation and memory encryption
+   * Provides hardware-based isolation and memory encryption.
 
 2. **NVIDIA Blackwell Architecture:**
 
-   * Next-generation GPU architecture announced in 2024
-
-   * Significantly enhances confidential computing capabilities
+   * Enhances confidential computing capabilities, announced in 2024.
 
 3. **Confidential AI:**
 
-   * Enables secure execution of AI workloads on GPUs
+   * Enables secure execution of AI workloads on GPUs.
 
-   * Protects both AI models and data during computation
+   * Protects both AI models and data during computation.
 
 4. **Key Features:**
 
-   * Secure Boot: Ensures the integrity of the GPU firmware
+   * **Secure Boot:** Ensures firmware integrity.
 
-   * Memory Encryption: Protects data in GPU memory
+   * **Memory Encryption:** Safeguards data in GPU memory.
 
-   * Secure Multi-Tenant Execution: Allows multiple isolated workloads on a single GPU
+   * **Secure Multi-Tenant Execution:** Supports multiple isolated workloads on a single GPU.
 
 5. **Integration with CPU TEEs:**
 
-   * Works in conjunction with CPU-based TEEs like Intel SGX
+   * Works in conjunction with CPU-based TEEs like Intel SGX.
 
-   * Provides end-to-end protection for hybrid CPU-GPU workloads
+   * Provides end-to-end protection for hybrid CPU-GPU workloads.
 
 6. **Use Cases:**
 
-   * Federated Learning: Enables secure collaborative AI training
+   * **Federated Learning:** Enables secure collaborative AI training.
 
-   * Model Inference: Protects proprietary AI models during deployment
+   * **Model Inference:** Protects proprietary AI models during deployment.
 
-   * Healthcare and Financial Services: Allows processing of sensitive data on GPUs
+   * **Healthcare and Financial Services:** Allows processing of sensitive data on GPUs.
 
 7. **Challenges:**
 
-   * Performance Impact: Encryption and isolation can affect computational speed
+   * **Performance Impact:** Encryption and isolation can affect computational speed.
 
-   * Ecosystem Adoption: Requires updates to existing AI frameworks and tools
+   * **Ecosystem Adoption:** Requires updates to existing AI frameworks and tools.
 
 #### TEEs for Verifiable and Private AI Tasks
 
@@ -397,39 +395,37 @@ TEEs offer significant potential for AI computations:
 
 1. **Model Protection:**
 
-   * Proprietary AI models can run inside TEEs, preventing unauthorized access or theft.
+   * Proprietary AI models are executed within TEEs, preventing unauthorized access.
 
    * Enables "AI-as-a-Service" without exposing model internals.
 
 2. **Data Privacy:**
 
-   * Sensitive input data can be processed within TEEs, ensuring confidentiality.
+   * Sensitive data can be processed securely within TEEs.
 
-   * Allows for computations on private data without exposing it to the processor owner.
+   * Allows for computations on private data without exposing it to the processor owner. 
 
 3. **Verifiable Execution:**
 
-   * Remote attestation provides proof that the correct AI model was executed.
-
-   * Ensures integrity of both the model and the input data during computation.
+   * Remote attestation proves the integrity of AI models and input data.
 
 4. **Secure Multi-Party Computation:**
 
-   * TEEs can facilitate secure collaborations between multiple parties without exposing their individual data.
+   * TEEs can facilitate secure collaborations between multiple parties without exposing their individual data. 
 
 5. **AI at the edge:**
 
-   * TEEs on edge devices can run AI models locally, preserving privacy and reducing data transfer.
+   * TEEs on edge devices enable local execution of AI models, preserving privacy and minimizing data transfer.
 
 #### Challenges and Considerations
 
 While TEEs offer robust security, some challenges remain:
 
-1. **Side-Channel Attacks:** Sophisticated attacks can potentially extract information from TEEs.
+1. **Side-Channel Attacks:** While rare, sophisticated attacks may extract information from TEEs.
 
-2. **Performance Overhead:** TEE operations can introduce some computational overhead.
+2. **Performance Overhead:** Encryption and isolation may impact computational speed.
 
-3. **Limited Memory:** Some TEE implementations have restrictions on enclave size.
+3. **Limited Memory:** Some TEE implementations restrict enclave size.
 
 4. **Ecosystem Support:** Not all software and frameworks are optimized for TEE execution.
 
