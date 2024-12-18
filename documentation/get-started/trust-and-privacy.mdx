@@ -186,11 +186,11 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
 In summary, Atoma's Sampling Consensus combines the best aspects of existing solutions while mitigating their drawbacks. It offers the verifiability of BFT without its scalability issues, the efficiency of native execution without sacrificing security, and the flexibility to cater to various security needs without the substantial overheads of ZKML or the finality delays of OpML.
 
-## Probability considerations on Atoma's Sampling Consensus
+## Probability Considerations on Atoma's Sampling Consensus
 
 Atoma's protocol enforces determinism for execution workloads by randomly selecting nodes to replicate compute. The number of sampled nodes directly impacts output integrity levels.
 
-Let's consider a scenario where a dishonest participant controls a fraction $r$ of the network. The probability $P$ that a quorum of $N > 0$ selected nodes includes at least one dishonest node is:
+Let's consider a scenario where a dishonest participant controls a fraction $r$ of the network. The probability $P$ that a quorum of $N > 0$ selected nodes includes at least one dishonest node is given by:
 
 $$P = r^N$$
 
@@ -200,25 +200,25 @@ For example:
 
 * With $N = 10$ nodes and $r = \frac{1}{3}$: $$P = \left(\frac{1}{3}\right)^{10} \approx 1.69 \times 10^{-5}$$
 
-This demonstrates that even a small set of randomly selected nodes can provide high trust guarantees against output tampering. However, users must pay $N$ times the native cost for this level of trust.
+This demonstrates that even a small set of randomly selected nodes can provide high trust guarantees against output tampering. However, achieving this level of trust requires users to pay $N$ times the native cost.
 
 #### Cost Considerations
 
-1. High-value use cases: For applications like AI-driven trading strategies in DeFi, the additional cost is often justified by the potential returns.
+1. For high-value use cases, such as AI-driven trading strategies in DeFi, the additional cost is often justified by the potential returns.
 
-2. Comparison to other methods:
+2. **Comparison to other methods:**
 
-   * ZKML: Still impractical for applications relying on LLM compute.
+   * ZKML remains impractical for applications relying on LLM compute.
 
-   * OpML: Requires economic incentives for verifiers, even without disputes.
+   * OpML relies on economic incentives for verifiers, even in the absence of disputes.
 
-3. Low to medium verifiability needs: For applications like chat-bots or AI NFT enhancements, the full cost of replication may be undesirable.
+3. **Low to Medium Verifiability Needs**: For applications like chatbots or AI NFT enhancements, the full cost of replication may be excessive.
 
-To address these varying needs and reduce costs, we've introduced two improvements to our original Sampling Consensus protocol, which will be discussed in the following section.
+To address these varying needs and reduce costs, we've introduced two improvements to our original Sampling Consensus protocol, detailed in the next section.
 
 ## Cross Validation Sampling Consensus
 
-To address the replication costs of the original `Sampling Consensus`, we've developed `Cross Validation Sampling Consensus`. This protocol offers lower costs with a slight impact on verifiability.
+To address the replication costs of the original `Sampling Consensus`, we developed `Cross Validation Sampling Consensus`. This protocol offers lower costs with a slight impact on verifiability.
 
 The process works as follows:
 
@@ -228,9 +228,9 @@ The process works as follows:
 
    * If no nodes are selected (probability $1 - p$), the initial output is considered final.
 
-   * If nodes are selected, they provide their own output commitments. Agreement with the original output finalizes the result; disagreement triggers a dispute.
+   * If nodes are selected, they provide their own output commitments, and agreement with the original output finalizes the result; disagreement triggers a dispute.
 
-3. After dispute resolution, malicious nodes' collateral is distributed among honest nodes in the quorum of $N + 1$.
+3. After dispute resolution, the collateral of malicious nodes is distributed among honest nodes in the quorum of $N + 1$.
 
 This approach relies on replication with rate $0 < p < 1$, meaning $(1-p)$ of requests are executed by a single node. Nodes can't predict if their output will be verified, enhancing honesty incentives. However, this method doesn't provide full verifiability for high-security requests and introduces additional latency compared to the original protocol.
 
