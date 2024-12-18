@@ -101,9 +101,13 @@ This approach establishes an ecosystem that incentivizes high performance, secur
 
 ## Atoma's Optimized Infrastructure
 
-Atoma leverages Rust's low-level speed and memory safety to power its decentralized AI infrastructure. Known for system efficiency, Rust is the de facto language for high-performance systems programming, integration with high security technologies such as TEEs, and integration with GPU programming frameworks such as CUDA and Metal programming. The combination of these features makes Rust the ideal language for Atoma's decentralized AI infrastructure. Moreover, instead of utilizing large legacy libraries such as PyTorch, which often leads to high memory usage and lower execution speed, Atoma adopts Candle, a lightweight, Rust-native AI framework maintained by HuggingFace. The compact binaries of Candle allow nodes, even at the network edge, to execute AI tasks with greater efficiency.
+Atoma leverages Rust’s low-level speed and memory safety to power its decentralized AI infrastructure. Known for system efficiency, Rust is the de facto language for high-performance systems programming, integrating high-security technologies such as TEEs and GPU programming frameworks like CUDA and Metal. These features make Rust ideal for Atoma’s decentralized AI infrastructure.
 
-For large-scale AI processing, such as processing large context-window LLM inference by the largest AI models, Atoma incorporates advanced techniques such as CUDA-based FlashAttention and PagedAttention, enhancing performance for both inference and training tasks. These optimizations ensure efficient scheduling of workloads, maximizing GPU utilization and enabling nodes to handle parallel requests seamlessly. Atoma's network scales both vertically and horizontally, supporting a growing number of nodes and cores to accommodate increasing computational demand.
+Instead of using large legacy libraries like PyTorch, which often lead to high memory usage and slower execution, Atoma adopts Candle, a lightweight, Rust-native AI framework maintained by HuggingFace. The compact binaries of Candle allow nodes, even at the network edge, to execute AI tasks with greater efficiency.
+
+For large-scale AI processing, such as handling large context-window LLM inference with the largest AI models, Atoma incorporates advanced techniques like CUDA-based FlashAttention and PagedAttention, enhancing performance for both inference and training tasks. These optimizations ensure efficient scheduling of workloads, maximizing GPU utilization and enabling nodes to handle parallel requests seamlessly.
+
+Atoma’s network scales both vertically and horizontally, supporting a growing number of nodes and cores to accommodate increasing computational demand.
 
 ## Atoma at the Edge: Empowering Local AI
 
