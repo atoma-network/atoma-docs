@@ -270,16 +270,16 @@ $$
 
 With realistic values (\( r = 10\% \), \( N = 1 \), \( H = R \), \( L = 2R \), reward = \( 20\% \) of \( C \)), the replication rate \( p \) can be lower than \( 1\% \), significantly reducing verification overhead.
 
-**NOTE:** This protocol is mostly suitable for low to medium security applications, which include Web applications like chats, content creation, LLM-powered tools (e.g., AI-powered IDEs), etc. That said, the security of Cross Validation Sampling Consensus does not hold for high-stakes scenarios where potential malicious rewards exceed protocol fees by orders of magnitude. In such cases, or when no verifiability is needed, the original Sampling Consensus is preferable.
+**NOTE:** This protocol is best suited for low to medium security applications, such as Web applications like chats, content creation, and LLM-powered tools (e.g., AI-powered IDEs). However, the security of Cross Validation Sampling Consensus is insufficient for high-stakes scenarios where potential malicious rewards exceed protocol fees by orders of magnitude. In such cases, or when verifiability is not required, the original Sampling Consensus is recommended.
 
 *Note:* Hyperbolic Labs independently developed and published similar ideas in a research paper.
 
 
 ## Node Obfuscation
 
-To address the increased time to finality in Cross Validation Sampling Consensus, we introduce a node obfuscation mechanism. This approach leverages cryptographic techniques to enhance both efficiency and security:
+To address the increased time to finality in Cross Validation Sampling Consensus, we have introduced a node obfuscation mechanism. This approach leverages cryptographic techniques to enhance both efficiency and security, as follows:
 
-1. **Quorum Selection:** Upon request submission, we select N+1 nodes (where N ≥ 1) to form the quorum.
+1. **Quorum Selection:** Upon request submission, N+1 nodes (where N ≥ 1) are selected to form the quorum.
 
 2. **Information Isolation:** Through advanced cryptographic obfuscation, each node is only aware of its own selection, with no knowledge of other participants in the quorum.
 
@@ -287,9 +287,9 @@ To address the increased time to finality in Cross Validation Sampling Consensus
 
 4. **Output Comparison:** A designated aggregator node collects and compares the outputs from all quorum members.
 
-5. **Finality Determination:** If all outputs match, the result is considered final. In case of discrepancies, a dispute resolution process is initiated.
+5. **Finality Determination:** If all outputs match, the result is considered final; otherwise, a dispute resolution process is initiated.
 
-Key Benefits:
+**Key Benefits:**
 
 * **Reduced Latency:** Eliminates one round of communication compared to the basic Cross Validation approach.
 
@@ -297,7 +297,7 @@ Key Benefits:
 
 * **Enhanced Privacy:** Nodes cannot collude as easily since they're unaware of other quorum members.
 
-This obfuscation mechanism effectively combines the speed advantages of parallel processing with the security benefits of cross-validation, while maintaining the economic incentives that encourage honest behavior in the network.
+This obfuscation mechanism combines the speed of parallel processing with the security of cross-validation, while preserving economic incentives for honest behavior in the network.
 
 ## Trusted Execution Environments: Enabling Secure and Private AI Compute
 
