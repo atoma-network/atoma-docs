@@ -433,7 +433,7 @@ While TEEs offer robust security, some challenges remain:
 
 Atoma Network leverages TEEs to enhance its Sampling Consensus mechanism:
 
-1. **Secure Node Execution:** Atoma network will leverage the usage of TEE nodes to protect AI computations. These nodes are required to hold TEE compatible hardware accelerators, such as NVIDIA Hopper or Blackwell GPUs.
+1. **Secure Node Execution:** Atoma network will leverage TEE nodes to protect AI computations. These nodes must include TEE-compatible hardware accelerators, such as NVIDIA Hopper or Blackwell GPUs.
 
 2. **Verifiable Outputs:** TEE attestations contribute to the overall verifiability of the network.
 
@@ -457,74 +457,75 @@ Atoma Network uniquely combines its Sampling Consensus mechanism with Trusted Ex
 
    * TEEs protect sensitive data and models during execution.
 
-   * Sampling Consensus allows to rotate nodes across different requests, greatly minimizing any potential risks of nodes trying to manipulate their physical hardware to try to tamper specific user requests (such as having access to enterprise or government grade confidential data).
+   * Sampling Consensus enables the rotation of nodes across different requests, greatly minimizing the risk of nodes manipulating their physical hardware to tamper with specific user requests (such as accessing enterprise- or government-grade confidential data).
 
 3. **Scalable Trust:**
 
-   * TEEs provide local guarantees on each node
+   * TEEs provide local guarantees on each node.
 
-   * Sampling Consensus extends trust across the network
+   * Sampling Consensus extends trust across the network.
 
 #### Implementation Details
 
 1. **Node Selection and Execution:**
 
-   * Nodes are selected according to the Sampling Consensus protocol
+   * Nodes are selected according to the Sampling Consensus protocol.
 
-   * Selected nodes execute AI tasks within their TEEs
+   * Selected nodes execute AI tasks within their TEEs.
 
 2. **Attestation Chain:**
 
-   * Each node provides TEE attestations along with computation results
+   * Each node provides TEE attestations along with computation results.
 
-   * The network verifies both the consensus and individual TEE proofs
+   * The network verifies both the consensus and individual TEE proofs.
 
 3. **Dispute Resolution:**
 
-   * In case of discrepancies, TEE compatible nodes can be used for resolving disputes
+   * In case of discrepancies, TEE compatible nodes can be used for resolving disputes.
 
-   * Malicious behavior can be definitively identified and penalized
+   * Malicious behavior can be definitively identified and penalized.
 
 4. **Dynamic Security Levels:**
 
-   * Users can request higher replication (N) for critical tasks
+   * Users can request higher replication (N) for critical tasks.
 
-   * TEE security complements lower replication for less sensitive tasks
+   * TEE security complements lower replication for less sensitive tasks.
 
 5. **Model and Data Protection:**
 
-   * Proprietary AI models are executed within TEEs, preventing unauthorized access
+   * Proprietary AI models are executed within TEEs, preventing unauthorized access.
 
-   * Input data remains encrypted outside the TEE, protecting user privacy
+   * Input data remains encrypted outside the TEE, protecting user privacy.
 
 #### Benefits of the Combined Approach
 
 1. **Comprehensive Security:**
 
-   * Protects against both network-level and hardware-level attacks
+   * Protects against both network-level and hardware-level attacks.
 
-   * Mitigates risks of collusion and hardware tampering
+   * Mitigates risks of collusion and hardware tampering.
 
 2. **Verifiable Privacy:**
 
-   * Enables privacy-preserving computations that are still verifiable
+   * Enables privacy-preserving computations that are still verifiable.
 
-   * Supports use cases involving sensitive or regulated data
+   * Supports use cases involving sensitive or regulated data.
 
 3. **Flexible Trust Model:**
 
-   * Adaptable to different security requirements and threat models
+   * Adaptable to different security requirements and threat models.
 
-   * Allows for a spectrum of trust levels, from high replication to TEE-only execution
+   * Allows for a spectrum of trust levels, from high replication to TEE-only execution.
 
 4. **Enhanced Performance:**
 
-   * TEEs reduce the need for high replication in many scenarios
+   * TEEs reduce the need for high replication in many scenarios.
 
-   * Sampling Consensus allows for efficient distribution of workloads
+   * Sampling Consensus allows for efficient distribution of workloads.
 
 5. **Future-Proofing:**
 
-   * The combined approach is adaptable to advancements in both consensus mechanisms and TEE technologies
+   * The combined approach is adaptable to advancements in both consensus mechanisms and TEE technologies.
+
 
 By leveraging both Sampling Consensus and TEEs, Atoma Network creates a unique security ecosystem that is greater than the sum of its parts. This approach not only enhances the overall security and privacy of AI computations but also opens up new possibilities for trustworthy, decentralized AI applications across various industries and use cases.
