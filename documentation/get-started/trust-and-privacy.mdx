@@ -132,19 +132,19 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
    * Ensures load balancing across the network, unlike BFT which requires a supermajority of nodes.
 
-   * Provides better scalability than BFT, as it doesn't require multiple rounds of communication among a large number of nodes.
+   * Improves scalability compared to BFT, as it doesn't require multiple rounds of communication among a large number of nodes.
 
-   * Offers faster finality than OpML, which relies on challenge periods.
+   * Accelerates finality compared to OpML, which relies on lengthy challenge periods.
 
-2. **Deterministic Execution**: Selected nodes have identical hardware and software specifications, ensuring:
+2. **Deterministic Execution**: The protocol selects nodes with identical hardware and software specifications, ensuring:
 
    * Consistent outputs across nodes, even for floating-point arithmetic-heavy workloads like AI inference.
 
-   * Verifiable compute without the massive overhead of ZKML proofs.
+   * Verifiable compute without the significant computational overhead of ZKML proofs.
 
 3. **Incentive Structure**: Nodes must execute requests or risk collateral slashing, which:
 
-   * Encourages honest behavior more effectively than OpML, where verifiers only receive rewards for successful disputes.
+   * Encourages honesty more effectively than OpML, where verifiers are rewarded only for successful disputes. 
 
    * Provides a clear economic incentive for participation, unlike BFT where all nodes must process all transactions.
 
@@ -152,7 +152,7 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
    * Honest nodes will always disagree with dishonest ones, ensuring high integrity.
 
-   * Consensus is reached only when all selected nodes perform the computation honestly.
+   * Consensus occurs only if all selected nodes execute the computation honestly.
 
    * This approach is more efficient than BFT, which requires agreement from a supermajority of nodes.
 
@@ -164,19 +164,19 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
 6. **Near-Native Finality**:
 
-   * The fastest node can immediately share the output with the user.
+   * The node completing computation first can immediately share the output with the user.
 
-   * Final verifiability attestation is provided when the slowest node commits.
+   * The final verifiability attestation is provided when the slowest node commits.
 
    * This approach offers much faster finality than OpML and is more efficient than BFT's multiple rounds of communication.
 
 7. **Flexible Verifiability**: Unlike ZKML, which always incurs a high overhead, Atoma's approach allows for:
 
-   * Adjustable levels of verifiability based on the use case.
+   * Adjustable levels of verifiability specific to the use case.
 
    * Cost-effective solutions for low to medium security needs.
 
-   * High-security options for critical applications without the extreme overhead of ZKML.
+   * High-security options for critical applications without the substantial overhead of ZKML.
 
 8. **Scalability**: The protocol scales well with network growth, unlike BFT which becomes slower and more communication-intensive as the network expands.
 
@@ -184,7 +184,7 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
 10. **Adaptability**: The protocol can be fine-tuned by adjusting the number of selected nodes, allowing for a balance between security and efficiency that other approaches lack.
 
-In summary, Atoma's Sampling Consensus combines the best aspects of existing solutions while mitigating their drawbacks. It offers the verifiability of BFT without its scalability issues, the efficiency of native execution without sacrificing security, and the flexibility to cater to various security needs without the extreme overheads of ZKML or the finality delays of OpML.
+In summary, Atoma's Sampling Consensus combines the best aspects of existing solutions while mitigating their drawbacks. It offers the verifiability of BFT without its scalability issues, the efficiency of native execution without sacrificing security, and the flexibility to cater to various security needs without the substantial overheads of ZKML or the finality delays of OpML.
 
 ## Probability considerations on Atoma's Sampling Consensus
 
