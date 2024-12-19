@@ -2,45 +2,45 @@
 title: "Trust and Privacy"
 ---
 
-## Private and secure AI inference compute
+## Private and Secure AI Inference Compute
 
-In a permissionless network, two critical challenges arise when running AI inference: trust in the accuracy of the output and privacy of both user data and model weights.
+In a permissionless network, two critical challenges arise during AI inference: ensuring output accuracy and protecting the privacy of both user data and model weights.
 
 #### Trust in Output Accuracy
 
-When requesting inference using a large model like Llama3.1-405B (405 billion model weight parameters), how can we be assured that the network isn't actually using a smaller model like LLama3.1-8B (8 billion parameters), or a highly quantized version of the original model? \*\*Verifiable AI\*\* inference aims to provide high guarantees that the generated output was correctly derived from the desired model and inputs.
+When requesting inference using a large model like Llama3.1-405B (405 billion model weight parameters), how can we ensure that the network isn't actually using a smaller model like LLama3.1-8B (8 billion parameters), or a highly quantized version of the original model? \*\*Verifiable AI\*\* inference ensures that the generated output is correctly derived from the specified model and inputs.
 
-This challenge is similar to what Web3 users encounter with blockchain technologies, which often rely on high compute replication to ensure transaction integrity. Blockchains typically have hundreds or thousands of validators, with each transaction being executed by at least a supermajority of nodes (often two-thirds of the network).
+This challenge is similar to what Web3 users encounter with blockchain technologies, which often rely on high compute replication to ensure transaction integrity. Blockchains typically have hundreds or thousands of validators, with each transaction executed by a supermajority of nodes (usually two-thirds of the network).
 
-However, while blockchain transactions are typically limited to a few kilobytes, modern AI models require gigabytes of memory. This makes it infeasible to run AI inference on-chain due to the tremendous cost of replication, necessitating alternative verification methods.
+However, while blockchain transactions are typically limited to a few kilobytes, modern AI models require gigabytes of memory. This makes it unfeasible to run AI inference on-chain due to the high cost of replication, necessitating alternative verification methods.
 
 #### Privacy Concerns
 
 Equally important is the need to protect the privacy of both user data and model weights throughout the inference process. This includes:
 
-1. Data in transit: Ensuring that user inputs and model outputs are encrypted during transmission between the user and the network nodes.
+1. **Data in Transit**: Ensuring that user inputs and model outputs are encrypted during transmission between the user and the network nodes.
 
-2. Data at rest: Protecting stored user data, ideally in encrypted format, and model weights from unauthorized access when not in use.
+2. **Data at Rest**: Protecting stored user data, ideally in encrypted format, and model weights from unauthorized access when not in use.
 
-3. Data during execution: Safeguarding user inputs and model weights while they are being processed in memory, through the use secure enclaves (TEEs).
+3. **Data During Execution**: Safeguarding user inputs and model weights while they are processed in memory through the use of secure enclaves (TEEs).
 
 Privacy preservation is crucial for several reasons:
 
-* **User trust:** Users need assurance that their potentially sensitive inputs won't be exposed or misused.
+* **User Trust:** Users need assurance that their potentially sensitive inputs won't be exposed or misused.
 
-* **Intellectual property protection:** Model owners must be confident that their valuable AI models won't be reverse-engineered or stolen.
+* **Intellectual Property Protection:** Model owners must be confident that their valuable AI models won't be reverse-engineered or stolen.
 
-* **Regulatory compliance:** Many jurisdictions have strict data protection laws that require safeguarding personal information.
+* **Regulatory Compliance:** Many jurisdictions have strict data protection laws that require safeguarding personal information.
 
-Addressing both trust and privacy concerns is essential for building a robust, secure, and widely adopted AI compute network. The following sections will explore various approaches to tackling these challenges, including Atoma's novel Sampling Consensus protocol and the use of TEEs on the Atoma Network.
+Addressing both trust and privacy concerns is essential for building a robust, secure, and widely adopted AI compute network. The following sections explore various approaches to tackling these challenges, including Atoma’s novel Sampling Consensus protocol and the use of TEEs on the Atoma Network.
 
-## Overview of common Verifiable Computation Algorithms
+## Overview of Common Verifiable Computation Algorithms
 
 #### Byzantine Fault Tolerant Protocols
 
-Byzantine Fault Tolerant (BFT) consensus refers to a class of algorithms used in distributed systems to agree on the state of a global ledger being altered by a given transaction. These protocols ensure consensus among nodes even if a proportion of the nodes in the system are unreliable or malicious. BFT consensus guarantees that the system as a whole can still make reliable and unanimous decisions, even in the presence of faulty or malicious actors.
+Byzantine Fault Tolerant (BFT) consensus refers to a class of algorithms used in distributed systems to agree on the state of a global ledger modified by a given transaction. These protocols ensure consensus among nodes even if a proportion of the nodes in the system are unreliable or malicious. BFT consensus guarantees that the system as a whole can still make reliable and unanimous decisions, even in the presence of faulty or malicious actors.
 
-Key characteristics of BFT protocols:
+**Key Characteristics of BFT Protocols:**
 
 * Typically require agreement from a supermajority (usually around 2/3) of nodes
 
@@ -48,41 +48,41 @@ Key characteristics of BFT protocols:
 
 * Can tolerate up to f faulty nodes in a system of 3f+1 total nodes
 
-Challenges in applying BFT to AI inference:
+**Challenges in Applying BFT to AI Inference:**
 
-1. **Computational overhead:** Each node must independently perform the same computations, leading to significant redundancy.
+1. **Computational Overhead:** Each node must independently perform the same computations, leading to significant redundancy.
 
-2. **Communication complexity:** Multiple rounds of communication are required among a supermajority of nodes, increasing latency.
+2. **Communication Complexity:** Multiple rounds of communication are required among a supermajority of nodes, increasing latency.
 
-3. **Scalability issues:** As the number of nodes increases, the communication overhead grows quadratically.
+3. **Scalability Issues:** As the number of nodes increases, the communication overhead grows quadratically.
 
-4. **State explosion:** AI compute pipelines generate large amounts of intermediate state data, exacerbating the above issues.
+4. **State Explosion:** AI compute pipelines generate large amounts of intermediate state data, exacerbating the above issues.
 
 While BFT protocols offer strong security guarantees, their application to AI inference faces significant challenges in terms of computational power, latency, and scalability. These limitations make BFT less suitable for large-scale, high-performance AI inference tasks.
 
 #### Zero Knowledge Machine Learning (ZKML)
 
-Zero Knowledge Machine Learning (ZKML) applies zero knowledge proofs (ZKPs) to AI and machine learning models. This approach ensures the correctness of machine learning model outputs while maintaining the confidentiality of the model itself (e.g., weights and architecture).
+Zero Knowledge Machine Learning (ZKML) applies zero knowledge proofs (ZKPs) to AI and machine learning models. This approach ensures the correctness of machine learning model outputs while maintaining model confidentiality (e.g., weights and architecture).
 
-Key features of ZKML:
+**Key Features of ZKML:**
 
-* Model privacy: Owners can keep models self-hosted without disclosing internal details.
+* **Model Privacy:** Owners can keep models self-hosted without disclosing internal details.
 
-* Verifiable correctness: ZK proofs provide near-absolute certainty of correct execution.
+* **Verifiable Correctness:** ZK proofs provide near-absolute certainty of correct execution.
 
-* Non-interactive proofs: Once generated, proofs can be verified quickly without further interaction.
+* **Non-interactive Proofs:** Once generated, proofs can be verified quickly without further interaction.
 
-Challenges and limitations:
+**Challenges and Limitations:**
 
-1. **Computational overhead:** Generating ZK proofs for AI models incurs significant computational costs, often orders of magnitude higher than native execution.
+1. **Computational Overhead:** Generating ZK proofs for AI models incurs significant computational costs, often orders of magnitude higher than native execution.
 
 2. **Complexity:** Compiling neural networks into ZK circuits is extremely complex and resource-intensive.
 
-3. **Scalability issues:** Current ZKML techniques struggle with large models, particularly LLMs.
+3. **Scalability Issues:** Current ZKML techniques struggle with large models, particularly LLMs.
 
-4. **Lack of practical implementations:** As of now, there are no deployments of ZK proof generation for large language models.
+4. **Lack of Practical Implementations:** As of now, there are no deployments of ZK proof generation for large language models.
 
-5. **Lack of support for floating point arithemtic:** Current ZK proving systems are not tailored to prove native floating point arithmetic operations, making these unsuitable for proving highly optimized AI workflows.
+5. **Lack of Support for Floating Point Arithemtic:** Current ZK proving systems are not tailored to prove native floating point arithmetic operations, making these unsuitable for proving highly optimized AI workflows.
 
 While ZKML can potentially offer verifiability guarantees, its current state makes it impractical for most real-world AI inference tasks due to performance and scalability limitations. However, ongoing research in this field may lead to more efficient implementations in the future.
 
@@ -90,31 +90,31 @@ While ZKML can potentially offer verifiability guarantees, its current state mak
 
 Optimistic Machine Learning (OpML) adopts an "optimistic" approach to verification, assuming computations are correct unless proven otherwise. This method aims to balance efficiency with security by avoiding immediate verification costs.
 
-Key concepts of OpML:
+**Key Concepts of OpML:**
 
-* **Assume-valid execution:** Initial computations are accepted without immediate verification.
+* **Assume-valid Execution:** Initial computations are accepted without immediate verification.
 
-* **Challenge periods:** Time windows where participants can contest the validity of computations.
+* **Challenge Periods:** Time windows where participants can contest the validity of computations.
 
-* **Dispute resolution:** Mechanisms to correct errors when valid challenges are raised.
+* **Dispute Resolution:** Mechanisms to correct errors when valid challenges are raised.
 
-Advantages:
+**Advantages:**
 
-1. **Reduced upfront costs:** Avoiding immediate verification can improve efficiency for most transactions.
+1. **Reduced Upfront Costs:** Avoiding immediate verification can improve efficiency for most transactions.
 
 2. **Scalability:** Can handle a higher throughput of computations compared to always-verify approaches.
 
-Challenges and limitations:
+**Challenges and Limitations:**
 
-1. **Delayed finality:** Challenge periods introduce delays in confirming the final state of computations.
+1. **Delayed Finality:** Challenge periods introduce delays in confirming the final state of computations.
 
-2. **Inconsistent states:** The possibility of successful challenges can lead to state reversions and inconsistencies.
+2. **Inconsistent States:** The possibility of successful challenges can lead to state reversions and inconsistencies.
 
-3. **Complex incentives:** Verifiers must compute results to check validity but are only rewarded for successful challenges.
+3. **Complex Incentives:** Verifiers must compute results to check validity but are only rewarded for successful challenges.
 
-4. **Security trade-offs:** Relies on economic incentives and the assumption that malicious behavior will be caught and punished.
+4. **Security Trade-offs:** Relies on economic incentives and the assumption that malicious behavior will be caught and punished.
 
-Practical considerations:
+**Practical Considerations:**
 
 * Suitable for scenarios where immediate finality is less critical and the cost of occasional reversions is acceptable.
 
@@ -132,19 +132,19 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
    * Ensures load balancing across the network, unlike BFT which requires a supermajority of nodes.
 
-   * Provides better scalability than BFT, as it doesn't require multiple rounds of communication among a large number of nodes.
+   * Improves scalability compared to BFT, as it doesn't require multiple rounds of communication among a large number of nodes.
 
-   * Offers faster finality than OpML, which relies on challenge periods.
+   * Accelerates finality compared to OpML, which relies on lengthy challenge periods.
 
-2. **Deterministic Execution**: Selected nodes have identical hardware and software specifications, ensuring:
+2. **Deterministic Execution**: The protocol selects nodes with identical hardware and software specifications, ensuring:
 
    * Consistent outputs across nodes, even for floating-point arithmetic-heavy workloads like AI inference.
 
-   * Verifiable compute without the massive overhead of ZKML proofs.
+   * Verifiable compute without the significant computational overhead of ZKML proofs.
 
 3. **Incentive Structure**: Nodes must execute requests or risk collateral slashing, which:
 
-   * Encourages honest behavior more effectively than OpML, where verifiers only receive rewards for successful disputes.
+   * Encourages honesty more effectively than OpML, where verifiers are rewarded only for successful disputes. 
 
    * Provides a clear economic incentive for participation, unlike BFT where all nodes must process all transactions.
 
@@ -152,7 +152,7 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
    * Honest nodes will always disagree with dishonest ones, ensuring high integrity.
 
-   * Consensus is reached only when all selected nodes perform the computation honestly.
+   * Consensus occurs only if all selected nodes execute the computation honestly.
 
    * This approach is more efficient than BFT, which requires agreement from a supermajority of nodes.
 
@@ -164,19 +164,19 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
 6. **Near-Native Finality**:
 
-   * The fastest node can immediately share the output with the user.
+   * The node completing computation first can immediately share the output with the user.
 
-   * Final verifiability attestation is provided when the slowest node commits.
+   * The final verifiability attestation is provided when the slowest node commits.
 
    * This approach offers much faster finality than OpML and is more efficient than BFT's multiple rounds of communication.
 
 7. **Flexible Verifiability**: Unlike ZKML, which always incurs a high overhead, Atoma's approach allows for:
 
-   * Adjustable levels of verifiability based on the use case.
+   * Adjustable levels of verifiability specific to the use case.
 
    * Cost-effective solutions for low to medium security needs.
 
-   * High-security options for critical applications without the extreme overhead of ZKML.
+   * High-security options for critical applications without the substantial overhead of ZKML.
 
 8. **Scalability**: The protocol scales well with network growth, unlike BFT which becomes slower and more communication-intensive as the network expands.
 
@@ -184,13 +184,13 @@ Atoma has developed a novel sampling consensus protocol that addresses the limit
 
 10. **Adaptability**: The protocol can be fine-tuned by adjusting the number of selected nodes, allowing for a balance between security and efficiency that other approaches lack.
 
-In summary, Atoma's Sampling Consensus combines the best aspects of existing solutions while mitigating their drawbacks. It offers the verifiability of BFT without its scalability issues, the efficiency of native execution without sacrificing security, and the flexibility to cater to various security needs without the extreme overheads of ZKML or the finality delays of OpML.
+In summary, Atoma's Sampling Consensus combines the best aspects of existing solutions while mitigating their drawbacks. It offers the verifiability of BFT without its scalability issues, the efficiency of native execution without sacrificing security, and the flexibility to cater to various security needs without the substantial overheads of ZKML or the finality delays of OpML.
 
-## Probability considerations on Atoma's Sampling Consensus
+## Probability Considerations on Atoma's Sampling Consensus
 
 Atoma's protocol enforces determinism for execution workloads by randomly selecting nodes to replicate compute. The number of sampled nodes directly impacts output integrity levels.
 
-Let's consider a scenario where a dishonest participant controls a fraction $r$ of the network. The probability $P$ that a quorum of $N > 0$ selected nodes includes at least one dishonest node is:
+Let's consider a scenario where a dishonest participant controls a fraction $r$ of the network. The probability $P$ that a quorum of $N > 0$ selected nodes includes at least one dishonest node is given by:
 
 $$P = r^N$$
 
@@ -200,25 +200,25 @@ For example:
 
 * With $N = 10$ nodes and $r = \frac{1}{3}$: $$P = \left(\frac{1}{3}\right)^{10} \approx 1.69 \times 10^{-5}$$
 
-This demonstrates that even a small set of randomly selected nodes can provide high trust guarantees against output tampering. However, users must pay $N$ times the native cost for this level of trust.
+This demonstrates that even a small set of randomly selected nodes can provide high trust guarantees against output tampering. However, achieving this level of trust requires users to pay $N$ times the native cost.
 
 #### Cost Considerations
 
-1. High-value use cases: For applications like AI-driven trading strategies in DeFi, the additional cost is often justified by the potential returns.
+1. For high-value use cases, such as AI-driven trading strategies in DeFi, the additional cost is often justified by the potential returns.
 
-2. Comparison to other methods:
+2. **Comparison to other methods:**
 
-   * ZKML: Still impractical for applications relying on LLM compute.
+   * ZKML remains impractical for applications relying on LLM compute.
 
-   * OpML: Requires economic incentives for verifiers, even without disputes.
+   * OpML relies on economic incentives for verifiers, even in the absence of disputes.
 
-3. Low to medium verifiability needs: For applications like chat-bots or AI NFT enhancements, the full cost of replication may be undesirable.
+3. **Low to Medium Verifiability Needs**: For applications like chatbots or AI NFT enhancements, the full cost of replication may be excessive.
 
-To address these varying needs and reduce costs, we've introduced two improvements to our original Sampling Consensus protocol, which will be discussed in the following section.
+To address these varying needs and reduce costs, we've introduced two improvements to our original Sampling Consensus protocol, detailed in the next section.
 
 ## Cross Validation Sampling Consensus
 
-To address the replication costs of the original `Sampling Consensus`, we've developed `Cross Validation Sampling Consensus`. This protocol offers lower costs with a slight impact on verifiability.
+To address the replication costs of the original `Sampling Consensus`, we developed `Cross Validation Sampling Consensus`. This protocol offers lower costs with a slight impact on verifiability.
 
 The process works as follows:
 
@@ -228,9 +228,9 @@ The process works as follows:
 
    * If no nodes are selected (probability $1 - p$), the initial output is considered final.
 
-   * If nodes are selected, they provide their own output commitments. Agreement with the original output finalizes the result; disagreement triggers a dispute.
+   * If nodes are selected, they provide their own output commitments, and agreement with the original output finalizes the result; disagreement triggers a dispute.
 
-3. After dispute resolution, malicious nodes' collateral is distributed among honest nodes in the quorum of $N + 1$.
+3. After dispute resolution, the collateral of malicious nodes is distributed among honest nodes in the quorum of $N + 1$.
 
 This approach relies on replication with rate $0 < p < 1$, meaning $(1-p)$ of requests are executed by a single node. Nodes can't predict if their output will be verified, enhancing honesty incentives. However, this method doesn't provide full verifiability for high-security requests and introduces additional latency compared to the original protocol.
 
@@ -270,16 +270,16 @@ $$
 
 With realistic values (\( r = 10\% \), \( N = 1 \), \( H = R \), \( L = 2R \), reward = \( 20\% \) of \( C \)), the replication rate \( p \) can be lower than \( 1\% \), significantly reducing verification overhead.
 
-**NOTE:** This protocol is mostly suitable for low to medium security applications, which include Web applications like chats, content creation, LLM-powered tools (e.g., AI-powered IDEs), etc. That said, the security of Cross Validation Sampling Consensus does not hold for high-stakes scenarios where potential malicious rewards exceed protocol fees by orders of magnitude. In such cases, or when no verifiability is needed, the original Sampling Consensus is preferable.
+**NOTE:** This protocol is best suited for low to medium security applications, such as Web applications like chats, content creation, and LLM-powered tools (e.g., AI-powered IDEs). However, the security of Cross Validation Sampling Consensus is insufficient for high-stakes scenarios where potential malicious rewards exceed protocol fees by orders of magnitude. In such cases, or when verifiability is not required, the original Sampling Consensus is recommended.
 
 *Note:* Hyperbolic Labs independently developed and published similar ideas in a research paper.
 
 
 ## Node Obfuscation
 
-To address the increased time to finality in Cross Validation Sampling Consensus, we introduce a node obfuscation mechanism. This approach leverages cryptographic techniques to enhance both efficiency and security:
+To address the increased time to finality in Cross Validation Sampling Consensus, we have introduced a node obfuscation mechanism. This approach leverages cryptographic techniques to enhance both efficiency and security, as follows:
 
-1. **Quorum Selection:** Upon request submission, we select N+1 nodes (where N ≥ 1) to form the quorum.
+1. **Quorum Selection:** Upon request submission, N+1 nodes (where N ≥ 1) are selected to form the quorum.
 
 2. **Information Isolation:** Through advanced cryptographic obfuscation, each node is only aware of its own selection, with no knowledge of other participants in the quorum.
 
@@ -287,9 +287,9 @@ To address the increased time to finality in Cross Validation Sampling Consensus
 
 4. **Output Comparison:** A designated aggregator node collects and compares the outputs from all quorum members.
 
-5. **Finality Determination:** If all outputs match, the result is considered final. In case of discrepancies, a dispute resolution process is initiated.
+5. **Finality Determination:** If all outputs match, the result is considered final; otherwise, a dispute resolution process is initiated.
 
-Key Benefits:
+**Key Benefits:**
 
 * **Reduced Latency:** Eliminates one round of communication compared to the basic Cross Validation approach.
 
@@ -297,65 +297,49 @@ Key Benefits:
 
 * **Enhanced Privacy:** Nodes cannot collude as easily since they're unaware of other quorum members.
 
-This obfuscation mechanism effectively combines the speed advantages of parallel processing with the security benefits of cross-validation, while maintaining the economic incentives that encourage honest behavior in the network.
+This obfuscation mechanism combines the speed of parallel processing with the security of cross-validation, while preserving economic incentives for honest behavior in the network.
 
 ## Trusted Execution Environments: Enabling Secure and Private AI Compute
 
-### Trusted Execution Environments: Enabling Secure and Private AI Compute
-
-Trusted Execution Environments (TEEs) are secure areas within a processor that provide isolated execution of code and data protection. They play a crucial role in enabling verifiable and private AI tasks, offering a hardware-backed solution to some of the most pressing security concerns in distributed computing.
-
 #### What are TEEs?
 
-TEEs are isolated execution environments that provide:
+Trusted Execution Environments (TEEs) are isolated regions within a processor designed to securely execute code and protect data. They are essential for verifiable and private AI tasks, providing a hardware-backed solution to critical security concerns in distributed computing.
 
-1. **Confidentiality:** Protecting the privacy of code and data inside the TEE.
+TEEs ensure:
 
-2. **Integrity:** Ensuring that the code and data have not been tampered with.
+1. **Confidentiality:** Ensures the privacy of code and data within the TEE.
 
-3. **Attestation:** Providing cryptographic proof of the TEE's state and the code running within it.
+2. **Integrity:** Verifies that code and data remain untampered.
+
+3. **Attestation:** Provides cryptographic proof of the TEE’s state and executing code.
 
 #### Major TEE Technologies
 
-Several CPU chip manufacturers offer TEE solutions:
+Several CPU manufacturers offer TEE solutions:
 
 1. **Intel SGX (Software Guard Extensions):**
 
-   * Provides enclaves for secure computation
-
-   * Widely adopted in server and cloud environments
+   * Provides secure enclaves for computation; widely adopted in server and cloud environments.
 
 2. **Intel SDX (Software Defined eXecution):**
 
-   * Next-generation confidential computing technology
-
-   * Offers improved performance and larger secure memory compared to SGX
-
-   * Designed for modern workloads including AI/ML
+   * Designed for modern workloads including AI/ML, offering improved performance and larger memory capacity compared to SGX.
 
 3. **AMD SEV (Secure Encrypted Virtualization):**
 
-   * Focuses on securing virtual machines
-
-   * Particularly useful for cloud computing scenarios
+   * Secures virtual machines, particularly for cloud computing.
 
 4. **ARM TrustZone:**
 
-   * Prevalent in mobile and embedded devices
-
-   * Creates a secure world separate from the normal operating environment
+   * Prevalent in mobile and embedded devices, creating a secure world separate from the normal operating environment.
 
 5. **RISC-V MultiZone:**
 
-   * Open-source TEE solution for RISC-V architecture
-
-   * Gaining traction in IoT and edge computing
+   * Open-source TEE solution for RISC-V architecture, gaining traction in IoT and edge computing.
 
 6. **NVIDIA Confidential Computing:**
 
-   * Provides TEE capabilities for GPU-accelerated workloads
-
-   * Crucial for secure AI/ML computations on NVIDIA hardware
+   * Delivers TEE capabilities tailored for GPU-accelerated workloads, enabling secure and efficient AI/ML computations.
 
 #### TEEs on NVIDIA GPUs
 
@@ -363,49 +347,47 @@ NVIDIA's approach to TEEs is particularly significant for the AI industry, as it
 
 1. **NVIDIA Hopper Architecture:**
 
-   * Introduces Confidential Computing features in the H100 GPU
+   * Introduces Confidential Computing features in the H100 and H200 GPUs.
 
-   * Provides hardware-based isolation and memory encryption
+   * Provides hardware-based isolation and memory encryption.
 
 2. **NVIDIA Blackwell Architecture:**
 
-   * Next-generation GPU architecture announced in 2024
-
-   * Significantly enhances confidential computing capabilities
+   * Enhances confidential computing capabilities, announced in 2024.
 
 3. **Confidential AI:**
 
-   * Enables secure execution of AI workloads on GPUs
+   * Enables secure execution of AI workloads on GPUs.
 
-   * Protects both AI models and data during computation
+   * Protects both AI models and data during computation.
 
 4. **Key Features:**
 
-   * Secure Boot: Ensures the integrity of the GPU firmware
+   * **Secure Boot:** Ensures firmware integrity.
 
-   * Memory Encryption: Protects data in GPU memory
+   * **Memory Encryption:** Safeguards data in GPU memory.
 
-   * Secure Multi-Tenant Execution: Allows multiple isolated workloads on a single GPU
+   * **Secure Multi-Tenant Execution:** Supports multiple isolated workloads on a single GPU.
 
 5. **Integration with CPU TEEs:**
 
-   * Works in conjunction with CPU-based TEEs like Intel SGX
+   * Works in conjunction with CPU-based TEEs like Intel SGX.
 
-   * Provides end-to-end protection for hybrid CPU-GPU workloads
+   * Provides end-to-end protection for hybrid CPU-GPU workloads.
 
 6. **Use Cases:**
 
-   * Federated Learning: Enables secure collaborative AI training
+   * **Federated Learning:** Enables secure collaborative AI training.
 
-   * Model Inference: Protects proprietary AI models during deployment
+   * **Model Inference:** Protects proprietary AI models during deployment.
 
-   * Healthcare and Financial Services: Allows processing of sensitive data on GPUs
+   * **Healthcare and Financial Services:** Allows processing of sensitive data on GPUs.
 
 7. **Challenges:**
 
-   * Performance Impact: Encryption and isolation can affect computational speed
+   * **Performance Impact:** Encryption and isolation can affect computational speed.
 
-   * Ecosystem Adoption: Requires updates to existing AI frameworks and tools
+   * **Ecosystem Adoption:** Requires updates to existing AI frameworks and tools.
 
 #### TEEs for Verifiable and Private AI Tasks
 
@@ -413,39 +395,37 @@ TEEs offer significant potential for AI computations:
 
 1. **Model Protection:**
 
-   * Proprietary AI models can run inside TEEs, preventing unauthorized access or theft.
+   * Proprietary AI models are executed within TEEs, preventing unauthorized access.
 
    * Enables "AI-as-a-Service" without exposing model internals.
 
 2. **Data Privacy:**
 
-   * Sensitive input data can be processed within TEEs, ensuring confidentiality.
+   * Sensitive data can be processed securely within TEEs.
 
-   * Allows for computations on private data without exposing it to the processor owner.
+   * Allows for computations on private data without exposing it to the processor owner. 
 
 3. **Verifiable Execution:**
 
-   * Remote attestation provides proof that the correct AI model was executed.
-
-   * Ensures integrity of both the model and the input data during computation.
+   * Remote attestation proves the integrity of AI models and input data.
 
 4. **Secure Multi-Party Computation:**
 
-   * TEEs can facilitate secure collaborations between multiple parties without exposing their individual data.
+   * TEEs can facilitate secure collaborations between multiple parties without exposing their individual data. 
 
 5. **AI at the edge:**
 
-   * TEEs on edge devices can run AI models locally, preserving privacy and reducing data transfer.
+   * TEEs on edge devices enable local execution of AI models, preserving privacy and minimizing data transfer.
 
 #### Challenges and Considerations
 
 While TEEs offer robust security, some challenges remain:
 
-1. **Side-Channel Attacks:** Sophisticated attacks can potentially extract information from TEEs.
+1. **Side-Channel Attacks:** While rare, sophisticated attacks may extract information from TEEs.
 
-2. **Performance Overhead:** TEE operations can introduce some computational overhead.
+2. **Performance Overhead:** Encryption and isolation may impact computational speed.
 
-3. **Limited Memory:** Some TEE implementations have restrictions on enclave size.
+3. **Limited Memory:** Some TEE implementations restrict enclave size.
 
 4. **Ecosystem Support:** Not all software and frameworks are optimized for TEE execution.
 
@@ -453,7 +433,7 @@ While TEEs offer robust security, some challenges remain:
 
 Atoma Network leverages TEEs to enhance its Sampling Consensus mechanism:
 
-1. **Secure Node Execution:** Atoma network will leverage the usage of TEE nodes to protect AI computations. These nodes are required to hold TEE compatible hardware accelerators, such as NVIDIA Hopper or Blackwell GPUs.
+1. **Secure Node Execution:** Atoma network will leverage TEE nodes to protect AI computations. These nodes must include TEE-compatible hardware accelerators, such as NVIDIA Hopper or Blackwell GPUs.
 
 2. **Verifiable Outputs:** TEE attestations contribute to the overall verifiability of the network.
 
@@ -477,74 +457,75 @@ Atoma Network uniquely combines its Sampling Consensus mechanism with Trusted Ex
 
    * TEEs protect sensitive data and models during execution.
 
-   * Sampling Consensus allows to rotate nodes across different requests, greatly minimizing any potential risks of nodes trying to manipulate their physical hardware to try to tamper specific user requests (such as having access to enterprise or government grade confidential data).
+   * Sampling Consensus enables the rotation of nodes across different requests, greatly minimizing the risk of nodes manipulating their physical hardware to tamper with specific user requests (such as accessing enterprise- or government-grade confidential data).
 
 3. **Scalable Trust:**
 
-   * TEEs provide local guarantees on each node
+   * TEEs provide local guarantees on each node.
 
-   * Sampling Consensus extends trust across the network
+   * Sampling Consensus extends trust across the network.
 
 #### Implementation Details
 
 1. **Node Selection and Execution:**
 
-   * Nodes are selected according to the Sampling Consensus protocol
+   * Nodes are selected according to the Sampling Consensus protocol.
 
-   * Selected nodes execute AI tasks within their TEEs
+   * Selected nodes execute AI tasks within their TEEs.
 
 2. **Attestation Chain:**
 
-   * Each node provides TEE attestations along with computation results
+   * Each node provides TEE attestations along with computation results.
 
-   * The network verifies both the consensus and individual TEE proofs
+   * The network verifies both the consensus and individual TEE proofs.
 
 3. **Dispute Resolution:**
 
-   * In case of discrepancies, TEE compatible nodes can be used for resolving disputes
+   * In case of discrepancies, TEE compatible nodes can be used for resolving disputes.
 
-   * Malicious behavior can be definitively identified and penalized
+   * Malicious behavior can be definitively identified and penalized.
 
 4. **Dynamic Security Levels:**
 
-   * Users can request higher replication (N) for critical tasks
+   * Users can request higher replication (N) for critical tasks.
 
-   * TEE security complements lower replication for less sensitive tasks
+   * TEE security complements lower replication for less sensitive tasks.
 
 5. **Model and Data Protection:**
 
-   * Proprietary AI models are executed within TEEs, preventing unauthorized access
+   * Proprietary AI models are executed within TEEs, preventing unauthorized access.
 
-   * Input data remains encrypted outside the TEE, protecting user privacy
+   * Input data remains encrypted outside the TEE, protecting user privacy.
 
 #### Benefits of the Combined Approach
 
 1. **Comprehensive Security:**
 
-   * Protects against both network-level and hardware-level attacks
+   * Protects against both network-level and hardware-level attacks.
 
-   * Mitigates risks of collusion and hardware tampering
+   * Mitigates risks of collusion and hardware tampering.
 
 2. **Verifiable Privacy:**
 
-   * Enables privacy-preserving computations that are still verifiable
+   * Enables privacy-preserving computations that are still verifiable.
 
-   * Supports use cases involving sensitive or regulated data
+   * Supports use cases involving sensitive or regulated data.
 
 3. **Flexible Trust Model:**
 
-   * Adaptable to different security requirements and threat models
+   * Adaptable to different security requirements and threat models.
 
-   * Allows for a spectrum of trust levels, from high replication to TEE-only execution
+   * Allows for a spectrum of trust levels, from high replication to TEE-only execution.
 
 4. **Enhanced Performance:**
 
-   * TEEs reduce the need for high replication in many scenarios
+   * TEEs reduce the need for high replication in many scenarios.
 
-   * Sampling Consensus allows for efficient distribution of workloads
+   * Sampling Consensus allows for efficient distribution of workloads.
 
 5. **Future-Proofing:**
 
-   * The combined approach is adaptable to advancements in both consensus mechanisms and TEE technologies
+   * The combined approach is adaptable to advancements in both consensus mechanisms and TEE technologies.
+
 
 By leveraging both Sampling Consensus and TEEs, Atoma Network creates a unique security ecosystem that is greater than the sum of its parts. This approach not only enhances the overall security and privacy of AI computations but also opens up new possibilities for trustworthy, decentralized AI applications across various industries and use cases.
