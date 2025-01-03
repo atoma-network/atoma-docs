@@ -38,13 +38,13 @@ sui client balance
 
 ### Atoma testnet parameters
 
-1. **Atoma's package id (on Sui's testnet):** `0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013`
+1. **Atoma's package id (on Sui's testnet):** `0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922`
 
-2. **Atoma's DB object id:** `0x7b8f40e38698deb650519a51f9c1a725bf8cfdc074d1552a4dc85976c2b414be`
+2. **Atoma's DB object id:** `0xe0b1d6458f349d4bc71ef119694866f1d6ee6915b43f8cc05a5d44a49e3e1f0f`
 
-3. **Atoma's TOMA faucet token package id (testnet):**
+3. **USDC faucet token package id (testnet):**
 
-   `0xa1b2ce1a52abc52c5d21be9da0f752dbd587018bc666c5298f778f42de26df1d`
+   `0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29`
 
 ### Set up Atoma's custom cli
 
@@ -57,23 +57,24 @@ git clone https://github.com/atoma-network/atoma-contracts
 cd atoma-contracts/sui/
 ```
 
-1. Request faucet TOMA tokens to your (local) active Sui wallet (it mints 100 tokens, as the token is programmed to have 9 decimal places):
+1. The current Atoma contract relies on `USDC` for payments. In order to start interacting with the Atoma contract, you need to request `USDC` tokens to your (local) active Sui wallet.
+In order to do so, you can request Sui testnet `USDC` tokens to your (local) active Sui wallet, via the url:
 
 ```
-./dev/cli toma faucet \
-  --toma-package "0xa1b2ce1a52abc52c5d21be9da0f752dbd587018bc666c5298f778f42de26df1d"\
-  --amount 100000000000 # feel free to adjust the amount, it has 9 decimal places
+https://faucet.circle.com/
 ```
 
-Once the transaction is submitted, you should be able to query the value amount of faucet TOMA tokens you currently hold on your wallet:
+Once you have requested the tokens, you should be able to query the value amount of `USDC` tokens you currently hold on your wallet:
 
 ```
 sui client balance
 ```
 
-### Create a Task on Atoma
+Notice that the `USDC` uses 6 decimal places, which means that to `1 USDC`is represented logically on the Sui blockchain through an amount of `1000000`.
 
-In order to create a `Task` on Atoma, it is important to understand how these are used to specify compute jobs on the network. Each `Task` is assigned a role. Roles can be one of those values:
+### Tasks on Atoma
+
+Tasks on Atoma are used to specify compute jobs on the network. Each `Task` is assigned a role. Roles can be one of those values:
 
 1. Chat completions - 0
 
@@ -93,27 +94,32 @@ In order to create a `Task` on Atoma, it is important to understand how these ar
 
 To spawn a new `Task` on Atoma, one can specify a model (following HuggingFace name convention), for example:
 
-`model-name: meta-llama/Llama-3.1-8B-Instruct`
+`model-name: meta-llama/Llama-3.3-70B-Instruct`
 
 It is also possible to specify an optional `Security level` for the `Task`:
 
 1. No security - 0 (meaning no additional security requirements like verifiability or privacy are required)
 
-2. Sampling Consensus - 1 (meaning that the each workload on Atoma for this task is under the `Sampling Consensus` protocol, for verifiable AI)
+2. Confidential compute - 1 (meaning that the each workload on Atoma for this task is performed within proper TEEs, for both verifiable and private AI)
 
-3. Confidential compute - 2 (meaning that each workload on Atoma for this task requires trusted hardware to be executed, allowing for both verifiability and privacy).
+3. Sampling Consensus - 2 (meaning that each workload on Atoma for this task requires `Sampling Consensus` to be executed, allowing for verifiable AI through crypto-economics guarantees).
 
-The `Task` creator can also specify a minimum node reputation score (minimum 0 and maximum 100).
+The `Task` creator can also specify a minimum node reputation score (minimum 0 and maximum 100). 
+
+In the current testnet version, `Task`s can only be spawned by the administrator of the Atoma contract. In the future, tasks will be part of Atoma's governance protocol. Moreover,
+tasks can either be public or private. Public tasks can be subscribed by any node on the network (more below), whereas private tasks can only be subscribed by nodes that have been granted access by the administrator,
+that is, that have been whitelisted by the administrator.
 
 In order to submit to create a Task, using Atoma's cli, one simply needs to run:
 
 ```
 ./dev/cli db create-task-entry \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --role 0 \ # chat completions
-  --model-name "meta-llama/Llama-3.1-8B-Instruct" \ # (optional)
-  --security-level 1 \ # (optional) Sampling Consensus verifiability
+  --model-name "meta-llama/Llama-3.3-70B-Instruct" \ # (optional)
+  --security-level 1 \ # (optional) Confidential compute integrity
   --minimum-reputation-score 50 # (optional) Only nodes with 50 reputation score can participate in task related workloads
+  --is-public true # (optional) Whether the task is public or not
 ```
 
 When a transaction for creating a new Task is submitted, the involved wallet receives a new Sui Move object, of the form:
@@ -141,8 +147,7 @@ It is possible to deprecate tasks that are active, and were created by the curre
 
 ```
 ./dev/cli db deprecate-task \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
-  --task-badge TASK_BADGE_ID
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
 ```
 
 The `TASK_BADGE_ID` value is the id within `TaskBadge` that can be accessed by querying the wallet owned objects.
@@ -153,18 +158,37 @@ To remove a task that was already deprecated, one can run the command:
 
 ```
 ./dev/cli db remove-deprecated-task \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
-  --task-badge TASK_BADGE_ID
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
 ```
 
 ### Register a node
 
-In order to register a node on Atoma, one must run:
+The easiest way to register a node on the Atoma contract is through the Atoma node daemon. However, it is also possible to register a node manually through the Atoma cli.
+In order to register a node on Atoma,
 
 ```
 ./dev/cli db register-node \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013"
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922"
 ```
+
+Once the node is registered, the node will receive a `NodeBadge` object of the form:
+
+```
+public struct NodeBadge has key, store {
+  id: UID,
+  small_id: NodeSmallId,
+}
+```
+
+the `NodeSmallId` is a wrapper around a `u64` number
+
+```
+public struct NodeSmallId has store, copy, drop {
+  inner: u64,
+}
+```
+
+which is a unique identifier that allows the Atoma contract to select different nodes for different tasks workloads.
 
 ### Subscribe a node to a Task
 
@@ -172,11 +196,13 @@ In order for Atoma nodes to participate in the protocol, these must subscribe to
 
 ```
 ./dev/cli db subscribe-node-to-task \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --task-small-id 1 \ # The Task small id, referring to a specific task on Atoma
-  --price-per-compute-unit 100 \ # the price to which the node is willing to be paid for its compute
-  --max-num-compute-units 10000000 # the maximum number of compute units that a node is willing to sell per Stack, the higher the better
+  --price-per-one-million-compute-units 1000000 \ # the price to which the node is willing to be paid for 1 million compute units
 ```
+
+The `price-per-one-million-compute-units` is the price to which the node is willing to be paid for 1 million compute units. More concretely, in the example above, if `task-small-id` 1 is a `Chat completions` task,
+say for `meta-llama/Llama-3.3-70B-Instruct`, then the subscribed node is charging a price of `1 USDC` for 1 million (LLM) tokens for the model `meta-llama/Llama-3.3-70B-Instruct`.
 
 ### Unsubscribe node from a Task
 
@@ -184,7 +210,7 @@ Nodes on Atoma can unsubscribe from Tasks that these have subscribed to (even th
 
 ```
 ./dev/cli db unsubscribe-node-from-task \ 
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --task-small-id 1 # the Task small id, referring to a specific task that the node did subscribe to
 ```
 
@@ -194,12 +220,14 @@ Users on Atoma can access nodes, by first buying `Stack`s associated to a specif
 
 ```
 ./dev/cli db acquire-new-stack-entry \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --task-small-id 1 \ # the Task small id to which the current Stack refers to 
   --num-compute-units 1000000 # How many compute units are being bought, compute units correspond to either LLM tokens, pixels, or other metrics of compute
-  --price 100 # The price per compute unit to which the user is willing to pay for
+  --price 1000000 # The price per compute unit to which the user is willing to pay for
 ```
 
+The `price` is the price per one million compute units to which the user is willing to pay for. In the example above, assuming that `task-small-id` 1 refers to a `Chat completions` task,
+under the `meta-llama/Llama-3.3-70B-Instruct` model, then the user is willing to pay `1 USDC` for 1 million compute units (that is, 1 million LLM tokens, roughly words).
 Once the `Stack` is acquired by the wallet, the wallet will hold a `StackBadge` object of the form:
 
 ```
@@ -219,22 +247,25 @@ The first step to settle a `Stack` is by trying to settle the stack:
 
 ```
 ./dev/cli db try-settle-stack \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --stack-small-id 1 \ # The Stack small id to which this transaction refers to 
   --num-claimed-compute-units 1000000 \ # This value should be inferior to the number of compute units bought in the Stack, the higher the better though
   --committed-stack-proof MERKLE_TREE_ROOT_BYTE_LEN32_ARRAY \ # Byte array of length 32 containing a proof commitment to the whole Stack history of requests and responses
   --stack-merkle-leaf MERKLE_TREE_LEAF_BYTE_LEN32_ARRAY \ # Byte array of length 32 containing a Merkle tree leaf for opening on the committed stack proof above
 ```
 
-The values of `committed-stack-proof` and `stack-merkle-leaf` can be computed as the Merkle tree root and leaf index corresponding to the whole `Stack` history. In practice, node operators do not need to compute these values themselves, as this is completed addressed within the Atoma node daemon logic.
+The values of `committed-stack-proof` and `stack-merkle-leaf` can be computed as the Merkle tree root and leaf index corresponding to the whole `Stack` history.
+In practice, node operators do not need to compute these values themselves, as this is completed addressed within the Atoma node daemon logic.
 
-Once the transaction goes through, a dispute challenge window for the `Stack` execution starts, which lasts for two epochs. Within those epochs anyone can dispute the `Stack` settlement, including user holding the original `Stack`. Additionally, the Atoma contract can select one or more nodes to attest to the right execution from the original selected node for the `Stack`. This is relevant for our Sampling Consensus protocol. If no security or confidential compute security are required, then the contract skips this step.
+Once the transaction goes through, a dispute challenge window for the `Stack` execution starts, which lasts for two epochs. Within those epochs anyone can dispute the `Stack` settlement,
+including user holding the original `Stack`. Additionally, the Atoma contract can select one or more nodes to attest to the right execution from the original selected node for the `Stack`
+This is relevant, and only required, for our Sampling Consensus protocol. If no security or confidential compute security are associated to the `Stack`, then the contract skips this step.
 
 If a node is selected to attest a `Stack` execution, it needs to fetch the Stack's input data, and redo the whole history of execution (that is, running AI inference on the whole stack requests). Once that is done, the node can attest the execution by submitting an on-chain transaction as:
 
 ```
 ./dev/cli db submit-stack-settlement-attestation \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --stack-small-id 1 \ # The Stack small id to which this transaction refers to 
   --committed-stack-proof MERKLE_TREE_ROOT_BYTE_LEN32_ARRAY \ # Byte array of length 32 containing a proof commitment to the whole Stack history of requests and responses
   --stack-merkle-leaf MERKLE_TREE_LEAF_BYTE_LEN32_ARRAY \ # Byte array of length 32 containing a Merkle tree leaf for opening on the committed stack proof above
