@@ -23,7 +23,7 @@
   ],
   "topbarCtaButton": {
     "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
+    "url": "https://atomacloud.com"
   },
   "tabs": [
     {
@@ -142,8 +142,8 @@
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://linkedin.com/company/mintlify"
+    "x": "https://x.com/Atoma_Network",
+    "github": "https://github.com/atoma-network",
+    "linkedin": "https://www.linkedin.com/company/atoma-network/"
   }
 }

@@ -3,6 +3,51 @@ title: 'Node Changelog'
 description: 'Latest updates of Atoma Node'
 ---
 
+<Update label="2024-12-26" description="v0.1.2">
+# Atoma Node v0.1.2 - Infrastructure Enhancements 🔧
+
+## Core Improvements
+
+### 🚀 Performance Updates
+- Upgraded vLLM version for improved inference performance
+- Added local port access capability to inference services
+
+### 🛠️ Infrastructure Changes
+- Removed port specification requirements for inference containers
+- Simplified database schema by removing foreign key constraints
+
+</Update>
+
+<Update label="2024-12-21" description="v0.1.1">
+# Atoma Node v0.1.1 - Infrastructure Updates 🔄
+
+## Core Improvements
+
+### 🔐 Security & Key Management
+- Removed file storing for symmetric key
+- Added automatic key rotation on node start
+- Enhanced node public key submission logic
+- Improved node registration process
+
+### 🛠️ Infrastructure Updates
+- Added Sui timestamp for stack create/settle operations
+- Added Prometheus docker service for performance metrics
+- Implemented register on proxy functionality
+- Increased vLLM customization options
+
+### 💼 Economic Updates
+- Renamed stacks pricing structure
+- Changed TOMA dependency to USDC
+
+### 🔧 DevOps & Maintenance
+- Refactored docker entrypoint file
+- Improved daemon architecture and testing
+- Enhanced API documentation
+- Restricted daemon port external exposure
+- Fixed timestamp-related issues
+
+</Update>
+
 <Update label="2024-10-11" description="v0.1.0">
 # Atoma Node v0.1.0 - Initial Release 🚀
 
