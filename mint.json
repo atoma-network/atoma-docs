@@ -49,6 +49,10 @@
       "openapi": "https://raw.githubusercontent.com/atoma-network/atoma-node/main/atoma-daemon/docs/openapi.yml"
     },
     {
+      "name": "Smart Contract",
+      "url": "smart-contract"
+    },
+    {
       "name": "Changelog",
       "url": "changelog"
     }
@@ -112,9 +116,20 @@
       "group": "Technical Reference",
       "pages": [
         "node/technical-reference/overview",
-        "node/technical-reference/atoma-contract",
         "node/technical-reference/node-config",
         "node/technical-reference/inference-services"
+      ]
+    },
+    {
+      "group": "Getting Started",
+      "pages": [
+        "smart-contract/getting-started/interact-atoma-contract"
+      ]
+    },
+    {
+      "group": "Technical Reference",
+      "pages": [
+        "smart-contract/technical-reference/tasks"
       ]
     },
     {
