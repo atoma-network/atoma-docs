@@ -1,30 +1,118 @@
 
-## What is the Atoma Network ?
+## What is the Atoma Network?
 
-The Atoma Network is a protocol designed to deliver decentralized, scalable, and permissionless AI computing, making powerful AI resources more accessible to all.
+The Atoma Network represents a groundbreaking decentralized protocol that revolutionizes the AI computing landscape by delivering scalable, verifiable, and private AI compute.
+At its core, Atoma addresses two critical challenges in the AI industry: ensuring robust data privacy and security while dramatically reducing the costs associated with AI computation.
 
-At the core of Atoma are execution nodes, or simply nodes, which represent a machine or a cluster of machines capable of processing AI requests on the network. These nodes handle tasks such as running AI inference to generate outputs from text prompts, creating images or videos from descriptions, translating documents, fine-tuning pre-trained models, and more.
+By creating a decentralized marketplace for AI resources, Atoma aggregates high-performance computing nodes from across the globe, democratizing access to cutting-edge AI technologies.
+The platform is built upon the Sui blockchain, chosen specifically for its superior consensus protocol leading to exceptional transaction speed, low latency and low transaction fees.
 
-## Full Data Privacy
+### Core Architecture
 
-With Atoma, your data is kept private and secure. Using our advanced Sampling Consensus algorithm and Trusted Execution Environments (TEEs), we ensure that every AI request processed through the network is safeguarded against interference. TEEs protect your data and models, ensuring they are accessible only to you and the model provider—even Atoma’s nodes cannot access them.
+The foundation of the Atoma Network consists of execution nodes-that is, compute resources equipped with powerful GPU compute, either running individually or orchestrated in clusters.
+These nodes are specifically designed to handle a diverse range of AI operations, including:
 
-Our Sampling Consensus algorithm is designed for cost-efficiency without compromising security. Competing with leading AI compute providers like OpenAI and Anthropic, it ensures affordable AI processing while maintaining strong privacy protections.
+- Large Language Model (LLM) inference for text generation
+- Embeddings
+- Image and video generation
+- Natural language processing and translation
+- Model fine-tuning and optimization
+- Complex AI computations and data processing
 
-Atoma’s commitment to AI verifiability and privacy will drive a new wave of applications, combining the power of LLMs with robust security and user-controlled data ownership.
+To ensure the highest standards of security and reliability, nodes within the network are incentivized to incorporate trusted hardware, specifically Trusted Execution Environments (TEEs).
+TEEs guarantee complete data isolation from the operating system (OS) during processing. Moreover, data processed by nodes is end-to-end encrypted, guaranteeing exclusive data access to the user and
+the trusted enclave within the node. This process guarantees complete data privacy and security, as not even the node operator can access or tamper the integrity of the data and the underlying execution, as the TEE is isolated from the OS.
 
-Furthermore, Atoma’s verifiability layer also empowers smart contracts on any blockchain to securely access verifiable AI computing, creating a new intelligence coordination layer without compromising security.
+Through trusted hardware, Atoma ensures two essential purposes:
+1. Guaranteeing complete privacy for all processed data
+2. Scalable and verifiable AI compute, with high throughput and minimal cost and latency overhead for the end user.
 
-## Why Sui Blockchain?
+## Advanced Privacy Protection
 
-Atoma leverages the Sui blockchain for its core operations due to several key advantages:
+Atoma sets a new standard in data privacy and security through its comprehensive protection framework. The network's architecture incorporates two powerful mechanisms:
 
-- **Efficient Payment Processing**: Sui enables efficient compute payments with minimal transaction fees (~$0.02 per transaction).
+### 1. Sampling Consensus Algorithm
+Our proprietary Sampling Consensus algorithm represents a breakthrough in balancing security with cost-effectiveness. Sampling Consensus allows nodes without access to TEEs to serve AI compute satisfying:
+- Robust verification of AI computations
+- Significant cost reduction compared to traditional methods
+- Maintenance of high security standards without performance compromises
 
-- **Smart Contract Infrastructure**: Sui smart contracts handle compute resource coordination and payments, maintaining:
-  - Node information and status
-  - Available AI models
-  - Task registrations
-  - Treasury management for node rewards
+### 2. Trusted Execution Environments (TEEs)
+TEEs provide an impenetrable security layer that ensures:
+- Complete data isolation during processing
+- End-to-end encryption of sensitive information
+- Exclusive access limited to authorized parties (you and your chosen model provider)
+- Protection from unauthorized access, including from Atoma's own infrastructure
 
-- **Flexible Payment Model**: Users can pre-purchase compute units through a Stack system, enabling efficient payments while minimizing blockchain interactions for routine tasks.
+This dual-layer security approach positions Atoma as a pioneer in private AI computing, enabling organizations to leverage powerful AI capabilities while maintaining absolute control over their data.
+
+## Blockchain Integration and Smart Contract Capabilities
+
+The integration with the Sui blockchain extends beyond basic operations, creating a sophisticated ecosystem that enables:
+
+- Verifiable AI computations accessible to smart contracts across multiple blockchain platforms
+- A secure intelligence coordination layer that maintains the highest security standards
+- Seamless interaction between traditional applications and blockchain-based systems
+- A flexible and efficient payment system, with minimal overhead and low transaction fees.
+- Advanced community based governance, with a transparent treasury management and reward distribution.
+
+## Atoma's on-chain logic
+
+The Atoma infrastructure relies heavily on innovative on-chain logic for resource coordination. It includes:
+
+### 1. Cost-Effective access to AI compute
+- Low transaction fees
+- Highly scalable payment infrastructure
+- Minimal operational overhead
+- Sui Move programming language for enhanced security, performance and reliability of on-chain logic
+
+### 2. Atoma's Smart Contract Capabilities
+The Atoma smart contracts on the Sui blockchain provides a robust infrastructure for managing:
+- Node registation and enhanced crypto-economics security
+- Dynamic AI model marketplace and discovery
+- Sophisticated AI tasks registration
+- Transparent treasury management and reward distribution
+- Community based governance
+
+### 3. Decentralized AI compute marketplace
+The platform introduces a flexible Stack system that allows users to:
+- Pre-purchase compute units for improved efficiency
+- Minimize blockchain interactions during routine operations
+- Optimize cost management and resource allocation
+- Maintain seamless operation flow without frequent payment interruptions
+
+Through these carefully designed systems and integrations, Atoma creates a secure, efficient, and accessible ecosystem for next-generation AI computing.
+
+## Atoma's application layer
+
+Atoma's application layer is built on top of the Atoma infrastructure, and it is designed to provide a seamless experience for both AI and Web3 developers and builders.
+Atoma provides a fully compatible OpenAI API, with the same interface and capabilities, but with the added benefits of Atoma's infrastructure. This allows developers
+to easily migrate and integrate Atoma's AI compute infrastructure into their existing applications.
+
+Atoma also provides a set of tools and libraries for building AI applications, including:
+- Atoma SDK for building AI applications on top of Atoma's infrastructure
+- Atoma API for building AI applications on top of Atoma's infrastructure
+- Atoma CLI for building AI applications on top of Atoma's infrastructure
+
+We further abstract away the complexity of authentication and authorization, through programmable cryptography, by providing a full cloud infrastructure, through our **Atoma's Proxy** service.
+For more details, please refer to the [Atoma's Proxy](https://docs.atoma.network/cloud/get-started/overview) documentation.
+
+Through all these tools and services, governments, enterprises, builders and developers can focus on building their applications, with full data privacy, integrity and security. We are keen to witness
+the creation of the next generation of AI applications, and we are excited to be part of this journey. These will likely include:
+
+- AI agents for automating business processes, social media, content creation, health care, finance (both traditional finance and DeFi)
+- AI powered search engines
+- AI powered Web3 wallets
+- AI powered recommendation systems
+- AI powered data analysis and insights
+- AI powered coding IDEs, with full privacy, for closed source repositories
+- AI powered prediction markets
+- AI powered content creation
+- Healthcare applications, with full patient data privacy
+- Self-driving cars
+- AI powered gaming applications
+- AI rendering engines for 3D graphics for games, simulations and browser-based applications
+- Personal AI assistants, with full privacy and security
+- Enterprise-grade knowledge management systems
+- AI powered education systems
+- National security
