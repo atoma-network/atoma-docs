@@ -7,24 +7,23 @@ description: 'Overview of Atoma Proxy'
 
 The Atoma Network is a decentralized and permissionless network of nodes that provide computing resources to AI workloads. In particular, this means that Atoma is composed of a large number of active nodes
 monetizing their hardware resources. Moreover, such nodes have different capabilities and are located in different geographical locations, with different bandwidth and latency specifications.
-Even though this heterogeneity allows for a more flexible and resilient infrastructure, with better price discovery for compute, it is a challenge to manage and distribute efficiently the AI workloads across the network.
-On top of that, Atoma nodes are only required to process requests if these are properly authenticated and authorized, which implies that on-chain payments need to be due for each request, including proof of ownership
-of the request. This process involves complex programmable cryptography primitives, which can become a challenge for the typical AI developer, which whishes to use Atoma's infrastructure.
+Even though this heterogeneity allows for a more flexible and resilient infrastructure, with better price discovery for compute, it is a challenge to manage and efficiently distribute the AI workloads across the network.
+On top of that, Atoma nodes are only required to process properly authenticated and authorized requests. This implies that on-chain payments need to be due in advance for each processed request, including proof of ownership
+of funds. This process involves complex programmable cryptographic primitives, which can become a challenge for the typical AI developer, wishing to use Atoma's infrastructure.
 
-In order to overcome these challenges, we have introduced the concept of the **Atoma Proxy**. The Atoma Proxy is a critical component of the Atoma Network that acts as a smart traffic controller for AI workloads.
-Think of it as an intelligent middleman that helps manage and distribute AI tasks across a network of computers. Furthermore, we have designed the Atoma Proxy to simplify both the user and developer experiences, by
-exposing a fully compatible OpenAI API, while abstracting away the complexity of the underlying infrastructure, including payments, request authentication and authorization, as well as pick and route the requests to the most suitable available nodes.
+In order to overcome these challenges, we have introduced the concept of the **Atoma Proxy**. The Atoma Proxy is a vital component of the Atoma Network, acting as an intelligent middleman for AI workloads, efficiently managing and distributing tasks across a network of computers.
+Think of it as an intelligent middleman that helps manage and distribute AI tasks across a network of computers. Furthermore, the Atoma Proxy is designed to streamline both user and developer experiences by offering
+a fully compatible OpenAI API. It abstracts the complexity of the underlying infrastructure, including handling payments, request authentication and authorization, and intelligently routing requests to the most suitable available nodes.
+For an AI developer willing to access LLM inference through Atoma, it can simply interact with the Atoma Proxy as if it was interacting via the Proxy's OpenAI API. Moreover, the Atoma Proxy supports both stablecoin and native USD payments,
+ensuring a seamless experience for developers. This means developers can build applications with minimal overhead while fully leveraging the power of the Atoma Network.
 
-For the AI developer willing to access LLM inference through Atoma, it can simply interact with the Atoma Proxy as if it was interacting via the Proxy's OpenAI API. Moreover, the Atoma Proxy supports both stablecoin and native USD payments,
-which allows for a seamless experience for the developer. This means that Atoma offers a minimal overhead for the end developer to build their applications, while still being able to leverage the full power of the Atoma Network.
-
-That said, we value not only the developer experience, but also the motto of decentralized technologies. For this reason, we have open sourced our Atoma Proxy codebase,
-so that anyone can run their own instance of the Atoma Proxy, and leverage the full power of the Atoma Network without having to rely on our serverless infrastructure.
+That said, we prioritize not only the developer experience but also the principles of decentralized technologies. To uphold this, we have open-sourced the Atoma Proxy codebase, allowing anyone to run their own instance of the Atoma Proxy and fully leverage the power of the Atoma Network without depending on our
+native proxy infrastructure.
 
 Finally, the Atoma Proxy preserves the integrity and confidentiality of the data processed by the Atoma Network, by supporting confidential computing, for both private and verifiable AI compute.
 This means, that the data processed by the Atoma Network is protected from unauthorized access, including the Atoma Proxy and the Atoma nodes.
 
-## Interact with Atoma's Proxy infrastructure
+## Interact with Atoma's Proxy Infrastructure
 
 We invite you to explore our [Atoma cloud dashboard](https://atomacloud.com), where you can create an account and generate an API key. With this API key, you can interact with Atoma's Proxy infrastructure, and leverage the full power of the Atoma Network.
 Furthermore, you can also deploy your own instance of the Atoma Proxy on your own infrastructure, by consulting our open-source codebase [here](https://github.com/atoma-network/atoma-proxy).
