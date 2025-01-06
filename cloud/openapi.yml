@@ -1,0 +1,1144 @@
+openapi: 3.1.0
+info:
+  title: atoma-proxy
+  description: ""
+  license:
+    name: Apache-2.0
+    identifier: Apache-2.0
+  version: 0.1.0
+servers:
+  - url: https://api.atomacloud.com
+paths:
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health
+      operationId: health
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema: {}
+        "500":
+          description: Service is unhealthy
+  /v1/models:
+    get:
+      tags:
+        - Models
+      summary: List models
+      description: |-
+        This endpoint mimics the OpenAI models endpoint format, returning a list of
+        available models with their associated metadata and permissions. Each model
+        includes standard OpenAI-compatible fields to ensure compatibility with
+        existing OpenAI client libraries.
+
+        # Arguments
+
+        * `state` - The shared application state containing the list of available models
+
+        # Returns
+
+        Returns a JSON response containing:
+        * An "object" field set to "list"
+        * A "data" array containing model objects with the following fields:
+          - id: The model identifier
+          - object: Always set to "model"
+          - created: Timestamp (currently hardcoded)
+          - owned_by: Set to "atoma"
+          - root: Same as the model id
+          - parent: Set to null
+          - max_model_len: Maximum context length (currently hardcoded to 2048)
+          - permission: Array of permission objects describing model capabilities
+
+        # Example Response
+
+        ```json
+        {
+          "object": "list",
+          "data": [
+            {
+              "id": "meta-llama/Llama-3.1-70B-Instruct",
+              "object": "model",
+              "created": 1730930595,
+              "owned_by": "atoma",
+              "root": "meta-llama/Llama-3.1-70B-Instruct",
+              "parent": null,
+              "max_model_len": 2048,
+              "permission": [
+                {
+                  "id": "modelperm-meta-llama/Llama-3.1-70B-Instruct",
+                  "object": "model_permission",
+                  "created": 1730930595,
+                  "allow_create_engine": false,
+                  "allow_sampling": true,
+                  "allow_logprobs": true,
+                  "allow_search_indices": false,
+                  "allow_view": true,
+                  "allow_fine_tuning": false,
+                  "organization": "*",
+                  "group": null,
+                  "is_blocking": false
+                }
+              ]
+            }
+          ]
+        }
+        ```
+      operationId: models_handler
+      responses:
+        "200":
+          description: List of available models
+          content:
+            application/json:
+              schema: {}
+        "500":
+          description: Failed to retrieve list of available models
+      security:
+        - bearerAuth: []
+  /node/registration:
+    post:
+      tags:
+        - Node Public Address Registration
+      summary: Register node
+      description: |-
+        This endpoint allows nodes to register or update their public address in the system.
+        When a node comes online or changes its address, it can use this endpoint to ensure
+        the system has its current address for routing requests.
+
+        # Arguments
+
+        * `state` - The shared application state containing the state manager sender
+        * `payload` - The registration payload containing the node's ID and public address
+
+        # Returns
+
+        Returns `Ok(Json(Value::Null))` on successful registration, or an error if the registration fails.
+
+        # Errors
+
+        Returns various `AtomaProxyError` variants:
+        * `MissingHeader` - If the signature header is missing
+        * `InvalidHeader` - If the signature header is malformed
+        * `InvalidBody` - If:
+          - The request body cannot be read
+          - The signature is invalid
+          - The body cannot be parsed
+          - The sui address doesn't match the signature
+        * `InternalError` - If:
+          - The state manager channel is closed
+          - The registration event cannot be sent
+          - Node Sui address lookup fails
+
+        # Example Request Payload
+
+        ```json
+        {
+            "node_small_id": 123,
+            "public_address": "http://node-123.example.com:8080",
+            "country": "US"
+        }
+        ```
+      operationId: node_public_address_registration
+      responses:
+        "200":
+          description: Node public address registered successfully
+          content:
+            application/json:
+              schema: {}
+        "500":
+          description: Failed to register node public address
+  /v1/chat/completions:
+    post:
+      tags:
+        - Chat
+      summary: Create chat completion
+      description: |-
+        This function processes chat completion requests by determining whether to use streaming
+        or non-streaming response handling based on the request payload. For streaming requests,
+        it configures additional options to track token usage.
+
+        # Arguments
+
+        * `metadata`: Extension containing request metadata (node address, ID, compute units, etc.)
+        * `state`: The shared state of the application
+        * `headers`: The headers of the request
+        * `payload`: The JSON payload containing the chat completion request
+
+        # Returns
+
+        Returns a Response containing either:
+        - A streaming SSE connection for real-time completions
+        - A single JSON response for non-streaming completions
+
+        # Errors
+
+        Returns an error status code if:
+        - The request processing fails
+        - The streaming/non-streaming handlers encounter errors
+        - The underlying inference service returns an error
+      operationId: chat_completions_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateChatCompletionRequest"
+        required: true
+      responses:
+        "200":
+          description: Chat completions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatCompletionResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /v1/confidential/chat/completions:
+    post:
+      tags:
+        - Confidential Chat
+      summary: Create confidential chat completion
+      description: |-
+        This handler processes chat completion requests in a confidential manner, providing additional
+        encryption and security measures for sensitive data processing. It supports both streaming and
+        non-streaming responses while maintaining data confidentiality through AEAD encryption and TEE hardware,
+        for full private AI compute.
+
+        # Arguments
+
+        * `metadata` - Extension containing request metadata including:
+          * `endpoint` - The API endpoint being accessed
+          * `node_address` - Address of the inference node
+          * `node_id` - Identifier of the selected node
+          * `num_compute_units` - Available compute units
+          * `selected_stack_small_id` - Stack identifier
+          * `salt` - Optional salt for encryption
+          * `node_x25519_public_key` - Optional public key for encryption
+          * `model_name` - Name of the AI model being used
+        * `state` - Shared application state (ProxyState)
+        * `headers` - HTTP request headers
+        * `payload` - The chat completion request body
+
+        # Returns
+
+        Returns a `Result` containing either:
+        * An HTTP response with the chat completion result
+        * A streaming SSE connection for real-time completions
+        * An `AtomaProxyError` error if the request processing fails
+
+        # Errors
+
+        Returns `AtomaProxyError::InvalidBody` if:
+        * The 'stream' field is missing or invalid in the payload
+
+        Returns `AtomaProxyError::InternalError` if:
+        * The inference service request fails
+        * Response processing encounters errors
+        * State manager updates fail
+
+        # Security Features
+
+        * Utilizes AEAD encryption for request/response data
+        * Supports TEE (Trusted Execution Environment) processing
+        * Implements secure key exchange using X25519
+        * Maintains confidentiality throughout the request lifecycle
+
+        # Example
+
+        ```rust,ignore
+        let response = confidential_chat_completions_handler(
+            Extension(metadata),
+            State(state),
+            headers,
+            Json(payload)
+        ).await?;
+        ```
+      operationId: confidential_chat_completions_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfidentialComputeRequest"
+        required: true
+      responses:
+        "200":
+          description: Confidential chat completions
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfidentialComputeResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /v1/embeddings:
+    post:
+      tags:
+        - Embeddings
+      summary: Create embeddings
+      description: |-
+        This endpoint follows the OpenAI API format for generating vector embeddings from input text.
+        The handler receives pre-processed metadata from middleware and forwards the request to
+        the selected node.
+
+        Note: Authentication, node selection, and initial request validation are handled by middleware
+        before this handler is called.
+
+        # Arguments
+        * `metadata` - Pre-processed request metadata containing node information and compute units
+        * `state` - The shared proxy state containing configuration and runtime information
+        * `headers` - HTTP headers from the incoming request
+        * `payload` - The JSON request body containing the model and input text
+
+        # Returns
+        * `Ok(Response)` - The embeddings response from the processing node
+        * `Err(AtomaProxyError)` - An error status code if any step fails
+
+        # Errors
+        * `INTERNAL_SERVER_ERROR` - Processing or node communication failures
+      operationId: embeddings_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmbeddingRequest"
+        required: true
+      responses:
+        "200":
+          description: Embeddings generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateEmbeddingResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /v1/confidential/embeddings:
+    post:
+      tags:
+        - Confidential Embeddings
+      summary: Create confidential embeddings
+      description: |-
+        This endpoint follows the OpenAI API format for generating vector embeddings from input text,
+        but with confidential processing (through AEAD encryption and TEE hardware).
+        The handler receives pre-processed metadata from middleware and forwards the request to
+        the selected node.
+
+        Note: Authentication, node selection, initial request validation and encryption
+        are handled by middleware before this handler is called.
+
+        # Arguments
+        * `metadata` - Pre-processed request metadata containing node information and compute units
+        * `state` - The shared proxy state containing configuration and runtime information
+        * `headers` - HTTP headers from the incoming request
+        * `payload` - The JSON request body containing the model and input text
+
+        # Returns
+        * `Ok(Response)` - The embeddings response from the processing node
+        * `Err(AtomaProxyError)` - An error status code if any step fails
+
+        # Errors
+        * `INTERNAL_SERVER_ERROR` - Processing or node communication failures
+      operationId: confidential_embeddings_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfidentialComputeRequest"
+        required: true
+      responses:
+        "200":
+          description: Confidential embeddings generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfidentialComputeResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /v1/images/generations:
+    post:
+      tags:
+        - Images
+      summary: Create image
+      description: |-
+        This endpoint processes requests to generate images using AI models by forwarding them
+        to the appropriate AI node. The request metadata and compute units have already been
+        validated by middleware before reaching this handler.
+
+        # Arguments
+        * `metadata` - Extension containing pre-processed request metadata (node address, compute units, etc.)
+        * `state` - Application state containing configuration and shared resources
+        * `headers` - HTTP headers from the incoming request
+        * `payload` - JSON payload containing image generation parameters
+
+        # Returns
+        * `Result<Response<Body>>` - The processed response from the AI node or an error status
+
+        # Errors
+        * Returns various status codes based on the underlying `handle_image_generation_response`:
+          - `INTERNAL_SERVER_ERROR` - If there's an error communicating with the AI node
+
+        # Example Payload
+        ```json
+        {
+            "model": "stable-diffusion-v1-5",
+            "n": 1,
+            "size": "1024x1024"
+        }
+        ```
+      operationId: image_generations_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateImageRequest"
+        required: true
+      responses:
+        "200":
+          description: Image generations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateImageResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /v1/confidential/images/generations:
+    post:
+      tags:
+        - Confidential Images
+      summary: Create confidential image
+      description: |-
+        This handler processes image generation requests in a confidential manner, providing additional
+        encryption and security measures for sensitive data processing. It supports both streaming and
+        non-streaming responses while maintaining data confidentiality through AEAD encryption and TEE hardware,
+        for full private AI compute.
+      operationId: confidential_image_generations_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfidentialComputeRequest"
+        required: true
+      responses:
+        "200":
+          description: Image generations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfidentialComputeResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /v1/encryption/public-key:
+    get:
+      tags:
+        - Confidential Node Public Key Selection
+      summary: Handles requests to select a node's public key for confidential compute operations.
+      description: |-
+        This endpoint attempts to find a suitable node and retrieve its public key for encryption
+        through a two-step process:
+
+        1. First, it tries to select an existing node with a public key directly.
+        2. If no node is immediately available, it falls back to finding the cheapest compatible node
+           and acquiring a new stack entry for it.
+
+        # Parameters
+        - `state`: The shared proxy state containing connections to the state manager and Sui
+        - `metadata`: Request metadata from middleware
+        - `request`: JSON payload containing the requested model name
+
+        # Returns
+        Returns a `Result` containing either:
+        - `Json<SelectNodePublicKeyResponse>` with:
+          - The selected node's public key (base64 encoded)
+          - The node's small ID
+          - Optional stack entry digest (if a new stack entry was acquired)
+        - `AtomaProxyError` error if:
+          - `INTERNAL_SERVER_ERROR` - Communication errors or missing node public keys
+          - `SERVICE_UNAVAILABLE` - No nodes available for confidential compute
+
+        # Example Response
+        ```json
+        {
+            "public_key": [base64_encoded_bytes],
+            "node_small_id": 123,
+            "stack_entry_digest": "transaction_digest_string"
+        }
+        ```
+
+        This endpoint is specifically designed for confidential compute scenarios where
+        requests need to be encrypted before being processed by nodes.
+      operationId: select_node_public_key
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SelectNodePublicKeyRequest"
+        required: true
+      responses:
+        "200":
+          description: Node DH public key requested successfully
+          content:
+            application/json:
+              schema: {}
+        "500":
+          description: Failed to request node DH public key
+        "503":
+          description: No node found for model with confidential compute enabled for requested model
+components:
+  schemas:
+    ChatCompletionChoice:
+      type: object
+      required:
+        - index
+        - message
+      properties:
+        finish_reason:
+          type:
+            - string
+            - "null"
+          description: The reason the chat completion was finished.
+        index:
+          type: integer
+          format: int32
+          description: The index of this choice in the list of choices.
+        logprobs:
+          description: Log probability information for the choice, if applicable.
+        message:
+          $ref: "#/components/schemas/ChatCompletionMessage"
+          description: The chat completion message.
+    ChatCompletionChunk:
+      type: object
+      required:
+        - id
+        - created
+        - model
+        - choices
+      properties:
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatCompletionChunkChoice"
+          description: A list of chat completion chunk choices.
+        created:
+          type: integer
+          format: int64
+          description: The Unix timestamp (in seconds) of when the chunk was created.
+        id:
+          type: string
+          description: A unique identifier for the chat completion chunk.
+        model:
+          type: string
+          description: The model used for the chat completion.
+    ChatCompletionChunkChoice:
+      type: object
+      required:
+        - index
+        - delta
+      properties:
+        delta:
+          $ref: "#/components/schemas/ChatCompletionChunkDelta"
+          description: The chat completion delta message for streaming.
+        finish_reason:
+          type:
+            - string
+            - "null"
+          description: The reason the chat completion was finished, if applicable.
+        index:
+          type: integer
+          format: int32
+          description: The index of this choice in the list of choices.
+    ChatCompletionChunkDelta:
+      type: object
+      properties:
+        content:
+          type:
+            - string
+            - "null"
+          description: The content of the message, if present in this chunk.
+        function_call:
+          description: The function call information, if present in this chunk.
+        role:
+          type:
+            - string
+            - "null"
+          description: The role of the message author, if present in this chunk.
+        tool_calls:
+          type:
+            - array
+            - "null"
+          items: {}
+          description: The tool calls information, if present in this chunk.
+    ChatCompletionMessage:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        content:
+          type: string
+          description: The contents of the message
+        name:
+          type:
+            - string
+            - "null"
+          description: The name of the author of this message
+        role:
+          type: string
+          description: 'The role of the message author. One of: "system", "user", "assistant", "tool", or "function"'
+    ChatCompletionRequest:
+      type: object
+      required:
+        - model
+        - messages
+      properties:
+        frequency_penalty:
+          type:
+            - number
+            - "null"
+          format: float
+          description: |-
+            Number between -2.0 and 2.0. Positive values penalize new tokens based on their
+            existing frequency in the text so far
+        function_call:
+          description: Controls how the model responds to function calls
+        functions:
+          type:
+            - array
+            - "null"
+          items: {}
+          description: A list of functions the model may generate JSON inputs for
+        logit_bias:
+          type:
+            - object
+            - "null"
+          description: Modify the likelihood of specified tokens appearing in the completion
+          additionalProperties:
+            type: number
+            format: float
+          propertyNames:
+            type: string
+        max_tokens:
+          type:
+            - integer
+            - "null"
+          format: int32
+          description: The maximum number of tokens to generate in the chat completion
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatCompletionMessage"
+          description: A list of messages comprising the conversation so far
+        model:
+          type: string
+          description: ID of the model to use
+        n:
+          type:
+            - integer
+            - "null"
+          format: int32
+          description: How many chat completion choices to generate for each input message
+        presence_penalty:
+          type:
+            - number
+            - "null"
+          format: float
+          description: |-
+            Number between -2.0 and 2.0. Positive values penalize new tokens based on
+            whether they appear in the text so far
+        response_format:
+          description: The format to return the response in
+        seed:
+          type:
+            - integer
+            - "null"
+          format: int64
+          description: If specified, our system will make a best effort to sample deterministically
+        stop:
+          type:
+            - array
+            - "null"
+          items:
+            type: string
+          description: Up to 4 sequences where the API will stop generating further tokens
+        stream:
+          type:
+            - boolean
+            - "null"
+          description: Whether to stream back partial progress
+        temperature:
+          type:
+            - number
+            - "null"
+          format: float
+          description: What sampling temperature to use, between 0 and 2
+        tool_choice:
+          description: Controls which (if any) tool the model should use
+        tools:
+          type:
+            - array
+            - "null"
+          items: {}
+          description: A list of tools the model may call
+        top_p:
+          type:
+            - number
+            - "null"
+          format: float
+          description: An alternative to sampling with temperature
+        user:
+          type:
+            - string
+            - "null"
+          description: A unique identifier representing your end-user
+    ChatCompletionResponse:
+      type: object
+      required:
+        - id
+        - created
+        - model
+        - choices
+      properties:
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/ChatCompletionChoice"
+          description: A list of chat completion choices.
+        created:
+          type: integer
+          format: int64
+          description: The Unix timestamp (in seconds) of when the chat completion was created.
+        id:
+          type: string
+          description: A unique identifier for the chat completion.
+        model:
+          type: string
+          description: The model used for the chat completion.
+        system_fingerprint:
+          type:
+            - string
+            - "null"
+          description: The system fingerprint for the completion, if applicable.
+        usage:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/CompletionUsage"
+              description: Usage statistics for the completion request.
+    ChatCompletionStreamResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/ChatCompletionChunk"
+          description: The stream of chat completion chunks.
+    CompletionUsage:
+      type: object
+      required:
+        - prompt_tokens
+        - completion_tokens
+        - total_tokens
+      properties:
+        completion_tokens:
+          type: integer
+          format: int32
+          description: Number of tokens in the completion.
+        prompt_tokens:
+          type: integer
+          format: int32
+          description: Number of tokens in the prompt.
+        total_tokens:
+          type: integer
+          format: int32
+          description: Total number of tokens used (prompt + completion).
+    ConfidentialComputeRequest:
+      type: object
+      description: A request for confidential computation that includes encrypted data and associated cryptographic parameters
+      required:
+        - ciphertext
+        - stack_small_id
+        - nonce
+        - salt
+        - client_dh_public_key
+        - node_dh_public_key
+        - plaintext_body_hash
+        - model_name
+      properties:
+        ciphertext:
+          type: string
+          description: The encrypted payload that needs to be processed (base64 encoded)
+        client_dh_public_key:
+          type: string
+          description: Client's public key for Diffie-Hellman key exchange (base64 encoded)
+        model_name:
+          type: string
+          description: Model name
+        node_dh_public_key:
+          type: string
+          description: Node's public key for Diffie-Hellman key exchange (base64 encoded)
+        nonce:
+          type: string
+          description: Cryptographic nonce used for encryption (base64 encoded)
+        num_compute_units:
+          type:
+            - integer
+            - "null"
+          format: int64
+          description: |-
+            Number of compute units to be used for the request, for image generations,
+            as this value is known in advance (the number of pixels to generate)
+          minimum: 0
+        plaintext_body_hash:
+          type: string
+          description: Hash of the original plaintext body for integrity verification (base64 encoded)
+        salt:
+          type: string
+          description: Salt value used in key derivation (base64 encoded)
+        stack_small_id:
+          type: integer
+          format: int64
+          description: Unique identifier for the small stack being used
+          minimum: 0
+        stream:
+          type:
+            - boolean
+            - "null"
+          description: Indicates whether this is a streaming request
+    ConfidentialComputeResponse:
+      type: object
+      description: Represents a response from a confidential compute request
+      required:
+        - ciphertext
+        - nonce
+      properties:
+        ciphertext:
+          type: string
+          description: Encrypted response body (base64 encoded)
+        nonce:
+          type: string
+          description: Nonce used for encryption (base64 encoded)
+        response_hash:
+          type:
+            - string
+            - "null"
+          description: Hash of the response body (base64 encoded)
+        signature:
+          type:
+            - string
+            - "null"
+          description: Signature of the response body (base64 encoded)
+        usage:
+          oneOf:
+            - type: "null"
+            - $ref: "#/components/schemas/Usage"
+              description: Usage statistics for the request
+    CreateChatCompletionRequest:
+      allOf:
+        - $ref: "#/components/schemas/ChatCompletionRequest"
+        - type: object
+          properties:
+            stream:
+              type:
+                - boolean
+                - "null"
+              description: Whether to stream back partial progress. Must be false for this request type.
+              default: false
+    CreateChatCompletionStreamRequest:
+      allOf:
+        - $ref: "#/components/schemas/ChatCompletionRequest"
+        - type: object
+          required:
+            - stream
+          properties:
+            stream:
+              type: boolean
+              description: Whether to stream back partial progress. Must be true for this request type.
+              default: true
+    CreateEmbeddingRequest:
+      type: object
+      description: Request object for creating embeddings
+      required:
+        - model
+        - input
+      properties:
+        dimensions:
+          type:
+            - integer
+            - "null"
+          format: int32
+          description: |-
+            The number of dimensions the resulting output embeddings should have.
+            Only supported in text-embedding-3 models.
+          minimum: 0
+        encoding_format:
+          type:
+            - string
+            - "null"
+          description: |-
+            The format to return the embeddings in. Can be "float" or "base64".
+            Defaults to "float"
+        input:
+          $ref: "#/components/schemas/EmbeddingInput"
+          description: |-
+            Input text to get embeddings for. Can be a string or array of strings.
+            Each input must not exceed the max input tokens for the model
+        model:
+          type: string
+          description: ID of the model to use.
+        user:
+          type:
+            - string
+            - "null"
+          description: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+    CreateEmbeddingResponse:
+      type: object
+      description: Response object from creating embeddings
+      required:
+        - object
+        - model
+        - data
+        - usage
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmbeddingObject"
+          description: List of embedding objects
+        model:
+          type: string
+          description: The model used for generating embeddings
+        object:
+          type: string
+          description: The object type, which is always "list"
+        usage:
+          $ref: "#/components/schemas/EmbeddingUsage"
+          description: Usage statistics for the request
+    CreateImageRequest:
+      type: object
+      description: Request body for image generation
+      required:
+        - prompt
+        - model
+      properties:
+        model:
+          type: string
+          description: The model to use for image generation.
+        n:
+          type:
+            - integer
+            - "null"
+          format: int32
+          description: The number of images to generate. Defaults to 1.
+          minimum: 0
+        prompt:
+          type: string
+          description: A text description of the desired image(s). The maximum length is 1000 characters.
+        quality:
+          type:
+            - string
+            - "null"
+          description: |-
+            The quality of the image that will be generated.
+            `hd` creates images with finer details and greater consistency across the image.
+        response_format:
+          type:
+            - string
+            - "null"
+          description: The format in which the generated images are returned.
+        size:
+          type:
+            - string
+            - "null"
+          description: The size of the generated images.
+        style:
+          type:
+            - string
+            - "null"
+          description: The style of the generated images.
+        user:
+          type:
+            - string
+            - "null"
+          description: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+    CreateImageResponse:
+      type: object
+      description: Response format for image generation
+      required:
+        - created
+        - data
+      properties:
+        created:
+          type: integer
+          format: int64
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/ImageData"
+    EmbeddingInput:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            type: string
+    EmbeddingObject:
+      type: object
+      description: Individual embedding object in the response
+      required:
+        - object
+        - embedding
+        - index
+      properties:
+        embedding:
+          type: array
+          items:
+            type: number
+            format: float
+          description: The embedding vector
+        index:
+          type: integer
+          description: Index of the embedding in the list of embeddings
+          minimum: 0
+        object:
+          type: string
+          description: The object type, which is always "embedding"
+    EmbeddingUsage:
+      type: object
+      description: Usage information for the embeddings request
+      required:
+        - prompt_tokens
+        - total_tokens
+      properties:
+        prompt_tokens:
+          type: integer
+          format: int32
+          description: Number of tokens in the prompt
+          minimum: 0
+        total_tokens:
+          type: integer
+          format: int32
+          description: Total tokens used in the request
+          minimum: 0
+    ImageData:
+      type: object
+      description: Individual image data in the response
+      required:
+        - url
+      properties:
+        revised_prompt:
+          type:
+            - string
+            - "null"
+        url:
+          type: string
+    SelectNodePublicKeyRequest:
+      type: object
+      description: |-
+        The request body for selecting a node's public key for encryption
+        from a client.
+      required:
+        - model_name
+      properties:
+        model_name:
+          type: string
+          description: The request model name
+    Usage:
+      type: object
+      description: Represents usage statistics for a confidential compute request
+      required:
+        - prompt_tokens
+        - total_tokens
+      properties:
+        completion_tokens:
+          type:
+            - integer
+            - "null"
+          format: int64
+          description: |-
+            Number of compute units used
+            NOTE: This is not used for the embeddings endpoint
+          minimum: 0
+        completion_tokens_details:
+          description: Details about the completion tokens
+        prompt_tokens:
+          type: integer
+          format: int64
+          description: Number of compute units used
+          minimum: 0
+        total_tokens:
+          type: integer
+          format: int64
+          description: Number of compute units used
+          minimum: 0
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+tags:
+  - name: Health
+    description: Health check
+  - name: Chat
+    description: OpenAI's API chat completions v1 endpoint
+  - name: Confidential Chat
+    description: Atoma's API confidential chat completions v1 endpoint
+  - name: Models
+    description: OpenAI's API models v1 endpoint
+  - name: Node Public Address Registration
+    description: Node public address registration
+  - name: Embeddings
+    description: OpenAI's API embeddings v1 endpoint
+  - name: Confidential Embeddings
+    description: Atoma's API confidential embeddings v1 endpoint
+  - name: Images
+    description: OpenAI's API images v1 endpoint
+  - name: Confidential Images
+    description: Atoma's API confidential images v1 endpoint
+  - name: Node Public Key Selection
+    description: Node public key selection
+x-speakeasy-name-override:
+  - operationId: chat_completions_create
+    methodNameOverride: create
+  - operationId: chat_completions_create_stream
+    methodNameOverride: create_stream
+  - operationId: confidential_chat_completions_create
+    methodNameOverride: create
+  - operationId: embeddings_create
+    methodNameOverride: create
+  - operationId: confidential_embeddings_create
+    methodNameOverride: create
+  - operationId: image_generations_create
+    methodNameOverride: generate
+  - operationId: confidential_image_generations_create
+    methodNameOverride: generate
