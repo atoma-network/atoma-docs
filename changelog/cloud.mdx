@@ -3,31 +3,39 @@ title: 'Cloud Changelog'
 description: 'Latest updates of Atoma Cloud'
 ---
 
-<Update label="2025-01-06" description="v0.1.3">
-# Atoma Cloud v0.1.3 - Performance & Reliability Updates 🚀
+<Update label="2025-01-06" description="v0.1.2">
+# Atoma Cloud v0.1.2 - Infrastructure & User Experience Updates 🔧
 
 ## Core Improvements
 
 ### 🔧 Backend Enhancements
-- Extended vLLM backend support through environment variables
 - Updated tokenizers version for improved compatibility
-- Implemented total token processing metrics
-- Resolved node public key rotations database issues
-- Fixed MistralRS keep-alive-text streaming hang
-
-### 📊 Monitoring & Logging
-- Fixed Prometheus labelling issues
-- Enhanced logging functionality on Atoma node
-- Improved Atoma service error handling
-
-### 💻 Infrastructure Updates
-- Refactored compute units logical flow
+- Enhanced chunk string parsing in streamer
+- Improved error handling for proxy service
 - Refactored confidential compute endpoints
-- Resolved build issues with TDX features
-- Updated API documentation
+- Made streaming functionality optional
+- Removed max_tokens requirement for improved flexibility
+- Added task non-deprecated constraint
+
+### 💰 Economic Features
+- Added USDC balance tracking for users
+- Implemented balance and stack retrieval for users
+- Added stack timestamp functionality
+- Enhanced model capabilities configuration in proxy
+
+### 🛠️ Infrastructure Updates
+- Added Traefik service to Docker compose
+- Implemented local deployment Docker compose file
+- Enhanced confidential compute response handling
+- Improved logging system with debug to info transitions
+
+## New Contributors
+* @fishonamos made their first contribution
+
+**Full Changelog**: https://github.com/atoma-network/atoma-proxy/compare/v0.1.1...v0.1.2
 </Update>
 
-<Update label="2024-12-26" description="v0.1.2">
+<Update label="2024-12-26" description="v0.1.1">
 # Atoma Cloud v0.1.2 - Database Optimization 🔧
 
 ## Core Improvements
