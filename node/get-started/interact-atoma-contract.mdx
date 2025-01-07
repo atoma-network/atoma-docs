@@ -7,9 +7,9 @@ Atoma testnet parameters:
 
 | Resource | ID |
 |----------|-----|
-| Package ID | `0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013` |
-| DB Object ID | `0x7b8f40e38698deb650519a51f9c1a725bf8cfdc074d1552a4dc85976c2b414be` |
-| TOMA Faucet Token | `0xa1b2ce1a52abc52c5d21be9da0f752dbd587018bc666c5298f778f42de26df1d` |
+| Package ID | `0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922` |
+| DB Object ID | `0xe0b1d6458f349d4bc71ef119694866f1d6ee6915b43f8cc05a5d44a49e3e1f0f` |
+| USDC Faucet Token | `0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29` |
 
 ## Prerequisites
 
@@ -23,7 +23,7 @@ cd atoma-contracts/sui/
 
 ```bash
 ./dev/cli db register-node \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013"
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922"
 ```
 
 ## Subscribe to Task
@@ -33,14 +33,12 @@ Available tasks:
 
 | Task Small ID  | Model Name                                   |
 | -------------- | -------------------------------------------- |
-| 1              | meta-llama/Llama-3.1-70B-Instruct            |
-| 2              | NousResearch/Hermes-3-Llama-3.1-70B          |
-| 3              | meta-llama/Llama-3.2-3B-Instruct             |
-| 4              | meta-llama/Llama-3.1-8B-Instruct             |
-| 5              | NousResearch/Hermes-3-Llama-3.1-8B           |
-| 6              | NousResearch/Hermes-3-Llama-3.1-405B         |
-| 7              | meta-llama/Llama-3.1-405B-Instruct           |
-| 8              | NousResearch/Hermes-3-Llama-3.1-70B-FP8      |
+| 1              | unsloth/Llama-3.2-1B-Instruct                |
+| 2              | meta-llama/Llama-3.1-405B-FP8                |
+| 3              | neuralmagic/Meta-Llama-3.1-405B-Instruct-FP8 |
+| 5              | intfloat/multilingual-e5-large-instruct      |
+| 6              | black-forest-labs/FLUX.1-schnell             |
+| 7              | meta-llama/Llama-3.3-70B-Instruct            |
 
 1. Subscribe to Task
 
@@ -52,7 +50,7 @@ Available tasks:
 
 ```bash
 ./dev/cli db subscribe-node-to-task \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --task-small-id 1 \
   --price-per-compute-unit 1 \
   --max-num-compute-units 10000000

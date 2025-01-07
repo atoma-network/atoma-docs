@@ -273,7 +273,7 @@ On the other hand, any participant on the network can start a dispute mechanism 
 
 ```
 ./dev/cli db start-attestation-dispute \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --stack-small-id 1 \ # The Stack small id to which this transaction refers to 
   --attestation-commitment MERKLE_TREE_ROOT_BYTE_LEN32_ARRAY \ # Byte array of length 32 containing a proof commitment to the whole Stack history of requests and responses
 ```
@@ -286,6 +286,6 @@ Once the dispute challenge period has finished for a `Stack`, the node can final
 
 ```
 ./dev/cli db claim-funds \
-  --package "0xc05bae323433740c969d8cf938c48d7559490be5f8dde158792e7a0623787013" \
+  --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
   --settled-ticket-ids 1,2,3,4 \ # The Stack small id to which this transaction refers to 
 ```
