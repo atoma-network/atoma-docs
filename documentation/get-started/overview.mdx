@@ -15,28 +15,32 @@ description: 'Welcome to Atoma - The Decentralized Private AI Network'
 
 ## Welcome to Atoma
 
-Atoma is a decentralized AI network that connects AI model providers with users seeking AI compute resources. Our platform streamlines AI model deployment and monetization while ensuring reliable access for users.
+Atoma is a decentralized private and verifiable AI execution network. It provides the infrastructure for developers and enterprises to use open-source AI models and build AI applications with full privacy.
 
-### Key Features
+There are several key components to Atoma’s infrastructure: 
 
-- **Decentralized AI Compute**: A network of execution nodes required to process AI requests. These include inference, text embeddings, fine-tuning, etc.
-In short, Atoma provides a permissionless and scalable AI infrastructure.
+- **Decentralized AI Compute**: 
+  - Atoma has a global network of GPUs that register on the network to perform inference requests, referred to as execution nodes. 
+  - Rather than processing requests through a single data centre, Atoma is a fully permissionless network that works with data centres around the world to intelligently distribute AI requests.
 
-- **Free Market Economics**: Implements a dynamic marketplace where:
-  - Node operators set competitive rates for their compute resources
-  - Users can choose nodes based on cost, performance, and privacy features
-  - Intelligent request routing ensures cost-effective and efficient performance
-  - Guarantees of maximum GPU utilization across the network, for maximum compute efficiency
-  - Atoma's smart contracts ensure secure and transparent handling of compute resources and payments. 
+- **Dynamic Marketplace**: 
+  - Node operators set rates for their compute resources. 
+  - Users select nodes based on cost, performance, and privacy preferences.
+
+- **Atoma Proxy**: 
+  - Each request is distributed to the most relevant node based on the hardware spec and whether privacy is requested, for that particular request. 
+  - This ensures cost efficiency and performance. 
 
 - **Privacy and Security**:
-  - Uses Trusted Execution Environments (TEEs) to safeguard user data and models and ensure computation integrity
-  - Sampling consensus algorithm for AI compute integrity, for nodes not equipped with TEEs
-  - Data remains inaccessible across the network, ensuring privacy and security
+  - Trusted Execution Environments (TEEs) ensure computations are secure and data remains private.
+  - The Sampling Consensus Protocol verifies computation integrity across the network.
+  - Data and model weights are inaccessible to unauthorized parties, protecting user and model provider assets.
 
-- **OpenAI API Compatibility**: Access the decentralized network through OpenAI-compatible APIs for seamless integration with existing applications.
+- **OpenAI API Compatibility**: 
+  - The network supports OpenAI-compatible APIs, allowing developers to integrate decentralized AI capabilities without reworking existing systems.
 
-- **Community Governance**: Atoma's treasury is managed by the community, with transparent reward distribution.
+- **Community Governance**: 
+  - Atoma's treasury is managed by the community, with transparent reward distribution.
 
 ## Getting Started
 
