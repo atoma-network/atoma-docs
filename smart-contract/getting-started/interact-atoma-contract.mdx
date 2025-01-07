@@ -1,42 +1,40 @@
 ---
-title: "Interact with the Atoma smart contract"
+title: "Interact with the Atoma Smart Contract"
 ---
 
-Describes the main steps how to interact with the Atoma smart contract
+Describes the main steps how to interact with the Atoma Smart Contract
 
 In order to interact with the Atoma contract, we provide a set of tools which include a custom cli module for Atoma, that allows anyone to submit transactions into Atoma. Furthermore, node operators can leverage a custom daemon that automatizes many of the processes related to operating a node (we will provide a more extensive description of the daemon functionalities in a later section).
 
 ### Install Sui cli
 
-The first step is to install locally the Sui client software. This can be done as follows:
-
-#### 1. Install the Sui client locally:
+#### 1. Install the Sui Client Locally:
 
 The first step in setting up an Atoma node is installing the Sui client locally. Please refer to the [Sui installation guide](https://docs.sui.io/build/install) for more information.
 
-Once you have the Sui client installed, locally, you need to connect to a Sui RPC node to be able to interact with the Sui blockchain and therefore the Atoma smart contract. Please refer to the [Connect to a Sui Network guide](https://docs.sui.io/guides/developer/getting-started/connect) for more information.
+After installing the Sui client, connect to a Sui RPC node to be able to interact with the Sui blockchain and therefore the Atoma smart contract. Please refer to the [Connect to a Sui Network guide](https://docs.sui.io/guides/developer/getting-started/connect) for more information.
 
-You then need to create a wallet and fund it with some testnet SUI. Please refer to the [Sui wallet guide](https://docs.sui.io/guides/developer/getting-started/get-address) for more information. If you are plan to run the Atoma node on Sui's testnet, you can request testnet SUI tokens by following the [docs](https://docs.sui.io/guides/developer/getting-started/get-coins).
+Next, create a wallet and fund it with some testnet SUI. Please refer to the [Sui wallet guide](https://docs.sui.io/guides/developer/getting-started/get-address) for more information. If you plan to run the Atoma node on Sui's testnet, you can request testnet SUI tokens by following the [docs](https://docs.sui.io/guides/developer/getting-started/get-coins).
 
-Once you finish the steps above, you should have the following files created locally:
+After completing the steps above, you should have the following files created locally:
 
 * `~/.sui/sui_config/client.yaml` - the Sui client configuration file.
 
 * `~/.sui/sui_config/sui.keystore` - The Sui keystore file (contains your private key(s)).
 
-You can request Sui testnet funds by running the command:
+Request Sui testnet funds by running the command:
 
 ```
 sui client faucet
 ```
 
-You can then query your wallet balance through
+You can query your wallet balance through
 
 ```
 sui client balance
 ```
 
-### Atoma testnet parameters
+### Atoma Testnet Parameters
 
 1. **Atoma's package id (on Sui's testnet):** `0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922`
 
@@ -46,9 +44,9 @@ sui client balance
 
    `0xa1ec7fc00a6f40db9693ad1415d0c193ad3906494428cf252621037bd7117e29`
 
-### Set up Atoma's custom cli
+### Set up Atoma's Custom cli
 
-In order to interact with the Atoma contract, through our custom cli, one must follow the steps:
+To interact with the Atoma contract through our custom cli, follow these steps:
 
 1. **Clone the Atoma contract repository:**
 
@@ -57,7 +55,7 @@ git clone https://github.com/atoma-network/atoma-contracts
 cd atoma-contracts/sui/
 ```
 
-1. The current Atoma contract relies on `USDC` for payments. In order to start interacting with the Atoma contract, you need to request `USDC` tokens to your (local) active Sui wallet.
+The current Atoma contract relies on `USDC` for payments. In order to start interacting with the Atoma contract, you need to request `USDC` tokens to your (local) active Sui wallet.
 In order to do so, you can request Sui testnet `USDC` tokens to your (local) active Sui wallet, via the url:
 
 ```
@@ -74,35 +72,35 @@ Notice that the `USDC` uses 6 decimal places, which means that to `1 USDC`is rep
 
 ### Tasks on Atoma
 
-Tasks on Atoma are used to specify compute jobs on the network. Each `Task` is assigned a role. Roles can be one of those values:
+Tasks on Atoma specify compute jobs on the network. Each `Task` is assigned a role. Roles can be one of the following values:
 
-1. Chat completions - 0
+- Chat completions - 0
 
-2. Embeddings - 1
+- Embeddings - 1
 
-3. Vision - 2
+- Vision - 2
 
-4. Image generation - 3
+- Image generation - 3
 
-5. Text to speech - 4
+- Text to speech - 4
 
-6. Speech to Text - 5
+- Speech to Text - 5
 
-7. Fine tuning - 6
+- Fine tuning - 6
 
-8. Training - 7
+- Training - 7
 
-To spawn a new `Task` on Atoma, one can specify a model (following HuggingFace name convention), for example:
+To spawn a new `Task` on Atoma, specify a model (following HuggingFace name convention), for example:
 
 `model-name: meta-llama/Llama-3.3-70B-Instruct`
 
-It is also possible to specify an optional `Security level` for the `Task`:
+You can specify an optional `Security level` for the `Task`:
 
-1. No security - 0 (meaning no additional security requirements like verifiability or privacy are required)
+- No security - 0 (meaning no additional security requirements like verifiability or privacy are required)
 
-2. Confidential compute - 1 (meaning that the each workload on Atoma for this task is performed within proper TEEs, for both verifiable and private AI)
+- Confidential compute - 1 (meaning that the each workload on Atoma for this task is performed within proper TEEs, for both verifiable and private AI)
 
-3. Sampling Consensus - 2 (meaning that each workload on Atoma for this task requires `Sampling Consensus` to be executed, allowing for verifiable AI through crypto-economics guarantees).
+- Sampling Consensus - 2 (meaning that each workload on Atoma for this task requires `Sampling Consensus` to be executed, allowing for verifiable AI through crypto-economics guarantees).
 
 The `Task` creator can also specify a minimum node reputation score (minimum 0 and maximum 100). 
 
@@ -141,7 +139,7 @@ public struct TaskSmallId has store, copy, drop {
 
 This number is important to refer to the task in future transactions such as subscribing nodes to tasks, deprecated or remove tasks, buy Stacks on behalf of a user, etc.
 
-### Deprecating tasks
+### Deprecating Tasks
 
 It is possible to deprecate tasks that are active, and were created by the current wallet by running:
 
@@ -152,7 +150,7 @@ It is possible to deprecate tasks that are active, and were created by the curre
 
 The `TASK_BADGE_ID` value is the id within `TaskBadge` that can be accessed by querying the wallet owned objects.
 
-### Removing tasks
+### Removing Tasks
 
 To remove a task that was already deprecated, one can run the command:
 
@@ -161,7 +159,7 @@ To remove a task that was already deprecated, one can run the command:
   --package "0xfa971724b5fb14c2ffc9a959b81cce4d85d457da27e29f793e12428ed71bb922" \
 ```
 
-### Register a node
+### Register a Node
 
 The easiest way to register a node on the Atoma contract is through the Atoma node daemon. However, it is also possible to register a node manually through the Atoma cli.
 In order to register a node on Atoma,
@@ -190,7 +188,7 @@ public struct NodeSmallId has store, copy, drop {
 
 which is a unique identifier that allows the Atoma contract to select different nodes for different tasks workloads.
 
-### Subscribe a node to a Task
+### Subscribe a Node to a Task
 
 In order for Atoma nodes to participate in the protocol, these must subscribe to specific tasks:
 
@@ -204,7 +202,7 @@ In order for Atoma nodes to participate in the protocol, these must subscribe to
 The `price-per-one-million-compute-units` is the price to which the node is willing to be paid for 1 million compute units. More concretely, in the example above, if `task-small-id` 1 is a `Chat completions` task,
 say for `meta-llama/Llama-3.3-70B-Instruct`, then the subscribed node is charging a price of `1 USDC` for 1 million (LLM) tokens for the model `meta-llama/Llama-3.3-70B-Instruct`.
 
-### Unsubscribe node from a Task
+### Unsubscribe a Node from a Task
 
 Nodes on Atoma can unsubscribe from Tasks that these have subscribed to (even though nodes must claim each active Stacks):
 
@@ -282,7 +280,7 @@ On the other hand, any participant on the network can start a dispute mechanism 
 
 In this case, a dispute resolution mechanism is put forth by the contract to resolve the dispute. The dishonest part involved in the dispute resolution mechanism will be at risk of slashed collateral.
 
-### Claim funds
+### Claim Funds
 
 Once the dispute challenge period has finished for a `Stack`, the node can finally claim its funds by running the command:
 
