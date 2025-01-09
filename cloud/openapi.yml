@@ -9,74 +9,6 @@ info:
 servers:
   - url: https://api.atomacloud.com
 paths:
-  /health:
-    get:
-      tags:
-        - Health
-      summary: Health
-      operationId: health
-      responses:
-        "200":
-          description: Service is healthy
-          content:
-            application/json:
-              schema: {}
-        "500":
-          description: Service is unhealthy
-  /v1/models:
-    get:
-      tags:
-        - Models
-      summary: List models
-      description: |-
-        This endpoint mimics the OpenAI models endpoint format, returning a list of
-        available models with their associated metadata. Each model includes standard
-        OpenAI-compatible fields to ensure compatibility with existing OpenAI client libraries.
-      operationId: models_list
-      responses:
-        "200":
-          description: List of available models
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ModelList"
-        "500":
-          description: Failed to retrieve list of available models
-      security:
-        - bearerAuth: []
-  /node/registration:
-    post:
-      tags:
-        - Node Public Address Registration
-      summary: Register node
-      description: |-
-        This endpoint allows nodes to register or update their public address in the system.
-        When a node comes online or changes its address, it can use this endpoint to ensure
-        the system has its current address for routing requests.
-
-        ## Errors
-
-        Returns various `AtomaProxyError` variants:
-        * `MissingHeader` - If the signature header is missing
-        * `InvalidHeader` - If the signature header is malformed
-        * `InvalidBody` - If:
-          - The request body cannot be read
-          - The signature is invalid
-          - The body cannot be parsed
-          - The sui address doesn't match the signature
-        * `InternalError` - If:
-          - The state manager channel is closed
-          - The registration event cannot be sent
-          - Node Sui address lookup fails
-      operationId: node_public_address_registration
-      responses:
-        "200":
-          description: Node public address registered successfully
-          content:
-            application/json:
-              schema: {}
-        "500":
-          description: Failed to register node public address
   /v1/chat/completions:
     post:
       tags:
@@ -177,44 +109,6 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-  /v1/embeddings:
-    post:
-      tags:
-        - Embeddings
-      summary: Create embeddings
-      description: |-
-        This endpoint follows the OpenAI API format for generating vector embeddings from input text.
-        The handler receives pre-processed metadata from middleware and forwards the request to
-        the selected node.
-
-        # Returns
-        * `Ok(Response)` - The embeddings response from the processing node
-        * `Err(AtomaProxyError)` - An error status code if any step fails
-
-        ## Errors
-        * `INTERNAL_SERVER_ERROR` - Processing or node communication failures
-      operationId: embeddings_create
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateEmbeddingRequest"
-        required: true
-      responses:
-        "200":
-          description: Embeddings generated successfully
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CreateEmbeddingResponse"
-        "400":
-          description: Bad request
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
-      security:
-        - bearerAuth: []
   /v1/confidential/embeddings:
     post:
       tags:
@@ -246,41 +140,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ConfidentialComputeResponse"
-        "400":
-          description: Bad request
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal server error
-      security:
-        - bearerAuth: []
-  /v1/images/generations:
-    post:
-      tags:
-        - Images
-      summary: Create image
-      description: |-
-        This endpoint processes requests to generate images using AI models by forwarding them
-        to the appropriate AI node. The request metadata and compute units have already been
-        validated by middleware before reaching this handler.
-
-        ## Errors
-        * Returns various status codes based on the underlying `handle_image_generation_response`:
-          - `INTERNAL_SERVER_ERROR` - If there's an error communicating with the AI node
-      operationId: image_generations_create
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateImageRequest"
-        required: true
-      responses:
-        "200":
-          description: Image generations
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CreateImageResponse"
         "400":
           description: Bad request
         "401":
@@ -321,11 +180,159 @@ paths:
           description: Internal server error
       security:
         - bearerAuth: []
-  /v1/encryption/public-key:
+  /v1/embeddings:
+    post:
+      tags:
+        - Embeddings
+      summary: Create embeddings
+      description: |-
+        This endpoint follows the OpenAI API format for generating vector embeddings from input text.
+        The handler receives pre-processed metadata from middleware and forwards the request to
+        the selected node.
+
+        # Returns
+        * `Ok(Response)` - The embeddings response from the processing node
+        * `Err(AtomaProxyError)` - An error status code if any step fails
+
+        ## Errors
+        * `INTERNAL_SERVER_ERROR` - Processing or node communication failures
+      operationId: embeddings_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateEmbeddingRequest"
+        required: true
+      responses:
+        "200":
+          description: Embeddings generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateEmbeddingResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /health:
     get:
       tags:
-        - Confidential Node Public Key Selection
-      summary: Select node public key
+        - Health
+      summary: Health
+      operationId: health
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema: {}
+        "500":
+          description: Service is unhealthy
+  /v1/images/generations:
+    post:
+      tags:
+        - Images
+      summary: Create image
+      description: |-
+        This endpoint processes requests to generate images using AI models by forwarding them
+        to the appropriate AI node. The request metadata and compute units have already been
+        validated by middleware before reaching this handler.
+
+        ## Errors
+        * Returns various status codes based on the underlying `handle_image_generation_response`:
+          - `INTERNAL_SERVER_ERROR` - If there's an error communicating with the AI node
+      operationId: image_generations_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateImageRequest"
+        required: true
+      responses:
+        "200":
+          description: Image generations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateImageResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal server error
+      security:
+        - bearerAuth: []
+  /v1/models:
+    get:
+      tags:
+        - Models
+      summary: List models
+      description: |-
+        This endpoint mimics the OpenAI models endpoint format, returning a list of
+        available models with their associated metadata. Each model includes standard
+        OpenAI-compatible fields to ensure compatibility with existing OpenAI client libraries.
+      operationId: models_list
+      responses:
+        "200":
+          description: List of available models
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ModelList"
+        "500":
+          description: Failed to retrieve list of available models
+      security:
+        - bearerAuth: []
+  /v1/nodes:
+    post:
+      tags:
+        - Nodes
+      summary: Create node
+      description: |-
+        This endpoint allows nodes to register or update their public address in the system.
+        When a node comes online or changes its address, it can use this endpoint to ensure
+        the system has its current address for routing requests.
+
+        ## Errors
+
+        Returns various `AtomaProxyError` variants:
+        * `MissingHeader` - If the signature header is missing
+        * `InvalidHeader` - If the signature header is malformed
+        * `InvalidBody` - If:
+          - The request body cannot be read
+          - The signature is invalid
+          - The body cannot be parsed
+          - The sui address doesn't match the signature
+        * `InternalError` - If:
+          - The state manager channel is closed
+          - The registration event cannot be sent
+          - Node Sui address lookup fails
+      operationId: nodes_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NodesCreateRequest"
+        required: true
+      responses:
+        "200":
+          description: Node public address registered successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NodesCreateResponse"
+        "500":
+          description: Failed to register node public address
+  /v1/nodes/models/{model}:
+    get:
+      tags:
+        - Nodes
+      summary: Retrieve node for a given model
       description: |-
         This endpoint attempts to find a suitable node and retrieve its public key for encryption
         through a two-step process:
@@ -340,19 +347,21 @@ paths:
         ## Errors
           - `INTERNAL_SERVER_ERROR` - Communication errors or missing node public keys
           - `SERVICE_UNAVAILABLE` - No nodes available for confidential compute
-      operationId: select_node_public_key
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SelectNodePublicKeyRequest"
-        required: true
+      operationId: nodes_models_retrieve
+      parameters:
+        - name: model
+          in: path
+          description: The name of the model to retrieve
+          required: true
+          schema:
+            type: string
       responses:
         "200":
           description: Node DH public key requested successfully
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: "#/components/schemas/NodesModelsRetrieveResponse"
         "500":
           description: Failed to request node DH public key
         "503":
@@ -939,17 +948,83 @@ components:
         object:
           type: string
           description: The object type, which is always "list"
-    SelectNodePublicKeyRequest:
+    NodePublicAddressAssignment:
       type: object
       description: |-
-        The request body for selecting a node's public key for encryption
-        from a client.
+        Represents the payload for the node public address registration request.
+
+        This struct represents the payload for the node public address registration request.
       required:
-        - model_name
+        - node_small_id
+        - public_address
+        - country
       properties:
-        model_name:
+        country:
           type: string
-          description: The request model name
+          description: The country of the node
+        node_small_id:
+          type: integer
+          format: int64
+          description: Unique small integer identifier for the node
+          minimum: 0
+        public_address:
+          type: string
+          description: The public address of the node
+    NodesCreateRequest:
+      type: object
+      description: Represents the payload for the node public address registration request.
+      required:
+        - data
+        - signature
+      properties:
+        data:
+          $ref: "#/components/schemas/NodePublicAddressAssignment"
+          description: The data required to register a node's public address
+        signature:
+          type: string
+          description: The signature of the data base 64 encoded
+    NodesCreateResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: The message of the response
+    NodesModelsRetrieveResponse:
+      type: object
+      description: |-
+        The response body for selecting a node's public key for encryption
+        from a client. The client will use the provided public key to encrypt
+        the request and send it back to the proxy. The proxy will then route this
+        request to the selected node.
+      required:
+        - public_key
+        - node_small_id
+        - stack_small_id
+      properties:
+        node_small_id:
+          type: integer
+          format: int64
+          description: The node small id for the selected node
+          minimum: 0
+        public_key:
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 0
+          description: The public key for the selected node, base64 encoded
+        stack_entry_digest:
+          type:
+            - string
+            - "null"
+          description: Transaction digest for the transaction that acquires the stack entry, if any
+        stack_small_id:
+          type: integer
+          format: int64
+          description: The stack small id to which an available stack entry was acquired, for the selected node
+          minimum: 0
     Usage:
       type: object
       description: Represents usage statistics for a confidential compute request
@@ -983,24 +1058,24 @@ components:
       type: http
       scheme: bearer
 tags:
-  - name: Health
-    description: Health check
   - name: Chat
     description: OpenAI's API chat completions v1 endpoint
   - name: Confidential Chat
     description: Atoma's API confidential chat completions v1 endpoint
-  - name: Models
-    description: OpenAI's API models v1 endpoint
-  - name: Node Public Address Registration
-    description: Node public address registration
-  - name: Embeddings
-    description: OpenAI's API embeddings v1 endpoint
   - name: Confidential Embeddings
     description: Atoma's API confidential embeddings v1 endpoint
-  - name: Images
-    description: OpenAI's API images v1 endpoint
   - name: Confidential Images
     description: Atoma's API confidential images v1 endpoint
+  - name: Embeddings
+    description: OpenAI's API embeddings v1 endpoint
+  - name: Health
+    description: Health check
+  - name: Images
+    description: OpenAI's API images v1 endpoint
+  - name: Models
+    description: OpenAI's API models v1 endpoint
+  - name: Nodes
+    description: Nodes Management
   - name: Node Public Key Selection
     description: Node public key selection
 x-speakeasy-name-override:
