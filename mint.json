@@ -116,7 +116,6 @@
       "group": "Technical Reference",
       "pages": [
         "node/technical-reference/overview",
-        "node/technical-reference/node-config",
         "node/technical-reference/inference-services"
       ]
     },
