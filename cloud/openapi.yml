@@ -229,7 +229,8 @@ paths:
           description: Service is healthy
           content:
             application/json:
-              schema: {}
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
         "500":
           description: Service is unhealthy
   /v1/images/generations:
@@ -899,6 +900,14 @@ components:
           format: int32
           description: Total tokens used in the request
           minimum: 0
+    HealthResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: The status of the service
     ImageData:
       type: object
       description: Individual image data in the response
