@@ -34,13 +34,28 @@ Atoma Node integrates several leading open-source inference engines:
 | -------------------------------------------------------- | --------------------- | ----------------------------- |
 | [mistral.rs](https://github.com/EricLBuehler/mistral.rs) | CUDA                  | `image_generations_mistralrs` |
 
+To run the node with confidential compute mode, you can use the following command:
+
 ```bash
 # Build and start all services
-COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up --build
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,confidential docker compose up --build
 
 # Only start one service
-COMPOSE_PROFILES=chat_completions_vllm docker compose up --build
+COMPOSE_PROFILES=chat_completions_vllm,confidential docker compose up --build
 
 # Run in detached mode
-COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up -d --build
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,confidential docker compose up -d --build
+```
+
+Otherwise, you can run the node in non-confidential mode with:
+
+```bash
+# Build and start all services
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,non-confidential docker compose up --build
+
+# Only start one service
+COMPOSE_PROFILES=chat_completions_vllm,non-confidential docker compose up --build
+
+# Run in detached mode
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,non-confidential docker compose up -d --build
 ```

@@ -17,14 +17,28 @@ cd atoma-node
     To learn more about the inference services, refer to the [technical reference](/node/technical-reference/inference-services).
 </Info>
 
+You can run the node either in confidential compute mode (if you have a TEE enabled node) with:
+
 ```bash
 # Build and start all services
-COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,confidential docker compose up
 
 # Only start one service
-COMPOSE_PROFILES=chat_completions_vllm docker compose up
+COMPOSE_PROFILES=chat_completions_vllm,confidential docker compose up
 
 # Run in detached mode
-COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up -d
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,confidential docker compose up -d
 ```
 
+Otherwise, you can run the node in non-confidential mode with:
+
+```bash
+# Build and start all services
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,non-confidential docker compose up
+
+# Only start one service
+COMPOSE_PROFILES=chat_completions_vllm,non-confidential docker compose up
+
+# Run in detached mode
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,non-confidential docker compose up -d
+```
