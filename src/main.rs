@@ -1,27 +1,35 @@
 use anyhow::{Context, Result};
 use serde_yaml::{self, Value};
 use std::fs;
-use std::path::PathBuf;
 
 fn main() -> Result<()> {
+    merge_sdk_samples(
+        "cloud/openapi.yml",
+        "../atoma-sdk-typescript/codeSamples.yaml",
+        "../atoma-sdk-python/codeSamples.yaml",
+    )
+}
+
+fn merge_sdk_samples(
+    openapi_path: &str,
+    ts_samples_path: &str,
+    py_samples_path: &str,
+) -> Result<()> {
     // Read the OpenAPI spec
-    let openapi_path = "cloud/openapi.yml";
     let openapi_content =
         fs::read_to_string(openapi_path).context("Failed to read OpenAPI file")?;
     let mut openapi: Value =
         serde_yaml::from_str(&openapi_content).context("Failed to parse OpenAPI YAML")?;
 
     // Read the TypeScript code samples
-    let ts_samples_path = PathBuf::from("../atoma-sdk-typescript/codeSamples.yaml");
-    let ts_samples_content = fs::read_to_string(&ts_samples_path)
+    let ts_samples_content = fs::read_to_string(ts_samples_path)
         .context("Failed to read TypeScript code samples file")?;
     let ts_samples: Value = serde_yaml::from_str(&ts_samples_content)
         .context("Failed to parse TypeScript code samples YAML")?;
 
     // Read the Python code samples
-    let py_samples_path = PathBuf::from("../atoma-sdk-python/codeSamples.yaml");
     let py_samples_content =
-        fs::read_to_string(&py_samples_path).context("Failed to read Python code samples file")?;
+        fs::read_to_string(py_samples_path).context("Failed to read Python code samples file")?;
     let py_samples: Value = serde_yaml::from_str(&py_samples_content)
         .context("Failed to parse Python code samples YAML")?;
 
