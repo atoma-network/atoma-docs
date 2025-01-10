@@ -53,34 +53,32 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.chat.createStream({
-              messages: [
-                {
-                  content: "<value>",
-                  role: "<value>",
-                },
-              ],
-              model: "Impala",
-            });
-
-            for await (const event of result) {
-              // Handle the event
-              console.log(event);
-            }
-          }
-
-          run();
+  /v1/chat/completions#stream:
+    post:
+      tags:
+      - Chat
+      operationId: chat_completions_create_stream
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateChatCompletionStreamRequest'
+        required: true
+      responses:
+        '200':
+          description: Chat completions
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ChatCompletionStreamResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
   /v1/confidential/chat/completions:
     post:
       tags:
@@ -137,33 +135,6 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.confidentialChat.create({
-              ciphertext: "<value>",
-              clientDhPublicKey: "<value>",
-              modelName: "<value>",
-              nodeDhPublicKey: "<value>",
-              nonce: "<value>",
-              plaintextBodyHash: "<value>",
-              salt: "<value>",
-              stackSmallId: 486589,
-            });
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
   /v1/confidential/embeddings:
     post:
       tags:
@@ -203,33 +174,6 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.confidentialEmbeddings.create({
-              ciphertext: "<value>",
-              clientDhPublicKey: "<value>",
-              modelName: "<value>",
-              nodeDhPublicKey: "<value>",
-              nonce: "<value>",
-              plaintextBodyHash: "<value>",
-              salt: "<value>",
-              stackSmallId: 486589,
-            });
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
   /v1/confidential/images/generations:
     post:
       tags:
@@ -262,33 +206,6 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.confidentialImages.generate({
-              ciphertext: "<value>",
-              clientDhPublicKey: "<value>",
-              modelName: "<value>",
-              nodeDhPublicKey: "<value>",
-              nonce: "<value>",
-              plaintextBodyHash: "<value>",
-              salt: "<value>",
-              stackSmallId: 740198,
-            });
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
   /v1/embeddings:
     post:
       tags:
@@ -327,27 +244,6 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.embeddings.create({
-              input: "<value>",
-              model: "LeBaron",
-            });
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
   /health:
     get:
       tags:
@@ -363,24 +259,6 @@ paths:
                 $ref: '#/components/schemas/HealthResponse'
         '500':
           description: Service is unhealthy
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.health.health();
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
   /v1/images/generations:
     post:
       tags:
@@ -416,27 +294,6 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.images.generate({
-              model: "Model X",
-              prompt: "<value>",
-            });
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
   /v1/models:
     get:
       tags:
@@ -458,24 +315,6 @@ paths:
           description: Failed to retrieve list of available models
       security:
       - bearerAuth: []
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.models.modelsList();
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
   /v1/nodes:
     post:
       tags:
@@ -516,31 +355,6 @@ paths:
                 $ref: '#/components/schemas/NodesCreateResponse'
         '500':
           description: Failed to register node public address
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.nodes.nodesCreate({
-              data: {
-                country: "Andorra",
-                nodeSmallId: 3665,
-                publicAddress: "<value>",
-              },
-              signature: "<value>",
-            });
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
   /v1/nodes/models/{model}:
     get:
       tags:
@@ -581,26 +395,6 @@ paths:
           description: No node found for model with confidential compute enabled for requested model
       security:
       - bearerAuth: []
-      x-codeSamples:
-      - lang: typescript
-        label: Typescript (SDK)
-        source: |-
-          import { AtomaSDK } from "atoma-sdk";
-
-          const atomaSDK = new AtomaSDK({
-            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
-          });
-
-          async function run() {
-            const result = await atomaSDK.nodes.nodesModelsRetrieve({
-              model: "Charger",
-            });
-
-            // Handle the result
-            console.log(result);
-          }
-
-          run();
 components:
   schemas:
     ChatCompletionChoice:
