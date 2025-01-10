@@ -3,11 +3,65 @@ use serde_yaml::{self, Value};
 use std::fs;
 
 fn main() -> Result<()> {
+    let openapi_path = "cloud/openapi.yml";
+
+    // First merge the SDK samples
     merge_sdk_samples(
-        "cloud/openapi.yml",
+        openapi_path,
         "../atoma-sdk-typescript/codeSamples.yaml",
         "../atoma-sdk-python/codeSamples.yaml",
-    )
+    )?;
+
+    // Then apply the monkey patches
+    apply_monkey_patches(openapi_path)?;
+
+    Ok(())
+}
+
+fn apply_monkey_patches(openapi_path: &str) -> Result<()> {
+    // Read the OpenAPI spec
+    let openapi_content =
+        fs::read_to_string(openapi_path).context("Failed to read OpenAPI file")?;
+    let mut openapi: Value =
+        serde_yaml::from_str(&openapi_content).context("Failed to parse OpenAPI YAML")?;
+
+    // 1. Delete the streaming endpoint
+    if let Some(paths) = openapi.get_mut("paths").and_then(|v| v.as_mapping_mut()) {
+        paths.remove("/v1/chat/completions#stream");
+    }
+
+    // 2. Update code sample labels in the chat completions endpoint
+    if let Some(chat_endpoint) = openapi
+        .get_mut("paths")
+        .and_then(|v| v.get_mut("/v1/chat/completions"))
+        .and_then(|v| v.get_mut("post"))
+    {
+        if let Some(samples) = chat_endpoint
+            .get_mut("x-codeSamples")
+            .and_then(|v| v.as_sequence_mut())
+        {
+            for sample in samples {
+                if let Some(label) = sample.get_mut("label").and_then(|v| v.as_str()) {
+                    let new_label = match label {
+                        "chat_completions_create" => "default",
+                        "chat_completions_create_stream" => "streaming",
+                        _ => continue,
+                    };
+
+                    if let Some(label_value) = sample.get_mut("label") {
+                        *label_value = Value::String(new_label.to_string());
+                    }
+                }
+            }
+        }
+    }
+
+    // Write the patched result back to the file
+    let output = serde_yaml::to_string(&openapi).context("Failed to serialize patched YAML")?;
+    fs::write(openapi_path, output).context("Failed to write output file")?;
+
+    println!("Successfully applied monkey patches to {}", openapi_path);
+    Ok(())
 }
 
 fn merge_sdk_samples(
