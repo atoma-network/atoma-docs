@@ -1,5 +1,6 @@
 use anyhow::{Context, Result};
-use serde_yaml::{self, Value};
+use serde::Serialize;
+use serde_yaml::{self, Mapping, Value};
 use std::fs;
 
 fn main() -> Result<()> {
@@ -25,12 +26,24 @@ fn apply_monkey_patches(openapi_path: &str) -> Result<()> {
     let mut openapi: Value =
         serde_yaml::from_str(&openapi_content).context("Failed to parse OpenAPI YAML")?;
 
-    // 1. Delete the streaming endpoint
-    if let Some(paths) = openapi.get_mut("paths").and_then(|v| v.as_mapping_mut()) {
-        paths.remove("/v1/chat/completions#stream");
+    // Create a new ordered mapping for paths
+    let mut new_paths = Mapping::new();
+
+    // Get the original paths in order and copy them to the new mapping, excluding the stream endpoint
+    if let Some(paths) = openapi.get("paths").and_then(|v| v.as_mapping()) {
+        for (path, value) in paths {
+            if path.as_str() != Some("/v1/chat/completions#stream") {
+                new_paths.insert(path.clone(), value.clone());
+            }
+        }
     }
 
-    // 2. Update code sample labels in the chat completions endpoint
+    // Replace the paths object with our ordered version
+    if let Some(paths_obj) = openapi.get_mut("paths") {
+        *paths_obj = Value::Mapping(new_paths);
+    }
+
+    // Update code sample labels in the chat completions endpoint
     if let Some(chat_endpoint) = openapi
         .get_mut("paths")
         .and_then(|v| v.get_mut("/v1/chat/completions"))
@@ -56,9 +69,13 @@ fn apply_monkey_patches(openapi_path: &str) -> Result<()> {
         }
     }
 
-    // Write the patched result back to the file
-    let output = serde_yaml::to_string(&openapi).context("Failed to serialize patched YAML")?;
-    fs::write(openapi_path, output).context("Failed to write output file")?;
+    // Write the patched result back to the file using a custom serializer that preserves order
+    let mut writer = Vec::new();
+    let mut serializer = serde_yaml::Serializer::new(&mut writer);
+    openapi
+        .serialize(&mut serializer)
+        .context("Failed to serialize YAML")?;
+    fs::write(openapi_path, writer).context("Failed to write output file")?;
 
     println!("Successfully applied monkey patches to {}", openapi_path);
     Ok(())
