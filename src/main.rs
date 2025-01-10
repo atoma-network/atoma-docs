@@ -25,7 +25,7 @@ fn main() -> Result<()> {
     let py_samples: Value = serde_yaml::from_str(&py_samples_content)
         .context("Failed to parse Python code samples YAML")?;
 
-    // Apply the TypeScript overlay actions
+    // Apply the TypeScript overlay actions first
     if let Some(actions) = ts_samples["actions"].as_sequence() {
         for action in actions {
             let target = action["target"].as_str();
@@ -38,7 +38,7 @@ fn main() -> Result<()> {
         }
     }
 
-    // Apply the Python overlay actions
+    // Then apply the Python overlay actions
     if let Some(actions) = py_samples["actions"].as_sequence() {
         for action in actions {
             let target = action["target"].as_str();
@@ -51,6 +51,9 @@ fn main() -> Result<()> {
         }
     }
 
+    // Sort all code samples in the OpenAPI spec to ensure TypeScript comes first
+    sort_code_samples(&mut openapi);
+
     // Write the merged result back to the original file
     let output = serde_yaml::to_string(&openapi).context("Failed to serialize merged YAML")?;
     fs::write(openapi_path, output).context("Failed to write output file")?;
@@ -60,6 +63,57 @@ fn main() -> Result<()> {
         openapi_path
     );
     Ok(())
+}
+
+fn sort_code_samples(value: &mut Value) {
+    match value {
+        Value::Mapping(map) => {
+            // Sort x-codeSamples if present
+            if let Some(samples) = map.get_mut("x-codeSamples") {
+                if let Some(samples_array) = samples.as_sequence_mut() {
+                    samples_array.sort_by(|a, b| {
+                        let a_lang = a.get("lang").and_then(|v| v.as_str()).unwrap_or("");
+                        let b_lang = b.get("lang").and_then(|v| v.as_str()).unwrap_or("");
+                        let a_label = a.get("label").and_then(|v| v.as_str()).unwrap_or("");
+                        let b_label = b.get("label").and_then(|v| v.as_str()).unwrap_or("");
+
+                        // First, compare languages (TypeScript comes before Python)
+                        let lang_order = match (a_lang, b_lang) {
+                            ("typescript", "python") => std::cmp::Ordering::Less,
+                            ("python", "typescript") => std::cmp::Ordering::Greater,
+                            _ => a_lang.cmp(b_lang),
+                        };
+
+                        if lang_order != std::cmp::Ordering::Equal {
+                            return lang_order;
+                        }
+
+                        // Within the same language, sort by streaming vs non-streaming
+                        let a_is_stream = a_label.contains("stream");
+                        let b_is_stream = b_label.contains("stream");
+
+                        match (a_is_stream, b_is_stream) {
+                            (true, false) => std::cmp::Ordering::Greater,
+                            (false, true) => std::cmp::Ordering::Less,
+                            _ => a_label.cmp(b_label),
+                        }
+                    });
+                }
+            }
+
+            // Recursively sort code samples in nested objects
+            for (_, v) in map.iter_mut() {
+                sort_code_samples(v);
+            }
+        }
+        Value::Sequence(seq) => {
+            // Recursively sort code samples in array elements
+            for item in seq.iter_mut() {
+                sort_code_samples(item);
+            }
+        }
+        _ => {}
+    }
 }
 
 fn parse_json_path(path: &str) -> Result<Vec<String>> {
@@ -102,6 +156,18 @@ fn parse_json_path(path: &str) -> Result<Vec<String>> {
     Ok(components)
 }
 
+fn is_duplicate_sample(existing: &Value, new_sample: &Value) -> bool {
+    let existing_lang = existing.get("lang").and_then(|v| v.as_str());
+    let existing_label = existing.get("label").and_then(|v| v.as_str());
+    let new_lang = new_sample.get("lang").and_then(|v| v.as_str());
+    let new_label = new_sample.get("label").and_then(|v| v.as_str());
+
+    match (existing_lang, existing_label, new_lang, new_label) {
+        (Some(el), Some(elbl), Some(nl), Some(nlbl)) => el == nl && elbl == nlbl,
+        _ => false,
+    }
+}
+
 fn merge_code_sample(openapi: &mut Value, path: &[String], update: &Value) -> Result<()> {
     let mut current = openapi;
 
@@ -125,8 +191,15 @@ fn merge_code_sample(openapi: &mut Value, path: &[String], update: &Value) -> Re
                 if let Some(samples_array) = code_samples.as_sequence_mut() {
                     if let Some(new_samples) = update.get("x-codeSamples") {
                         if let Some(new_array) = new_samples.as_sequence() {
-                            for sample in new_array {
-                                samples_array.push(sample.clone());
+                            'new_sample: for new_sample in new_array {
+                                // Check if this sample already exists
+                                for existing_sample in samples_array.iter() {
+                                    if is_duplicate_sample(existing_sample, new_sample) {
+                                        continue 'new_sample;
+                                    }
+                                }
+                                // If we get here, this is a new sample
+                                samples_array.push(new_sample.clone());
                             }
                         }
                     }
