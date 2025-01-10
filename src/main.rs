@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use serde_yaml::{self, Value};
 use std::fs;
+use std::path::PathBuf;
 
 fn main() -> Result<()> {
     // Read the OpenAPI spec
@@ -10,10 +11,10 @@ fn main() -> Result<()> {
     let mut openapi: Value =
         serde_yaml::from_str(&openapi_content).context("Failed to parse OpenAPI YAML")?;
 
-    // Read the code samples overlay
-    let samples_path = "cloud/codeSamples.yaml";
+    // Read the code samples overlay from the SDK directory
+    let samples_path = PathBuf::from("../atoma-sdk-typescript/codeSamples.yaml");
     let samples_content =
-        fs::read_to_string(samples_path).context("Failed to read code samples file")?;
+        fs::read_to_string(&samples_path).context("Failed to read code samples file")?;
     let samples: Value =
         serde_yaml::from_str(&samples_content).context("Failed to parse code samples YAML")?;
 
