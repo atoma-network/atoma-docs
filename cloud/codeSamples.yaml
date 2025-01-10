@@ -1,0 +1,285 @@
+overlay: 1.0.0
+info:
+  title: CodeSamples overlay for typescript target
+  version: 0.0.0
+actions:
+  - target: $["paths"]["/health"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.health.health();
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/chat/completions"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.chat.create({
+                messages: [
+                  {
+                    content: "<value>",
+                    role: "<value>",
+                  },
+                ],
+                model: "LeBaron",
+              });
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/chat/completions#stream"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.chat.createStream({
+                messages: [
+                  {
+                    content: "<value>",
+                    role: "<value>",
+                  },
+                ],
+                model: "Impala",
+              });
+
+              for await (const event of result) {
+                // Handle the event
+                console.log(event);
+              }
+            }
+
+            run();
+  - target: $["paths"]["/v1/confidential/chat/completions"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.confidentialChat.create({
+                ciphertext: "<value>",
+                clientDhPublicKey: "<value>",
+                modelName: "<value>",
+                nodeDhPublicKey: "<value>",
+                nonce: "<value>",
+                plaintextBodyHash: "<value>",
+                salt: "<value>",
+                stackSmallId: 486589,
+              });
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/confidential/embeddings"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.confidentialEmbeddings.create({
+                ciphertext: "<value>",
+                clientDhPublicKey: "<value>",
+                modelName: "<value>",
+                nodeDhPublicKey: "<value>",
+                nonce: "<value>",
+                plaintextBodyHash: "<value>",
+                salt: "<value>",
+                stackSmallId: 486589,
+              });
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/confidential/images/generations"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.confidentialImages.generate({
+                ciphertext: "<value>",
+                clientDhPublicKey: "<value>",
+                modelName: "<value>",
+                nodeDhPublicKey: "<value>",
+                nonce: "<value>",
+                plaintextBodyHash: "<value>",
+                salt: "<value>",
+                stackSmallId: 740198,
+              });
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/embeddings"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.embeddings.create({
+                input: "<value>",
+                model: "LeBaron",
+              });
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/images/generations"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.images.generate({
+                model: "Model X",
+                prompt: "<value>",
+              });
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/models"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.models.modelsList();
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/nodes"]["post"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.nodes.nodesCreate({
+                data: {
+                  country: "Andorra",
+                  nodeSmallId: 3665,
+                  publicAddress: "<value>",
+                },
+                signature: "<value>",
+              });
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();
+  - target: $["paths"]["/v1/nodes/models/{model}"]["get"]
+    update:
+      x-codeSamples:
+        - lang: typescript
+          label: Typescript (SDK)
+          source: |-
+            import { AtomaSDK } from "atoma-sdk";
+
+            const atomaSDK = new AtomaSDK({
+              bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+            });
+
+            async function run() {
+              const result = await atomaSDK.nodes.nodesModelsRetrieve({
+                model: "Charger",
+              });
+
+              // Handle the result
+              console.log(result);
+            }
+
+            run();

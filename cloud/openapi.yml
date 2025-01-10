@@ -1,18 +1,18 @@
 openapi: 3.1.0
 info:
   title: atoma-proxy
-  description: ""
+  description: ''
   license:
     name: Apache-2.0
     identifier: Apache-2.0
   version: 0.1.0
 servers:
-  - url: https://api.atoma.network
+- url: https://api.atoma.network
 paths:
   /v1/chat/completions:
     post:
       tags:
-        - Chat
+      - Chat
       summary: Create chat completion
       description: |-
         This function processes chat completion requests by determining whether to use streaming
@@ -36,27 +36,55 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateChatCompletionRequest"
+              $ref: '#/components/schemas/CreateChatCompletionRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Chat completions
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ChatCompletionResponse"
-        "400":
+                $ref: '#/components/schemas/ChatCompletionResponse'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.chat.createStream({
+              messages: [
+                {
+                  content: "<value>",
+                  role: "<value>",
+                },
+              ],
+              model: "Impala",
+            });
+
+            for await (const event of result) {
+              // Handle the event
+              console.log(event);
+            }
+          }
+
+          run();
   /v1/confidential/chat/completions:
     post:
       tags:
-        - Confidential Chat
+      - Confidential Chat
       summary: Create confidential chat completion
       description: |-
         This handler processes chat completion requests in a confidential manner, providing additional
@@ -92,27 +120,54 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ConfidentialComputeRequest"
+              $ref: '#/components/schemas/ConfidentialComputeRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Confidential chat completions
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ConfidentialComputeResponse"
-        "400":
+                $ref: '#/components/schemas/ConfidentialComputeResponse'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.confidentialChat.create({
+              ciphertext: "<value>",
+              clientDhPublicKey: "<value>",
+              modelName: "<value>",
+              nodeDhPublicKey: "<value>",
+              nonce: "<value>",
+              plaintextBodyHash: "<value>",
+              salt: "<value>",
+              stackSmallId: 486589,
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
   /v1/confidential/embeddings:
     post:
       tags:
-        - Confidential Embeddings
+      - Confidential Embeddings
       summary: Create confidential embeddings
       description: |-
         This endpoint follows the OpenAI API format for generating vector embeddings from input text,
@@ -131,27 +186,54 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ConfidentialComputeRequest"
+              $ref: '#/components/schemas/ConfidentialComputeRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Confidential embeddings generated successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ConfidentialComputeResponse"
-        "400":
+                $ref: '#/components/schemas/ConfidentialComputeResponse'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.confidentialEmbeddings.create({
+              ciphertext: "<value>",
+              clientDhPublicKey: "<value>",
+              modelName: "<value>",
+              nodeDhPublicKey: "<value>",
+              nonce: "<value>",
+              plaintextBodyHash: "<value>",
+              salt: "<value>",
+              stackSmallId: 486589,
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
   /v1/confidential/images/generations:
     post:
       tags:
-        - Confidential Images
+      - Confidential Images
       summary: Create confidential image
       description: |-
         This handler processes image generation requests in a confidential manner, providing additional
@@ -163,27 +245,54 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ConfidentialComputeRequest"
+              $ref: '#/components/schemas/ConfidentialComputeRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Image generations
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ConfidentialComputeResponse"
-        "400":
+                $ref: '#/components/schemas/ConfidentialComputeResponse'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.confidentialImages.generate({
+              ciphertext: "<value>",
+              clientDhPublicKey: "<value>",
+              modelName: "<value>",
+              nodeDhPublicKey: "<value>",
+              nonce: "<value>",
+              plaintextBodyHash: "<value>",
+              salt: "<value>",
+              stackSmallId: 740198,
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
   /v1/embeddings:
     post:
       tags:
-        - Embeddings
+      - Embeddings
       summary: Create embeddings
       description: |-
         This endpoint follows the OpenAI API format for generating vector embeddings from input text.
@@ -201,42 +310,81 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateEmbeddingRequest"
+              $ref: '#/components/schemas/CreateEmbeddingRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Embeddings generated successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateEmbeddingResponse"
-        "400":
+                $ref: '#/components/schemas/CreateEmbeddingResponse'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.embeddings.create({
+              input: "<value>",
+              model: "LeBaron",
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
   /health:
     get:
       tags:
-        - Health
+      - Health
       summary: Health
       operationId: health
       responses:
-        "200":
+        '200':
           description: Service is healthy
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/HealthResponse"
-        "500":
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
           description: Service is unhealthy
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.health.health();
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
   /v1/images/generations:
     post:
       tags:
-        - Images
+      - Images
       summary: Create image
       description: |-
         This endpoint processes requests to generate images using AI models by forwarding them
@@ -251,27 +399,48 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateImageRequest"
+              $ref: '#/components/schemas/CreateImageRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Image generations
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreateImageResponse"
-        "400":
+                $ref: '#/components/schemas/CreateImageResponse'
+        '400':
           description: Bad request
-        "401":
+        '401':
           description: Unauthorized
-        "500":
+        '500':
           description: Internal server error
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.images.generate({
+              model: "Model X",
+              prompt: "<value>",
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
   /v1/models:
     get:
       tags:
-        - Models
+      - Models
       summary: List models
       description: |-
         This endpoint mimics the OpenAI models endpoint format, returning a list of
@@ -279,20 +448,38 @@ paths:
         OpenAI-compatible fields to ensure compatibility with existing OpenAI client libraries.
       operationId: models_list
       responses:
-        "200":
+        '200':
           description: List of available models
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ModelList"
-        "500":
+                $ref: '#/components/schemas/ModelList'
+        '500':
           description: Failed to retrieve list of available models
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.models.modelsList();
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
   /v1/nodes:
     post:
       tags:
-        - Nodes
+      - Nodes
       summary: Create node
       description: |-
         This endpoint allows nodes to register or update their public address in the system.
@@ -318,21 +505,46 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/NodesCreateRequest"
+              $ref: '#/components/schemas/NodesCreateRequest'
         required: true
       responses:
-        "200":
+        '200':
           description: Node public address registered successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/NodesCreateResponse"
-        "500":
+                $ref: '#/components/schemas/NodesCreateResponse'
+        '500':
           description: Failed to register node public address
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.nodes.nodesCreate({
+              data: {
+                country: "Andorra",
+                nodeSmallId: 3665,
+                publicAddress: "<value>",
+              },
+              signature: "<value>",
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
   /v1/nodes/models/{model}:
     get:
       tags:
-        - Nodes
+      - Nodes
       summary: Retrieve node for a given model
       description: |-
         This endpoint attempts to find a suitable node and retrieve its public key for encryption
@@ -350,37 +562,57 @@ paths:
           - `SERVICE_UNAVAILABLE` - No nodes available for confidential compute
       operationId: nodes_models_retrieve
       parameters:
-        - name: model
-          in: path
-          description: The name of the model to retrieve
-          required: true
-          schema:
-            type: string
+      - name: model
+        in: path
+        description: The name of the model to retrieve
+        required: true
+        schema:
+          type: string
       responses:
-        "200":
+        '200':
           description: Node DH public key requested successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/NodesModelsRetrieveResponse"
-        "500":
+                $ref: '#/components/schemas/NodesModelsRetrieveResponse'
+        '500':
           description: Failed to request node DH public key
-        "503":
+        '503':
           description: No node found for model with confidential compute enabled for requested model
       security:
-        - bearerAuth: []
+      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: Typescript (SDK)
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.nodes.nodesModelsRetrieve({
+              model: "Charger",
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
 components:
   schemas:
     ChatCompletionChoice:
       type: object
       required:
-        - index
-        - message
+      - index
+      - message
       properties:
         finish_reason:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The reason the chat completion was finished.
         index:
           type: integer
@@ -389,20 +621,20 @@ components:
         logprobs:
           description: Log probability information for the choice, if applicable.
         message:
-          $ref: "#/components/schemas/ChatCompletionMessage"
+          $ref: '#/components/schemas/ChatCompletionMessage'
           description: The chat completion message.
     ChatCompletionChunk:
       type: object
       required:
-        - id
-        - created
-        - model
-        - choices
+      - id
+      - created
+      - model
+      - choices
       properties:
         choices:
           type: array
           items:
-            $ref: "#/components/schemas/ChatCompletionChunkChoice"
+            $ref: '#/components/schemas/ChatCompletionChunkChoice'
           description: A list of chat completion chunk choices.
         created:
           type: integer
@@ -417,16 +649,16 @@ components:
     ChatCompletionChunkChoice:
       type: object
       required:
-        - index
-        - delta
+      - index
+      - delta
       properties:
         delta:
-          $ref: "#/components/schemas/ChatCompletionChunkDelta"
+          $ref: '#/components/schemas/ChatCompletionChunkDelta'
           description: The chat completion delta message for streaming.
         finish_reason:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The reason the chat completion was finished, if applicable.
         index:
           type: integer
@@ -437,35 +669,35 @@ components:
       properties:
         content:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The content of the message, if present in this chunk.
         function_call:
           description: The function call information, if present in this chunk.
         role:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The role of the message author, if present in this chunk.
         tool_calls:
           type:
-            - array
-            - "null"
+          - array
+          - 'null'
           items: {}
           description: The tool calls information, if present in this chunk.
     ChatCompletionMessage:
       type: object
       required:
-        - role
-        - content
+      - role
+      - content
       properties:
         content:
           type: string
           description: The contents of the message
         name:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The name of the author of this message
         role:
           type: string
@@ -473,13 +705,13 @@ components:
     ChatCompletionRequest:
       type: object
       required:
-        - model
-        - messages
+      - model
+      - messages
       properties:
         frequency_penalty:
           type:
-            - number
-            - "null"
+          - number
+          - 'null'
           format: float
           description: |-
             Number between -2.0 and 2.0. Positive values penalize new tokens based on their
@@ -488,14 +720,14 @@ components:
           description: Controls how the model responds to function calls
         functions:
           type:
-            - array
-            - "null"
+          - array
+          - 'null'
           items: {}
           description: A list of functions the model may generate JSON inputs for
         logit_bias:
           type:
-            - object
-            - "null"
+          - object
+          - 'null'
           description: Modify the likelihood of specified tokens appearing in the completion
           additionalProperties:
             type: number
@@ -504,28 +736,28 @@ components:
             type: string
         max_tokens:
           type:
-            - integer
-            - "null"
+          - integer
+          - 'null'
           format: int32
           description: The maximum number of tokens to generate in the chat completion
         messages:
           type: array
           items:
-            $ref: "#/components/schemas/ChatCompletionMessage"
+            $ref: '#/components/schemas/ChatCompletionMessage'
           description: A list of messages comprising the conversation so far
         model:
           type: string
           description: ID of the model to use
         n:
           type:
-            - integer
-            - "null"
+          - integer
+          - 'null'
           format: int32
           description: How many chat completion choices to generate for each input message
         presence_penalty:
           type:
-            - number
-            - "null"
+          - number
+          - 'null'
           format: float
           description: |-
             Number between -2.0 and 2.0. Positive values penalize new tokens based on
@@ -534,59 +766,59 @@ components:
           description: The format to return the response in
         seed:
           type:
-            - integer
-            - "null"
+          - integer
+          - 'null'
           format: int64
           description: If specified, our system will make a best effort to sample deterministically
         stop:
           type:
-            - array
-            - "null"
+          - array
+          - 'null'
           items:
             type: string
           description: Up to 4 sequences where the API will stop generating further tokens
         stream:
           type:
-            - boolean
-            - "null"
+          - boolean
+          - 'null'
           description: Whether to stream back partial progress
         temperature:
           type:
-            - number
-            - "null"
+          - number
+          - 'null'
           format: float
           description: What sampling temperature to use, between 0 and 2
         tool_choice:
           description: Controls which (if any) tool the model should use
         tools:
           type:
-            - array
-            - "null"
+          - array
+          - 'null'
           items: {}
           description: A list of tools the model may call
         top_p:
           type:
-            - number
-            - "null"
+          - number
+          - 'null'
           format: float
           description: An alternative to sampling with temperature
         user:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: A unique identifier representing your end-user
     ChatCompletionResponse:
       type: object
       required:
-        - id
-        - created
-        - model
-        - choices
+      - id
+      - created
+      - model
+      - choices
       properties:
         choices:
           type: array
           items:
-            $ref: "#/components/schemas/ChatCompletionChoice"
+            $ref: '#/components/schemas/ChatCompletionChoice'
           description: A list of chat completion choices.
         created:
           type: integer
@@ -600,28 +832,28 @@ components:
           description: The model used for the chat completion.
         system_fingerprint:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The system fingerprint for the completion, if applicable.
         usage:
           oneOf:
-            - type: "null"
-            - $ref: "#/components/schemas/CompletionUsage"
-              description: Usage statistics for the completion request.
+          - type: 'null'
+          - $ref: '#/components/schemas/CompletionUsage'
+            description: Usage statistics for the completion request.
     ChatCompletionStreamResponse:
       type: object
       required:
-        - data
+      - data
       properties:
         data:
-          $ref: "#/components/schemas/ChatCompletionChunk"
+          $ref: '#/components/schemas/ChatCompletionChunk'
           description: The stream of chat completion chunks.
     CompletionUsage:
       type: object
       required:
-        - prompt_tokens
-        - completion_tokens
-        - total_tokens
+      - prompt_tokens
+      - completion_tokens
+      - total_tokens
       properties:
         completion_tokens:
           type: integer
@@ -639,14 +871,14 @@ components:
       type: object
       description: A request for confidential computation that includes encrypted data and associated cryptographic parameters
       required:
-        - ciphertext
-        - stack_small_id
-        - nonce
-        - salt
-        - client_dh_public_key
-        - node_dh_public_key
-        - plaintext_body_hash
-        - model_name
+      - ciphertext
+      - stack_small_id
+      - nonce
+      - salt
+      - client_dh_public_key
+      - node_dh_public_key
+      - plaintext_body_hash
+      - model_name
       properties:
         ciphertext:
           type: string
@@ -665,8 +897,8 @@ components:
           description: Cryptographic nonce used for encryption (base64 encoded)
         num_compute_units:
           type:
-            - integer
-            - "null"
+          - integer
+          - 'null'
           format: int64
           description: |-
             Number of compute units to be used for the request, for image generations,
@@ -685,15 +917,15 @@ components:
           minimum: 0
         stream:
           type:
-            - boolean
-            - "null"
+          - boolean
+          - 'null'
           description: Indicates whether this is a streaming request
     ConfidentialComputeResponse:
       type: object
       description: Represents a response from a confidential compute request
       required:
-        - ciphertext
-        - nonce
+      - ciphertext
+      - nonce
       properties:
         ciphertext:
           type: string
@@ -703,52 +935,52 @@ components:
           description: Nonce used for encryption (base64 encoded)
         response_hash:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: Hash of the response body (base64 encoded)
         signature:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: Signature of the response body (base64 encoded)
         usage:
           oneOf:
-            - type: "null"
-            - $ref: "#/components/schemas/Usage"
-              description: Usage statistics for the request
+          - type: 'null'
+          - $ref: '#/components/schemas/Usage'
+            description: Usage statistics for the request
     CreateChatCompletionRequest:
       allOf:
-        - $ref: "#/components/schemas/ChatCompletionRequest"
-        - type: object
-          properties:
-            stream:
-              type:
-                - boolean
-                - "null"
-              description: Whether to stream back partial progress. Must be false for this request type.
-              default: false
+      - $ref: '#/components/schemas/ChatCompletionRequest'
+      - type: object
+        properties:
+          stream:
+            type:
+            - boolean
+            - 'null'
+            description: Whether to stream back partial progress. Must be false for this request type.
+            default: false
     CreateChatCompletionStreamRequest:
       allOf:
-        - $ref: "#/components/schemas/ChatCompletionRequest"
-        - type: object
-          required:
-            - stream
-          properties:
-            stream:
-              type: boolean
-              description: Whether to stream back partial progress. Must be true for this request type.
-              default: true
+      - $ref: '#/components/schemas/ChatCompletionRequest'
+      - type: object
+        required:
+        - stream
+        properties:
+          stream:
+            type: boolean
+            description: Whether to stream back partial progress. Must be true for this request type.
+            default: true
     CreateEmbeddingRequest:
       type: object
       description: Request object for creating embeddings
       required:
-        - model
-        - input
+      - model
+      - input
       properties:
         dimensions:
           type:
-            - integer
-            - "null"
+          - integer
+          - 'null'
           format: int32
           description: |-
             The number of dimensions the resulting output embeddings should have.
@@ -756,13 +988,13 @@ components:
           minimum: 0
         encoding_format:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: |-
             The format to return the embeddings in. Can be "float" or "base64".
             Defaults to "float"
         input:
-          $ref: "#/components/schemas/EmbeddingInput"
+          $ref: '#/components/schemas/EmbeddingInput'
           description: |-
             Input text to get embeddings for. Can be a string or array of strings.
             Each input must not exceed the max input tokens for the model
@@ -771,22 +1003,22 @@ components:
           description: ID of the model to use.
         user:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
     CreateEmbeddingResponse:
       type: object
       description: Response object from creating embeddings
       required:
-        - object
-        - model
-        - data
-        - usage
+      - object
+      - model
+      - data
+      - usage
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/EmbeddingObject"
+            $ref: '#/components/schemas/EmbeddingObject'
           description: List of embedding objects
         model:
           type: string
@@ -795,22 +1027,22 @@ components:
           type: string
           description: The object type, which is always "list"
         usage:
-          $ref: "#/components/schemas/EmbeddingUsage"
+          $ref: '#/components/schemas/EmbeddingUsage'
           description: Usage statistics for the request
     CreateImageRequest:
       type: object
       description: Request body for image generation
       required:
-        - prompt
-        - model
+      - prompt
+      - model
       properties:
         model:
           type: string
           description: The model to use for image generation.
         n:
           type:
-            - integer
-            - "null"
+          - integer
+          - 'null'
           format: int32
           description: The number of images to generate. Defaults to 1.
           minimum: 0
@@ -819,37 +1051,37 @@ components:
           description: A text description of the desired image(s). The maximum length is 1000 characters.
         quality:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: |-
             The quality of the image that will be generated.
             `hd` creates images with finer details and greater consistency across the image.
         response_format:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The format in which the generated images are returned.
         size:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The size of the generated images.
         style:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: The style of the generated images.
         user:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
     CreateImageResponse:
       type: object
       description: Response format for image generation
       required:
-        - created
-        - data
+      - created
+      - data
       properties:
         created:
           type: integer
@@ -857,20 +1089,20 @@ components:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/ImageData"
+            $ref: '#/components/schemas/ImageData'
     EmbeddingInput:
       oneOf:
-        - type: string
-        - type: array
-          items:
-            type: string
+      - type: string
+      - type: array
+        items:
+          type: string
     EmbeddingObject:
       type: object
       description: Individual embedding object in the response
       required:
-        - object
-        - embedding
-        - index
+      - object
+      - embedding
+      - index
       properties:
         embedding:
           type: array
@@ -889,8 +1121,8 @@ components:
       type: object
       description: Usage information for the embeddings request
       required:
-        - prompt_tokens
-        - total_tokens
+      - prompt_tokens
+      - total_tokens
       properties:
         prompt_tokens:
           type: integer
@@ -905,7 +1137,7 @@ components:
     HealthResponse:
       type: object
       required:
-        - message
+      - message
       properties:
         message:
           type: string
@@ -914,22 +1146,22 @@ components:
       type: object
       description: Individual image data in the response
       required:
-        - url
+      - url
       properties:
         revised_prompt:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
         url:
           type: string
     Model:
       type: object
       description: Individual model object in the response
       required:
-        - id
-        - object
-        - created
-        - owned_by
+      - id
+      - object
+      - created
+      - owned_by
       properties:
         created:
           type: integer
@@ -948,13 +1180,13 @@ components:
       type: object
       description: Response object for the models listing endpoint
       required:
-        - object
-        - data
+      - object
+      - data
       properties:
         data:
           type: array
           items:
-            $ref: "#/components/schemas/Model"
+            $ref: '#/components/schemas/Model'
           description: List of model objects
         object:
           type: string
@@ -966,9 +1198,9 @@ components:
 
         This struct represents the payload for the node public address registration request.
       required:
-        - node_small_id
-        - public_address
-        - country
+      - node_small_id
+      - public_address
+      - country
       properties:
         country:
           type: string
@@ -985,11 +1217,11 @@ components:
       type: object
       description: Represents the payload for the node public address registration request.
       required:
-        - data
-        - signature
+      - data
+      - signature
       properties:
         data:
-          $ref: "#/components/schemas/NodePublicAddressAssignment"
+          $ref: '#/components/schemas/NodePublicAddressAssignment'
           description: The data required to register a node's public address
         signature:
           type: string
@@ -997,7 +1229,7 @@ components:
     NodesCreateResponse:
       type: object
       required:
-        - message
+      - message
       properties:
         message:
           type: string
@@ -1010,9 +1242,9 @@ components:
         the request and send it back to the proxy. The proxy will then route this
         request to the selected node.
       required:
-        - public_key
-        - node_small_id
-        - stack_small_id
+      - public_key
+      - node_small_id
+      - stack_small_id
       properties:
         node_small_id:
           type: integer
@@ -1028,8 +1260,8 @@ components:
           description: The public key for the selected node, base64 encoded
         stack_entry_digest:
           type:
-            - string
-            - "null"
+          - string
+          - 'null'
           description: Transaction digest for the transaction that acquires the stack entry, if any
         stack_small_id:
           type: integer
@@ -1040,13 +1272,13 @@ components:
       type: object
       description: Represents usage statistics for a confidential compute request
       required:
-        - prompt_tokens
-        - total_tokens
+      - prompt_tokens
+      - total_tokens
       properties:
         completion_tokens:
           type:
-            - integer
-            - "null"
+          - integer
+          - 'null'
           format: int64
           description: |-
             Number of compute units used
@@ -1069,38 +1301,38 @@ components:
       type: http
       scheme: bearer
 tags:
-  - name: Chat
-    description: OpenAI's API chat completions v1 endpoint
-  - name: Confidential Chat
-    description: Atoma's API confidential chat completions v1 endpoint
-  - name: Confidential Embeddings
-    description: Atoma's API confidential embeddings v1 endpoint
-  - name: Confidential Images
-    description: Atoma's API confidential images v1 endpoint
-  - name: Embeddings
-    description: OpenAI's API embeddings v1 endpoint
-  - name: Health
-    description: Health check
-  - name: Images
-    description: OpenAI's API images v1 endpoint
-  - name: Models
-    description: OpenAI's API models v1 endpoint
-  - name: Nodes
-    description: Nodes Management
-  - name: Node Public Key Selection
-    description: Node public key selection
+- name: Chat
+  description: OpenAI's API chat completions v1 endpoint
+- name: Confidential Chat
+  description: Atoma's API confidential chat completions v1 endpoint
+- name: Confidential Embeddings
+  description: Atoma's API confidential embeddings v1 endpoint
+- name: Confidential Images
+  description: Atoma's API confidential images v1 endpoint
+- name: Embeddings
+  description: OpenAI's API embeddings v1 endpoint
+- name: Health
+  description: Health check
+- name: Images
+  description: OpenAI's API images v1 endpoint
+- name: Models
+  description: OpenAI's API models v1 endpoint
+- name: Nodes
+  description: Nodes Management
+- name: Node Public Key Selection
+  description: Node public key selection
 x-speakeasy-name-override:
-  - operationId: chat_completions_create
-    methodNameOverride: create
-  - operationId: chat_completions_create_stream
-    methodNameOverride: create_stream
-  - operationId: confidential_chat_completions_create
-    methodNameOverride: create
-  - operationId: embeddings_create
-    methodNameOverride: create
-  - operationId: confidential_embeddings_create
-    methodNameOverride: create
-  - operationId: image_generations_create
-    methodNameOverride: generate
-  - operationId: confidential_image_generations_create
-    methodNameOverride: generate
+- operationId: chat_completions_create
+  methodNameOverride: create
+- operationId: chat_completions_create_stream
+  methodNameOverride: create_stream
+- operationId: confidential_chat_completions_create
+  methodNameOverride: create
+- operationId: embeddings_create
+  methodNameOverride: create
+- operationId: confidential_embeddings_create
+  methodNameOverride: create
+- operationId: image_generations_create
+  methodNameOverride: generate
+- operationId: confidential_image_generations_create
+  methodNameOverride: generate
