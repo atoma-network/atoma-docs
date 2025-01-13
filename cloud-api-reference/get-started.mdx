@@ -45,45 +45,6 @@ The nodes endpoints allow for:
 - Creating node locks for confidential computing
 - Managing node public keys for encrypted communication
 
-## Quick Start Example
-
-Here's a simple example using the Python SDK:
-
-```python
-from atoma_sdk import AtomaSDK
-import os
-
-# Initialize the SDK with your API key
-atoma_sdk = AtomaSDK(
-    bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", "")  # Get API key from environment variable
-)
-
-# Make a chat completion request
-response = atoma_sdk.chat.create(
-    model="meta-llama/llama-3.3-70b-instruct",  # Specify the model you want to use
-    messages=[
-        {
-            "role": "system",
-            "content": "You are a helpful assistant."
-        },
-        {
-            "role": "user",
-            "content": "What is the capital of France?"
-        }
-    ],
-    temperature=0.7
-)
-
-# Print the response
-print(response.choices[0].message.content)
-```
-
-To run this example:
-1. Install the SDK: `pip install atoma-sdk`
-2. Set your API key as an environment variable: `export ATOMASDK_BEARER_AUTH=your_api_key`
-3. Save the code in a file (e.g., `quickstart.py`)
-4. Run the script: `python quickstart.py`
-
 ## Key Features
 
 1. **OpenAI Compatibility**
@@ -101,7 +62,7 @@ To run this example:
    - Intelligent load balancing
    - High availability and fault tolerance
 
-## SDKs and Libraries
+## Quickstart with SDKs
 
 Atoma provides official SDKs for easy integration:
 
