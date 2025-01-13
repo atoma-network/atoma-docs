@@ -7,7 +7,7 @@ Atoma provides a fully compatible OpenAI API that allows you to access decentral
 
 ## Authentication
 
-All API requests require authentication using a bearer tokenm, you can get your API key from the [Atoma Dashboard](https://cloud.atoma.network/dashboard). Include your API key in the `Authorization` header:
+All API requests require authentication using a bearer tokenm, you can get your API key from the [Atoma Dashboard](https://cloud.atoma.network). Include your API key in the `Authorization` header:
 
 ```bash
 Authorization: Bearer <YOUR_API_KEY>
@@ -35,6 +35,15 @@ Atoma provides the following main endpoints:
 - Confidential Chat: `/v1/confidential/chat/completions`
 - Confidential Embeddings: `/v1/confidential/embeddings`
 - Confidential Images: `/v1/confidential/images/generations`
+
+### Nodes
+- Node Registration: `/v1/nodes`
+- Node Lock Creation: `/v1/nodes/lock`
+
+The nodes endpoints allow for:
+- Node registration and public address updates in the network
+- Creating node locks for confidential computing
+- Managing node public keys for encrypted communication
 
 ## Quick Start Example
 
