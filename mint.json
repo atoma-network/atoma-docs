@@ -105,6 +105,12 @@
     {
       "group": "Get Started",
       "pages": [
+        "cloud-api-reference/get-started"
+      ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [
         "node/get-started/overview",
         "node/get-started/setup-node",
         "node/get-started/interact-atoma-contract",
