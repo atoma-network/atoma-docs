@@ -1,0 +1,111 @@
+---
+title: Get Started
+description: Learn how to use Atoma's Cloud API for AI inference
+---
+
+Atoma provides a fully compatible OpenAI API that allows you to access decentralized AI capabilities while maintaining privacy and security. This guide will help you get started with using the API.
+
+## Authentication
+
+All API requests require authentication using a bearer tokenm, you can get your API key from the [Atoma Dashboard](https://cloud.atoma.network). Include your API key in the `Authorization` header:
+
+```bash
+Authorization: Bearer <YOUR_API_KEY>
+```
+
+## Base URL
+
+All API endpoints are accessible through the base URL:
+
+```
+https://api.atoma.network
+```
+
+## Available Endpoints
+
+Atoma provides the following main endpoints:
+
+### Standard Endpoints (OpenAI Compatible)
+- Chat Completions: `/v1/chat/completions`
+- Embeddings: `/v1/embeddings`
+- Image Generations: `/v1/images/generations`
+- Models: `/v1/models`
+
+### Confidential Computing Endpoints
+- Confidential Chat: `/v1/confidential/chat/completions`
+- Confidential Embeddings: `/v1/confidential/embeddings`
+- Confidential Images: `/v1/confidential/images/generations`
+
+### Nodes
+- Node Registration: `/v1/nodes`
+- Node Lock Creation: `/v1/nodes/lock`
+
+The nodes endpoints allow for:
+- Node registration and public address updates in the network
+- Creating node locks for confidential computing
+- Managing node public keys for encrypted communication
+
+## Key Features
+
+1. **OpenAI Compatibility**
+   - Drop-in replacement for OpenAI API
+   - Supports all standard OpenAI endpoints
+   - Compatible with existing OpenAI client libraries
+
+2. **Privacy and Security**
+   - Support for confidential computing
+   - Trusted Execution Environments (TEEs)
+   - End-to-end encryption for sensitive data
+
+3. **Distributed Infrastructure**
+   - Global network of compute nodes
+   - Intelligent load balancing
+   - High availability and fault tolerance
+
+## Quickstart with SDKs
+
+Atoma provides official SDKs for easy integration:
+
+### TypeScript/JavaScript
+```typescript
+import { AtomaSDK } from "atoma-sdk";
+
+const atomaSDK = new AtomaSDK({
+  bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+});
+
+async function run() {
+  const result = await atomaSDK.chat.create({
+    messages: [
+      { role: "user", content: "Hello!" }
+    ],
+    model: "meta-llama/llama-3.3-70b-instruct"
+  });
+  console.log(result);
+}
+```
+
+### Python
+```python
+from atoma_sdk import AtomaSDK
+import os
+
+with AtomaSDK(
+    bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+) as atoma_sdk:
+    result = atoma_sdk.chat.create(
+        messages=[
+            {"role": "user", "content": "Hello!"}
+        ],
+        model="meta-llama/llama-3.3-70b-instruct"
+    )
+    print(result)
+```
+
+{/* Add examples for confidential */}
+
+## Next Steps
+
+- Explore the detailed API reference for each endpoint
+- Learn about [confidential computing](/cloud-api-reference/confidential-computing) features
+- Check out our [example applications](/cloud-api-reference/examples)

@@ -722,11 +722,11 @@ paths:
 
               # Handle response
               print(res)
-  /v1/nodes/models/{model}:
-    get:
+  /v1/nodes/lock:
+    post:
       tags:
       - Nodes
-      summary: Retrieve node for a given model
+      summary: Create a node lock for confidential compute
       description: |-
         This endpoint attempts to find a suitable node and retrieve its public key for encryption
         through a two-step process:
@@ -741,21 +741,21 @@ paths:
         ## Errors
           - `INTERNAL_SERVER_ERROR` - Communication errors or missing node public keys
           - `SERVICE_UNAVAILABLE` - No nodes available for confidential compute
-      operationId: nodes_models_retrieve
-      parameters:
-      - name: model
-        in: path
-        description: The name of the model to retrieve
+      operationId: nodes_create_lock
+      requestBody:
+        description: The model to lock a node for
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodesCreateLockRequest'
         required: true
-        schema:
-          type: string
       responses:
         '200':
           description: Node DH public key requested successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NodesModelsRetrieveResponse'
+                $ref: '#/components/schemas/NodesCreateLockResponse'
         '500':
           description: Failed to request node DH public key
         '503':
@@ -764,7 +764,7 @@ paths:
       - bearerAuth: []
       x-codeSamples:
       - lang: typescript
-        label: nodes_models_retrieve
+        label: nodes_create_lock
         source: |-
           import { AtomaSDK } from "atoma-sdk";
 
@@ -773,8 +773,8 @@ paths:
           });
 
           async function run() {
-            const result = await atomaSDK.nodes.nodesModelsRetrieve({
-              model: "Charger",
+            const result = await atomaSDK.nodes.nodesCreateLock({
+              model: "Focus",
             });
 
             // Handle the result
@@ -783,7 +783,7 @@ paths:
 
           run();
       - lang: python
-        label: nodes_models_retrieve
+        label: nodes_create_lock
         source: |-
           from atoma_sdk import AtomaSDK
           import os
@@ -792,7 +792,7 @@ paths:
               bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
           ) as atoma_sdk:
 
-              res = atoma_sdk.nodes.nodes_models_retrieve(model="Charger")
+              res = atoma_sdk.nodes.nodes_create_lock(model="Focus")
 
               # Handle response
               print(res)
@@ -1408,6 +1408,45 @@ components:
         public_address:
           type: string
           description: The public address of the node
+    NodesCreateLockRequest:
+      type: object
+      description: Request body for creating a node lock
+      required:
+      - model
+      properties:
+        model:
+          type: string
+          description: The model to lock a node for
+    NodesCreateLockResponse:
+      type: object
+      description: |-
+        The response body for selecting a node's public key for encryption
+        from a client. The client will use the provided public key to encrypt
+        the request and send it back to the proxy. The proxy will then route this
+        request to the selected node.
+      required:
+      - public_key
+      - node_small_id
+      - stack_small_id
+      properties:
+        node_small_id:
+          type: integer
+          format: int64
+          description: The node small id for the selected node
+          minimum: 0
+        public_key:
+          type: string
+          description: The public key for the selected node, base64 encoded
+        stack_entry_digest:
+          type:
+          - string
+          - 'null'
+          description: Transaction digest for the transaction that acquires the stack entry, if any
+        stack_small_id:
+          type: integer
+          format: int64
+          description: The stack small id to which an available stack entry was acquired, for the selected node
+          minimum: 0
     NodesCreateRequest:
       type: object
       description: Represents the payload for the node public address registration request.
@@ -1429,40 +1468,6 @@ components:
         message:
           type: string
           description: The message of the response
-    NodesModelsRetrieveResponse:
-      type: object
-      description: |-
-        The response body for selecting a node's public key for encryption
-        from a client. The client will use the provided public key to encrypt
-        the request and send it back to the proxy. The proxy will then route this
-        request to the selected node.
-      required:
-      - public_key
-      - node_small_id
-      - stack_small_id
-      properties:
-        node_small_id:
-          type: integer
-          format: int64
-          description: The node small id for the selected node
-          minimum: 0
-        public_key:
-          type: array
-          items:
-            type: integer
-            format: int32
-            minimum: 0
-          description: The public key for the selected node, base64 encoded
-        stack_entry_digest:
-          type:
-          - string
-          - 'null'
-          description: Transaction digest for the transaction that acquires the stack entry, if any
-        stack_small_id:
-          type: integer
-          format: int64
-          description: The stack small id to which an available stack entry was acquired, for the selected node
-          minimum: 0
     Usage:
       type: object
       description: Represents usage statistics for a confidential compute request
