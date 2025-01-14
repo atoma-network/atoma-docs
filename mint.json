@@ -126,6 +126,12 @@
       ]
     },
     {
+      "group": "Get Started",
+      "pages": [
+        "node-api-reference/get-started"
+      ]
+    },
+    {
       "group": "Getting Started",
       "pages": [
         "smart-contract/getting-started/interact-atoma-contract"

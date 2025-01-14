@@ -1,0 +1,44 @@
+---
+title: Get Started
+description: Learn how to use Atoma's Node API
+---
+
+The Atoma Node API allows you to interact with your Atoma node for AI inference tasks and node management. This guide will help you get started with using the API.
+
+## Authentication
+
+All API requests require authentication. You'll need to include your node's authentication token in the `Authorization` header:
+
+```
+bash
+Authorization: Bearer <YOUR_NODE_TOKEN>
+```
+
+## Base URL
+
+By default, the Atoma Node API is accessible at:
+
+```
+http://localhost:8080
+```
+
+You can configure a different port by setting the `ATOMA_API_SERVICE_PORT` environment variable.
+
+## Available Endpoints
+
+Atoma Node provides the following main endpoint categories:
+
+### Inference Endpoints
+- Chat Completions: `/v1/chat/completions`
+- Embeddings: `/v1/embeddings`
+- Image Generation: `/v1/images/generations`
+
+### Confidential Computing Endpoints
+- Confidential Chat: `/v1/confidential/chat/completions`
+- Confidential Embeddings: `/v1/confidential/embeddings`
+- Confidential Images: `/v1/confidential/images/generations`
+
+### Node Management
+- Health Check: `/health`
+- Node Status: `/v1/status`
+- Models List: `/v1/models`
