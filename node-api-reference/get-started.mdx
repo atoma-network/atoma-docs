@@ -3,42 +3,50 @@ title: Get Started
 description: Learn how to use Atoma's Node API
 ---
 
-The Atoma Node API allows you to interact with your Atoma node for AI inference tasks and node management. This guide will help you get started with using the API.
+The Atoma Node API allows you to interact with your Atoma node, via the Atoma node daemon, for tasks, stacks and funds management. This guide will help you get started with using the API.
 
-## Authentication
+## Spawn the Atoma Node Daemon
 
-All API requests require authentication. You'll need to include your node's authentication token in the `Authorization` header:
+To start the Atoma Node daemon, you must start a node on your machine. In order to do so, you can follow the instructions in the Atoma node [section](https://docs.atoma.network/node/get-started/setup-node).
 
-```
-bash
-Authorization: Bearer <YOUR_NODE_TOKEN>
-```
+By spawning the node, you are able able to interact with the Atoma node API, directly from localhost.
 
 ## Base URL
 
 By default, the Atoma Node API is accessible at:
 
 ```
-http://localhost:8080
+http://localhost:3001
 ```
 
-You can configure a different port by setting the `ATOMA_API_SERVICE_PORT` environment variable.
+You can configure a different port by setting the `ATOMA_DAEMON_PORT` environment variable.
 
 ## Available Endpoints
 
 Atoma Node provides the following main endpoint categories:
 
-### Inference Endpoints
-- Chat Completions: `/v1/chat/completions`
-- Embeddings: `/v1/embeddings`
-- Image Generation: `/v1/images/generations`
+### Tasks
+- List Tasks: `GET /tasks`
 
-### Confidential Computing Endpoints
-- Confidential Chat: `/v1/confidential/chat/completions`
-- Confidential Embeddings: `/v1/confidential/embeddings`
-- Confidential Images: `/v1/confidential/images/generations`
+### Subscriptions
+- List Node Subscriptions: `GET /subscriptions/nodes/{node_id}`
+
+### Stacks
+- List Node Stacks: `GET /stacks/nodes/{node_id}?min_fill_fraction={fraction}`
 
 ### Node Management
-- Health Check: `/health`
-- Node Status: `/v1/status`
-- Models List: `/v1/models`
+- Register Node: `POST /nodes/register`
+- Subscribe to Model: `POST /nodes/model-subscribe`
+- Subscribe to Task: `POST /nodes/task-subscribe`
+- Update Task Subscription: `POST /nodes/task-update-subscription`
+- Unsubscribe from Task: `DELETE /nodes/task-unsubscribe`
+- Try Settle Stacks: `POST /nodes/try-settle-stacks`
+- Submit Attestations: `POST /nodes/submit-attestations`
+- Claim Funds: `POST /nodes/claim-funds`
+
+### Attestation Disputes
+- List Against Node Disputes: `GET /attestation_disputes/against/nodes/{node_id}`
+- List Own Node Disputes: `GET /attestation_disputes/own/nodes/{node_id}`
+
+### Claimed Stacks
+- List Node Claimed Stacks: `GET /claimed-stacks/nodes/{node_id}`
