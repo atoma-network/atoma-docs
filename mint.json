@@ -37,7 +37,7 @@
     {
       "name": "Cloud API Reference",
       "url": "cloud-api-reference",
-      "openapi": "/cloud/openapi.yml"
+      "openapi": "/cloud-api-reference/openapi.yml"
     },
     {
       "name": "Node",

@@ -4,7 +4,7 @@ use serde_yaml::{self, Mapping, Value};
 use std::fs;
 
 fn main() -> Result<()> {
-    let openapi_path = "cloud/openapi.yml";
+    let openapi_path = "cloud-api-reference/openapi.yml";
 
     // First merge the SDK samples
     merge_sdk_samples(
