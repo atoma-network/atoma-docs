@@ -229,6 +229,34 @@ paths:
           }
 
           run();
+      - lang: typescript
+        label: confidential_chat_completions_create_stream
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.confidentialChat.createStream({
+              ciphertext: "<value>",
+              clientDhPublicKey: "<value>",
+              modelName: "<value>",
+              nodeDhPublicKey: "<value>",
+              nonce: "<value>",
+              plaintextBodyHash: "<value>",
+              salt: "<value>",
+              stackSmallId: 180107,
+            });
+
+            for await (const event of result) {
+              // Handle the event
+              console.log(event);
+            }
+          }
+
+          run();
       - lang: python
         label: confidential_chat_completions_create
         source: |-
@@ -243,6 +271,48 @@ paths:
 
               # Handle response
               print(res)
+      - lang: python
+        label: confidential_chat_completions_create_stream
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.confidential_chat.create_stream(ciphertext="<value>", client_dh_public_key="<value>", model_name="<value>", node_dh_public_key="<value>", nonce="<value>", plaintext_body_hash="<value>", salt="<value>", stack_small_id=180107)
+
+              with res as event_stream:
+                  for event in event_stream:
+                      # handle event
+                      print(event, flush=True)
+  /v1/confidential/chat/completions#stream:
+    post:
+      tags:
+      - Confidential Chat
+      operationId: confidential_chat_completions_create_stream
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfidentialComputeRequest'
+        required: true
+      responses:
+        '200':
+          description: Chat completions
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ConfidentialComputeStreamResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
   /v1/confidential/embeddings:
     post:
       tags:
@@ -809,10 +879,12 @@ components:
           - string
           - 'null'
           description: The reason the chat completion was finished.
+          example: stop
         index:
           type: integer
           format: int32
           description: The index of this choice in the list of choices.
+          example: 0
         logprobs:
           description: Log probability information for the choice, if applicable.
         message:
@@ -835,12 +907,15 @@ components:
           type: integer
           format: int64
           description: The Unix timestamp (in seconds) of when the chunk was created.
+          example: 1677652288
         id:
           type: string
           description: A unique identifier for the chat completion chunk.
+          example: chatcmpl-123
         model:
           type: string
           description: The model used for the chat completion.
+          example: meta-llama/Llama-3.3-70B-Instruct
     ChatCompletionChunkChoice:
       type: object
       required:
@@ -855,10 +930,12 @@ components:
           - string
           - 'null'
           description: The reason the chat completion was finished, if applicable.
+          example: stop
         index:
           type: integer
           format: int32
           description: The index of this choice in the list of choices.
+          example: 0
     ChatCompletionChunkDelta:
       type: object
       properties:
@@ -867,6 +944,7 @@ components:
           - string
           - 'null'
           description: The content of the message, if present in this chunk.
+          example: Hello
         function_call:
           description: The function call information, if present in this chunk.
         role:
@@ -874,6 +952,7 @@ components:
           - string
           - 'null'
           description: The role of the message author, if present in this chunk.
+          example: assistant
         tool_calls:
           type:
           - array
@@ -889,14 +968,17 @@ components:
         content:
           type: string
           description: The contents of the message
+          example: Hello! How can you help me today?
         name:
           type:
           - string
           - 'null'
           description: The name of the author of this message
+          example: john_doe
         role:
           type: string
           description: 'The role of the message author. One of: "system", "user", "assistant", "tool", or "function"'
+          example: user
     ChatCompletionRequest:
       type: object
       required:
@@ -911,6 +993,7 @@ components:
           description: |-
             Number between -2.0 and 2.0. Positive values penalize new tokens based on their
             existing frequency in the text so far
+          example: 0.0
         function_call:
           description: Controls how the model responds to function calls
         functions:
@@ -935,6 +1018,7 @@ components:
           - 'null'
           format: int32
           description: The maximum number of tokens to generate in the chat completion
+          example: 2048
         messages:
           type: array
           items:
@@ -943,12 +1027,14 @@ components:
         model:
           type: string
           description: ID of the model to use
+          example: meta-llama/Llama-3.3-70B-Instruct
         n:
           type:
           - integer
           - 'null'
           format: int32
           description: How many chat completion choices to generate for each input message
+          example: 1
         presence_penalty:
           type:
           - number
@@ -957,6 +1043,7 @@ components:
           description: |-
             Number between -2.0 and 2.0. Positive values penalize new tokens based on
             whether they appear in the text so far
+          example: 0.0
         response_format:
           description: The format to return the response in
         seed:
@@ -965,6 +1052,7 @@ components:
           - 'null'
           format: int64
           description: If specified, our system will make a best effort to sample deterministically
+          example: 123
         stop:
           type:
           - array
@@ -972,17 +1060,21 @@ components:
           items:
             type: string
           description: Up to 4 sequences where the API will stop generating further tokens
+          example: json(["stop", "halt"])
+          default: '[]'
         stream:
           type:
           - boolean
           - 'null'
           description: Whether to stream back partial progress
+          example: false
         temperature:
           type:
           - number
           - 'null'
           format: float
           description: What sampling temperature to use, between 0 and 2
+          example: 0.7
         tool_choice:
           description: Controls which (if any) tool the model should use
         tools:
@@ -997,11 +1089,13 @@ components:
           - 'null'
           format: float
           description: An alternative to sampling with temperature
+          example: 1.0
         user:
           type:
           - string
           - 'null'
           description: A unique identifier representing your end-user
+          example: user-1234
     ChatCompletionResponse:
       type: object
       required:
@@ -1019,17 +1113,21 @@ components:
           type: integer
           format: int64
           description: The Unix timestamp (in seconds) of when the chat completion was created.
+          example: 1677652288
         id:
           type: string
           description: A unique identifier for the chat completion.
+          example: chatcmpl-123
         model:
           type: string
           description: The model used for the chat completion.
+          example: meta-llama/Llama-3.3-70B-Instruct
         system_fingerprint:
           type:
           - string
           - 'null'
           description: The system fingerprint for the completion, if applicable.
+          example: fp_44709d6fcb
         usage:
           oneOf:
           - type: 'null'
@@ -1054,14 +1152,17 @@ components:
           type: integer
           format: int32
           description: Number of tokens in the completion.
+          example: 12
         prompt_tokens:
           type: integer
           format: int32
           description: Number of tokens in the prompt.
+          example: 9
         total_tokens:
           type: integer
           format: int32
           description: Total number of tokens used (prompt + completion).
+          example: 21
     ConfidentialComputeRequest:
       type: object
       description: A request for confidential computation that includes encrypted data and associated cryptographic parameters
@@ -1143,6 +1244,15 @@ components:
           - type: 'null'
           - $ref: '#/components/schemas/Usage'
             description: Usage statistics for the request
+    ConfidentialComputeStreamResponse:
+      type: object
+      description: Represents a response from a confidential compute request
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ConfidentialComputeResponse'
+          description: The stream of chat completion chunks.
     CreateChatCompletionRequest:
       allOf:
       - $ref: '#/components/schemas/ChatCompletionRequest'
@@ -1528,6 +1638,8 @@ x-speakeasy-name-override:
   methodNameOverride: create_stream
 - operationId: confidential_chat_completions_create
   methodNameOverride: create
+- operationId: confidential_chat_completions_create_stream
+  methodNameOverride: create_stream
 - operationId: embeddings_create
   methodNameOverride: create
 - operationId: confidential_embeddings_create
