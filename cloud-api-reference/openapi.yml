@@ -64,18 +64,15 @@ paths:
           });
 
           async function run() {
-            const result = await atomaSDK.chat.create({
+            const completion = await atomaSDK.chat.create({
               messages: [
-                {
-                  content: "<value>",
-                  role: "<value>",
-                },
+                {"role": "developer", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Hello!"}
               ],
-              model: "LeBaron",
+              model: "meta-llama/Llama-3.3-70B-Instruct"
             });
 
-            // Handle the result
-            console.log(result);
+            console.log(completion.choices[0]);
           }
 
           run();
@@ -89,19 +86,16 @@ paths:
           });
 
           async function run() {
-            const result = await atomaSDK.chat.createStream({
+            const completion = await atomaSDK.chat.createStream({
               messages: [
-                {
-                  content: "<value>",
-                  role: "<value>",
-                },
+                {"role": "developer", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Hello!"}
               ],
-              model: "Impala",
+              model: "meta-llama/Llama-3.3-70B-Instruct"
             });
 
-            for await (const event of result) {
-              // Handle the event
-              console.log(event);
+            for await (const chunk of completion) {
+              console.log(chunk.choices[0].delta.content);
             }
           }
 
@@ -116,15 +110,15 @@ paths:
               bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
           ) as atoma_sdk:
 
-              res = atoma_sdk.chat.create(messages=[
-                  {
-                      "content": "<value>",
-                      "role": "<value>",
-                  },
-              ], model="LeBaron")
+              completion = atoma_sdk.chat.create(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                messages=[
+                  {"role": "developer", "content": "You are a helpful assistant."},
+                  {"role": "user", "content": "Hello!"}
+                ]
+              )
 
-              # Handle response
-              print(res)
+              print(completion.choices[0].message)
       - lang: python
         label: streaming
         source: |-
@@ -135,17 +129,16 @@ paths:
               bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
           ) as atoma_sdk:
 
-              res = atoma_sdk.chat.create_stream(messages=[
-                  {
-                      "content": "<value>",
-                      "role": "<value>",
-                  },
-              ], model="Impala")
+              completion = atoma_sdk.chat.create_stream(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                messages=[
+                  {"role": "developer", "content": "You are a helpful assistant."},
+                  {"role": "user", "content": "Hello!"}
+                ]
+              )
 
-              with res as event_stream:
-                  for event in event_stream:
-                      # handle event
-                      print(event, flush=True)
+              for chunk in completion:
+                print(chunk.data.choices[0].delta)
   /v1/confidential/chat/completions:
     post:
       tags:
@@ -204,7 +197,7 @@ paths:
       - bearerAuth: []
       x-codeSamples:
       - lang: typescript
-        label: confidential_chat_completions_create
+        label: default
         source: |-
           import { AtomaSDK } from "atoma-sdk";
 
@@ -213,24 +206,44 @@ paths:
           });
 
           async function run() {
-            const result = await atomaSDK.confidentialChat.create({
-              ciphertext: "<value>",
-              clientDhPublicKey: "<value>",
-              modelName: "<value>",
-              nodeDhPublicKey: "<value>",
-              nonce: "<value>",
-              plaintextBodyHash: "<value>",
-              salt: "<value>",
-              stackSmallId: 486589,
+            const completion = await atomaSDK.confidentialChat.create({
+              messages: [
+                {"role": "developer", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Hello!"}
+              ],
+              model: "meta-llama/Llama-3.3-70B-Instruct"
             });
 
-            // Handle the result
-            console.log(result);
+            console.log(completion.choices[0]);
+          }
+
+          run();
+      - lang: typescript
+        label: streaming
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const completion = await atomaSDK.confidentialChat.createStream({
+              messages: [
+                {"role": "developer", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Hello!"}
+              ],
+              model: "meta-llama/Llama-3.3-70B-Instruct"
+            });
+
+            for await (const chunk of completion) {
+              console.log(chunk.choices[0].delta.content);
+            }
           }
 
           run();
       - lang: python
-        label: confidential_chat_completions_create
+        label: default
         source: |-
           from atoma_sdk import AtomaSDK
           import os
@@ -239,10 +252,35 @@ paths:
               bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
           ) as atoma_sdk:
 
-              res = atoma_sdk.confidential_chat.create(ciphertext="<value>", client_dh_public_key="<value>", model_name="<value>", node_dh_public_key="<value>", nonce="<value>", plaintext_body_hash="<value>", salt="<value>", stack_small_id=486589)
+              completion = atoma_sdk.confidential_chat.create(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                messages=[
+                  {"role": "developer", "content": "You are a helpful assistant."},
+                  {"role": "user", "content": "Hello!"}
+                ]
+              )
 
-              # Handle response
-              print(res)
+              print(completion.choices[0].message)
+      - lang: python
+        label: streaming
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.confidential_chat.create_stream(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                messages=[
+                  {"role": "developer", "content": "You are a helpful assistant."},
+                  {"role": "user", "content": "Hello!"}
+                ]
+              )
+
+              for chunk in completion:
+                print(chunk.choices[0].delta)
   /v1/confidential/embeddings:
     post:
       tags:
@@ -294,14 +332,9 @@ paths:
 
           async function run() {
             const result = await atomaSDK.confidentialEmbeddings.create({
-              ciphertext: "<value>",
-              clientDhPublicKey: "<value>",
-              modelName: "<value>",
-              nodeDhPublicKey: "<value>",
-              nonce: "<value>",
-              plaintextBodyHash: "<value>",
-              salt: "<value>",
-              stackSmallId: 486589,
+              model: "intfloat/multilingual-e5-large-instruct",
+              input: "The quick brown fox jumped over the lazy dog",
+              encoding_format: "float",
             });
 
             // Handle the result
@@ -319,9 +352,12 @@ paths:
               bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
           ) as atoma_sdk:
 
-              res = atoma_sdk.confidential_embeddings.create(ciphertext="<value>", client_dh_public_key="<value>", model_name="<value>", node_dh_public_key="<value>", nonce="<value>", plaintext_body_hash="<value>", salt="<value>", stack_small_id=486589)
+              res = atoma_sdk.confidential_embeddings.create(
+                input_="The quick brown fox jumped over the lazy dog",
+                model="intfloat/multilingual-e5-large-instruct",
+                encoding_format="float"
+              )
 
-              # Handle response
               print(res)
   /v1/confidential/images/generations:
     post:
@@ -367,14 +403,10 @@ paths:
 
           async function run() {
             const result = await atomaSDK.confidentialImages.generate({
-              ciphertext: "<value>",
-              clientDhPublicKey: "<value>",
-              modelName: "<value>",
-              nodeDhPublicKey: "<value>",
-              nonce: "<value>",
-              plaintextBodyHash: "<value>",
-              salt: "<value>",
-              stackSmallId: 740198,
+              model: "black-forest-labs/FLUX.1-schnell",
+              prompt: "A cute baby sea otter",
+              n: 1,
+              size: "1024x1024"
             });
 
             // Handle the result
@@ -392,9 +424,15 @@ paths:
               bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
           ) as atoma_sdk:
 
-              res = atoma_sdk.confidential_images.generate(ciphertext="<value>", client_dh_public_key="<value>", model_name="<value>", node_dh_public_key="<value>", nonce="<value>", plaintext_body_hash="<value>", salt="<value>", stack_small_id=740198)
+              res = atoma_sdk.confidential_images.generate(
+                model="black-forest-labs/FLUX.1-schnell",
+                prompt="A cute baby sea otter floating on its back",
+                n=1,
+                quality="hd",
+                response_format="url",
+                size="1024x1024"
+              )
 
-              # Handle response
               print(res)
   /v1/embeddings:
     post:
@@ -446,8 +484,9 @@ paths:
 
           async function run() {
             const result = await atomaSDK.embeddings.create({
-              input: "<value>",
-              model: "LeBaron",
+              model: "intfloat/multilingual-e5-large-instruct",
+              input: "The quick brown fox jumped over the lazy dog",
+              encoding_format: "float",
             });
 
             // Handle the result
@@ -465,9 +504,12 @@ paths:
               bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
           ) as atoma_sdk:
 
-              res = atoma_sdk.embeddings.create(input_="<value>", model="LeBaron")
+              res = atoma_sdk.embeddings.create(
+                input_="The quick brown fox jumped over the lazy dog",
+                model="intfloat/multilingual-e5-large-instruct",
+                encoding_format="float"
+              )
 
-              # Handle response
               print(res)
   /health:
     get:
@@ -563,8 +605,10 @@ paths:
 
           async function run() {
             const result = await atomaSDK.images.generate({
-              model: "Model X",
-              prompt: "<value>",
+              model: "black-forest-labs/FLUX.1-schnell",
+              prompt: "A cute baby sea otter",
+              n: 1,
+              size: "1024x1024"
             });
 
             // Handle the result
@@ -582,9 +626,15 @@ paths:
               bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
           ) as atoma_sdk:
 
-              res = atoma_sdk.images.generate(model="Model X", prompt="<value>")
+              res = atoma_sdk.images.generate(
+                model="black-forest-labs/FLUX.1-schnell",
+                prompt="A cute baby sea otter floating on its back",
+                n=1,
+                quality="hd",
+                response_format="url",
+                size="1024x1024"
+              )
 
-              # Handle response
               print(res)
   /v1/models:
     get:
@@ -809,10 +859,12 @@ components:
           - string
           - 'null'
           description: The reason the chat completion was finished.
+          example: stop
         index:
           type: integer
           format: int32
           description: The index of this choice in the list of choices.
+          example: 0
         logprobs:
           description: Log probability information for the choice, if applicable.
         message:
@@ -835,12 +887,15 @@ components:
           type: integer
           format: int64
           description: The Unix timestamp (in seconds) of when the chunk was created.
+          example: 1677652288
         id:
           type: string
           description: A unique identifier for the chat completion chunk.
+          example: chatcmpl-123
         model:
           type: string
           description: The model used for the chat completion.
+          example: meta-llama/Llama-3.3-70B-Instruct
     ChatCompletionChunkChoice:
       type: object
       required:
@@ -855,10 +910,12 @@ components:
           - string
           - 'null'
           description: The reason the chat completion was finished, if applicable.
+          example: stop
         index:
           type: integer
           format: int32
           description: The index of this choice in the list of choices.
+          example: 0
     ChatCompletionChunkDelta:
       type: object
       properties:
@@ -867,6 +924,7 @@ components:
           - string
           - 'null'
           description: The content of the message, if present in this chunk.
+          example: Hello
         function_call:
           description: The function call information, if present in this chunk.
         role:
@@ -874,6 +932,7 @@ components:
           - string
           - 'null'
           description: The role of the message author, if present in this chunk.
+          example: assistant
         tool_calls:
           type:
           - array
@@ -889,14 +948,17 @@ components:
         content:
           type: string
           description: The contents of the message
+          example: Hello! How can you help me today?
         name:
           type:
           - string
           - 'null'
           description: The name of the author of this message
+          example: john_doe
         role:
           type: string
           description: 'The role of the message author. One of: "system", "user", "assistant", "tool", or "function"'
+          example: user
     ChatCompletionRequest:
       type: object
       required:
@@ -911,6 +973,7 @@ components:
           description: |-
             Number between -2.0 and 2.0. Positive values penalize new tokens based on their
             existing frequency in the text so far
+          example: 0.0
         function_call:
           description: Controls how the model responds to function calls
         functions:
@@ -935,6 +998,7 @@ components:
           - 'null'
           format: int32
           description: The maximum number of tokens to generate in the chat completion
+          example: 2048
         messages:
           type: array
           items:
@@ -943,12 +1007,14 @@ components:
         model:
           type: string
           description: ID of the model to use
+          example: meta-llama/Llama-3.3-70B-Instruct
         n:
           type:
           - integer
           - 'null'
           format: int32
           description: How many chat completion choices to generate for each input message
+          example: 1
         presence_penalty:
           type:
           - number
@@ -957,6 +1023,7 @@ components:
           description: |-
             Number between -2.0 and 2.0. Positive values penalize new tokens based on
             whether they appear in the text so far
+          example: 0.0
         response_format:
           description: The format to return the response in
         seed:
@@ -965,6 +1032,7 @@ components:
           - 'null'
           format: int64
           description: If specified, our system will make a best effort to sample deterministically
+          example: 123
         stop:
           type:
           - array
@@ -972,17 +1040,21 @@ components:
           items:
             type: string
           description: Up to 4 sequences where the API will stop generating further tokens
+          example: json(["stop", "halt"])
+          default: '[]'
         stream:
           type:
           - boolean
           - 'null'
           description: Whether to stream back partial progress
+          example: false
         temperature:
           type:
           - number
           - 'null'
           format: float
           description: What sampling temperature to use, between 0 and 2
+          example: 0.7
         tool_choice:
           description: Controls which (if any) tool the model should use
         tools:
@@ -997,11 +1069,13 @@ components:
           - 'null'
           format: float
           description: An alternative to sampling with temperature
+          example: 1.0
         user:
           type:
           - string
           - 'null'
           description: A unique identifier representing your end-user
+          example: user-1234
     ChatCompletionResponse:
       type: object
       required:
@@ -1019,17 +1093,21 @@ components:
           type: integer
           format: int64
           description: The Unix timestamp (in seconds) of when the chat completion was created.
+          example: 1677652288
         id:
           type: string
           description: A unique identifier for the chat completion.
+          example: chatcmpl-123
         model:
           type: string
           description: The model used for the chat completion.
+          example: meta-llama/Llama-3.3-70B-Instruct
         system_fingerprint:
           type:
           - string
           - 'null'
           description: The system fingerprint for the completion, if applicable.
+          example: fp_44709d6fcb
         usage:
           oneOf:
           - type: 'null'
@@ -1054,14 +1132,17 @@ components:
           type: integer
           format: int32
           description: Number of tokens in the completion.
+          example: 12
         prompt_tokens:
           type: integer
           format: int32
           description: Number of tokens in the prompt.
+          example: 9
         total_tokens:
           type: integer
           format: int32
           description: Total number of tokens used (prompt + completion).
+          example: 21
     ConfidentialComputeRequest:
       type: object
       description: A request for confidential computation that includes encrypted data and associated cryptographic parameters
@@ -1143,6 +1224,15 @@ components:
           - type: 'null'
           - $ref: '#/components/schemas/Usage'
             description: Usage statistics for the request
+    ConfidentialComputeStreamResponse:
+      type: object
+      description: Represents a response from a confidential compute request
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ConfidentialComputeResponse'
+          description: The stream of chat completion chunks.
     CreateChatCompletionRequest:
       allOf:
       - $ref: '#/components/schemas/ChatCompletionRequest'
@@ -1177,9 +1267,7 @@ components:
           - integer
           - 'null'
           format: int32
-          description: |-
-            The number of dimensions the resulting output embeddings should have.
-            Only supported in text-embedding-3 models.
+          description: The number of dimensions the resulting output embeddings should have.
           minimum: 0
         encoding_format:
           type:
@@ -1188,6 +1276,7 @@ components:
           description: |-
             The format to return the embeddings in. Can be "float" or "base64".
             Defaults to "float"
+          example: float
         input:
           $ref: '#/components/schemas/EmbeddingInput'
           description: |-
@@ -1196,11 +1285,13 @@ components:
         model:
           type: string
           description: ID of the model to use.
+          example: intfloat/multilingual-e5-large-instruct
         user:
           type:
           - string
           - 'null'
           description: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+          example: user-1234
     CreateEmbeddingResponse:
       type: object
       description: Response object from creating embeddings
@@ -1218,9 +1309,11 @@ components:
         model:
           type: string
           description: The model used for generating embeddings
+          example: intfloat/multilingual-e5-large-instruct
         object:
           type: string
           description: The object type, which is always "list"
+          example: list
         usage:
           $ref: '#/components/schemas/EmbeddingUsage'
           description: Usage statistics for the request
@@ -1234,16 +1327,19 @@ components:
         model:
           type: string
           description: The model to use for image generation.
+          example: black-forest-labs/FLUX.1-schnell
         n:
           type:
           - integer
           - 'null'
           format: int32
           description: The number of images to generate. Defaults to 1.
+          example: 1
           minimum: 0
         prompt:
           type: string
           description: A text description of the desired image(s). The maximum length is 1000 characters.
+          example: A cute baby sea otter floating on its back
         quality:
           type:
           - string
@@ -1251,26 +1347,31 @@ components:
           description: |-
             The quality of the image that will be generated.
             `hd` creates images with finer details and greater consistency across the image.
+          example: hd
         response_format:
           type:
           - string
           - 'null'
           description: The format in which the generated images are returned.
+          example: url
         size:
           type:
           - string
           - 'null'
           description: The size of the generated images.
+          example: 1024x1024
         style:
           type:
           - string
           - 'null'
           description: The style of the generated images.
+          example: vivid
         user:
           type:
           - string
           - 'null'
           description: A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+          example: user-1234
     CreateImageResponse:
       type: object
       description: Response format for image generation
@@ -1281,6 +1382,7 @@ components:
         created:
           type: integer
           format: int64
+          example: 1677649420
         data:
           type: array
           items:
@@ -1288,9 +1390,11 @@ components:
     EmbeddingInput:
       oneOf:
       - type: string
+        example: The quick brown fox jumped over the lazy dog
       - type: array
         items:
           type: string
+        example: '["The quick brown fox", "jumped over the lazy dog"]'
     EmbeddingObject:
       type: object
       description: Individual embedding object in the response
@@ -1305,13 +1409,16 @@ components:
             type: number
             format: float
           description: The embedding vector
+          example: '[0.0023064255, -0.009327292]'
         index:
           type: integer
           description: Index of the embedding in the list of embeddings
+          example: 0
           minimum: 0
         object:
           type: string
           description: The object type, which is always "embedding"
+          example: embedding
     EmbeddingUsage:
       type: object
       description: Usage information for the embeddings request
@@ -1323,11 +1430,13 @@ components:
           type: integer
           format: int32
           description: Number of tokens in the prompt
+          example: 8
           minimum: 0
         total_tokens:
           type: integer
           format: int32
           description: Total tokens used in the request
+          example: 8
           minimum: 0
     HealthResponse:
       type: object
@@ -1347,8 +1456,10 @@ components:
           type:
           - string
           - 'null'
+          example: A stunning image of a baby sea otter floating on its back in crystal clear blue water, with gentle ripples surrounding it. The otter's fur appears soft and well-detailed, and its expression is peaceful and content.
         url:
           type: string
+          example: https://oaidalleapiprodscus.blob.core.windows.net/private/image.png
     Model:
       type: object
       description: Individual model object in the response
@@ -1528,6 +1639,8 @@ x-speakeasy-name-override:
   methodNameOverride: create_stream
 - operationId: confidential_chat_completions_create
   methodNameOverride: create
+- operationId: confidential_chat_completions_create_stream
+  methodNameOverride: create_stream
 - operationId: embeddings_create
   methodNameOverride: create
 - operationId: confidential_embeddings_create

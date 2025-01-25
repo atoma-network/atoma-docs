@@ -4,7 +4,7 @@ use serde_yaml::{self, Mapping, Value};
 use std::fs;
 
 fn main() -> Result<()> {
-    let openapi_path = "cloud/openapi.yml";
+    let openapi_path = "cloud-api-reference/openapi.yml";
 
     // First merge the SDK samples
     merge_sdk_samples(
@@ -29,10 +29,12 @@ fn apply_monkey_patches(openapi_path: &str) -> Result<()> {
     // Create a new ordered mapping for paths
     let mut new_paths = Mapping::new();
 
-    // Get the original paths in order and copy them to the new mapping, excluding the stream endpoint
+    // Get the original paths in order and copy them to the new mapping, excluding the stream endpoints
     if let Some(paths) = openapi.get("paths").and_then(|v| v.as_mapping()) {
         for (path, value) in paths {
-            if path.as_str() != Some("/v1/chat/completions#stream") {
+            if path.as_str() != Some("/v1/chat/completions#stream")
+                && path.as_str() != Some("/v1/confidential/chat/completions#stream")
+            {
                 new_paths.insert(path.clone(), value.clone());
             }
         }
@@ -58,6 +60,32 @@ fn apply_monkey_patches(openapi_path: &str) -> Result<()> {
                     let new_label = match label {
                         "chat_completions_create" => "default",
                         "chat_completions_create_stream" => "streaming",
+                        _ => continue,
+                    };
+
+                    if let Some(label_value) = sample.get_mut("label") {
+                        *label_value = Value::String(new_label.to_string());
+                    }
+                }
+            }
+        }
+    }
+
+    // Update code sample labels in the confidential chat completions endpoint
+    if let Some(chat_endpoint) = openapi
+        .get_mut("paths")
+        .and_then(|v| v.get_mut("/v1/confidential/chat/completions"))
+        .and_then(|v| v.get_mut("post"))
+    {
+        if let Some(samples) = chat_endpoint
+            .get_mut("x-codeSamples")
+            .and_then(|v| v.as_sequence_mut())
+        {
+            for sample in samples {
+                if let Some(label) = sample.get_mut("label").and_then(|v| v.as_str()) {
+                    let new_label = match label {
+                        "confidential_chat_completions_create" => "default",
+                        "confidential_chat_completions_create_stream" => "streaming",
                         _ => continue,
                     };
 
