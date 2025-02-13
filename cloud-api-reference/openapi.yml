@@ -53,33 +53,92 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-  /v1/chat/completions#stream:
-    post:
-      tags:
-      - Chat
-      operationId: chat_completions_create_stream
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateChatCompletionStreamRequest'
-        required: true
-      responses:
-        '200':
-          description: Chat completions
-          content:
-            text/event-stream:
-              schema:
-                $ref: '#/components/schemas/ChatCompletionStreamResponse'
-              x-speakeasy-sse-sentinel: '[DONE]'
-        '400':
-          description: Bad request
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-      security:
-      - bearerAuth: []
+  x-codeSamples:
+  - lang: typescript
+    label: default
+    source: |-
+      import { AtomaSDK } from "atoma-sdk";
+
+      const atomaSDK = new AtomaSDK({
+        bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+      });
+
+      async function run() {
+        const completion = await atomaSDK.chat.create({
+          messages: [
+            {"role": "developer", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Hello!"}
+          ],
+          model: "meta-llama/Llama-3.3-70B-Instruct"
+        });
+
+        console.log(completion.choices[0]);
+      }
+
+      run();
+  - lang: typescript
+    label: streaming
+    source: |-
+      import { AtomaSDK } from "atoma-sdk";
+
+      const atomaSDK = new AtomaSDK({
+        bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+      });
+
+      async function run() {
+        const completion = await atomaSDK.chat.createStream({
+          messages: [
+            {"role": "developer", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Hello!"}
+          ],
+          model: "meta-llama/Llama-3.3-70B-Instruct"
+        });
+
+        for await (const chunk of completion) {
+          console.log(chunk.choices[0].delta.content);
+        }
+      }
+
+      run();
+  - lang: python
+    label: default
+    source: |-
+      from atoma_sdk import AtomaSDK
+      import os
+
+      with AtomaSDK(
+          bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+      ) as atoma_sdk:
+
+          completion = atoma_sdk.chat.create(
+            model="meta-llama/Llama-3.3-70B-Instruct",
+            messages=[
+              {"role": "developer", "content": "You are a helpful assistant."},
+              {"role": "user", "content": "Hello!"}
+            ]
+          )
+
+          print(completion.choices[0].message)
+  - lang: python
+    label: streaming
+    source: |-
+      from atoma_sdk import AtomaSDK
+      import os
+
+      with AtomaSDK(
+          bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+      ) as atoma_sdk:
+
+          completion = atoma_sdk.chat.create_stream(
+            model="meta-llama/Llama-3.3-70B-Instruct",
+            messages=[
+              {"role": "developer", "content": "You are a helpful assistant."},
+              {"role": "user", "content": "Hello!"}
+            ]
+          )
+
+          for chunk in completion:
+            print(chunk.data.choices[0].delta)
   /v1/confidential/chat/completions:
     post:
       tags:
@@ -136,32 +195,92 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-  /v1/confidential/chat/completions#stream:
-    post:
-      tags:
-      - Confidential Chat
-      operationId: confidential_chat_completions_create_stream
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConfidentialComputeRequest'
-        required: true
-      responses:
-        '200':
-          description: Chat completions
-          content:
-            text/event-stream:
-              schema:
-                $ref: '#/components/schemas/ConfidentialComputeStreamResponse'
-        '400':
-          description: Bad request
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-      security:
-      - bearerAuth: []
+  x-codeSamples:
+  - lang: typescript
+    label: default
+    source: |-
+      import { AtomaSDK } from "atoma-sdk";
+
+      const atomaSDK = new AtomaSDK({
+        bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+      });
+
+      async function run() {
+        const completion = await atomaSDK.confidentialChat.create({
+          messages: [
+            {"role": "developer", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Hello!"}
+          ],
+          model: "meta-llama/Llama-3.3-70B-Instruct"
+        });
+
+        console.log(completion.choices[0]);
+      }
+
+      run();
+  - lang: typescript
+    label: streaming
+    source: |-
+      import { AtomaSDK } from "atoma-sdk";
+
+      const atomaSDK = new AtomaSDK({
+        bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+      });
+
+      async function run() {
+        const completion = await atomaSDK.confidentialChat.createStream({
+          messages: [
+            {"role": "developer", "content": "You are a helpful assistant."},
+            {"role": "user", "content": "Hello!"}
+          ],
+          model: "meta-llama/Llama-3.3-70B-Instruct"
+        });
+
+        for await (const chunk of completion) {
+          console.log(chunk.choices[0].delta.content);
+        }
+      }
+
+      run();
+  - lang: python
+    label: default
+    source: |-
+      from atoma_sdk import AtomaSDK
+      import os
+
+      with AtomaSDK(
+          bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+      ) as atoma_sdk:
+
+          completion = atoma_sdk.confidential_chat.create(
+            model="meta-llama/Llama-3.3-70B-Instruct",
+            messages=[
+              {"role": "developer", "content": "You are a helpful assistant."},
+              {"role": "user", "content": "Hello!"}
+            ]
+          )
+
+          print(completion.choices[0].message)
+  - lang: python
+    label: streaming
+    source: |-
+      from atoma_sdk import AtomaSDK
+      import os
+
+      with AtomaSDK(
+          bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+      ) as atoma_sdk:
+
+          completion = atoma_sdk.confidential_chat.create_stream(
+            model="meta-llama/Llama-3.3-70B-Instruct",
+            messages=[
+              {"role": "developer", "content": "You are a helpful assistant."},
+              {"role": "user", "content": "Hello!"}
+            ]
+          )
+
+          for chunk in completion:
+            print(chunk.choices[0].delta)
   /v1/confidential/embeddings:
     post:
       tags:
@@ -201,6 +320,45 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: confidential_embeddings_create
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.confidentialEmbeddings.create({
+              model: "intfloat/multilingual-e5-large-instruct",
+              input: "The quick brown fox jumped over the lazy dog",
+              encoding_format: "float",
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
+      - lang: python
+        label: confidential_embeddings_create
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.confidential_embeddings.create(
+                input_="The quick brown fox jumped over the lazy dog",
+                model="intfloat/multilingual-e5-large-instruct",
+                encoding_format="float"
+              )
+
+              print(res)
   /v1/confidential/images/generations:
     post:
       tags:
@@ -233,6 +391,49 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: confidential_image_generations_create
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.confidentialImages.generate({
+              model: "black-forest-labs/FLUX.1-schnell",
+              prompt: "A cute baby sea otter",
+              n: 1,
+              size: "1024x1024"
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
+      - lang: python
+        label: confidential_image_generations_create
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.confidential_images.generate(
+                model="black-forest-labs/FLUX.1-schnell",
+                prompt="A cute baby sea otter floating on its back",
+                n=1,
+                quality="hd",
+                response_format="url",
+                size="1024x1024"
+              )
+
+              print(res)
   /v1/embeddings:
     post:
       tags:
@@ -271,6 +472,45 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: embeddings_create
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.embeddings.create({
+              model: "intfloat/multilingual-e5-large-instruct",
+              input: "The quick brown fox jumped over the lazy dog",
+              encoding_format: "float",
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
+      - lang: python
+        label: embeddings_create
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.embeddings.create(
+                input_="The quick brown fox jumped over the lazy dog",
+                model="intfloat/multilingual-e5-large-instruct",
+                encoding_format="float"
+              )
+
+              print(res)
   /health:
     get:
       tags:
@@ -286,6 +526,38 @@ paths:
                 $ref: '#/components/schemas/HealthResponse'
         '500':
           description: Service is unhealthy
+      x-codeSamples:
+      - lang: typescript
+        label: health
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.health.health();
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
+      - lang: python
+        label: health
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.health.health()
+
+              # Handle response
+              print(res)
   /v1/images/generations:
     post:
       tags:
@@ -321,6 +593,49 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: image_generations_create
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.images.generate({
+              model: "black-forest-labs/FLUX.1-schnell",
+              prompt: "A cute baby sea otter",
+              n: 1,
+              size: "1024x1024"
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
+      - lang: python
+        label: image_generations_create
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.images.generate(
+                model="black-forest-labs/FLUX.1-schnell",
+                prompt="A cute baby sea otter floating on its back",
+                n=1,
+                quality="hd",
+                response_format="url",
+                size="1024x1024"
+              )
+
+              print(res)
   /v1/models:
     get:
       tags:
@@ -340,6 +655,38 @@ paths:
                 $ref: '#/components/schemas/ModelList'
         '500':
           description: Failed to retrieve list of available models
+      x-codeSamples:
+      - lang: typescript
+        label: models_list
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.models.modelsList();
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
+      - lang: python
+        label: models_list
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.models.models_list()
+
+              # Handle response
+              print(res)
   /v1/nodes:
     post:
       tags:
@@ -380,6 +727,49 @@ paths:
                 $ref: '#/components/schemas/NodesCreateResponse'
         '500':
           description: Failed to register node public address
+      x-codeSamples:
+      - lang: typescript
+        label: nodes_create
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.nodes.nodesCreate({
+              data: {
+                country: "Andorra",
+                nodeSmallId: 3665,
+                publicAddress: "<value>",
+              },
+              signature: "<value>",
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
+      - lang: python
+        label: nodes_create
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.nodes.nodes_create(data={
+                  "country": "Andorra",
+                  "node_small_id": 3665,
+                  "public_address": "<value>",
+              }, signature="<value>")
+
+              # Handle response
+              print(res)
   /v1/nodes/lock:
     post:
       tags:
@@ -420,6 +810,40 @@ paths:
           description: No node found for model with confidential compute enabled for requested model
       security:
       - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: nodes_create_lock
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const result = await atomaSDK.nodes.nodesCreateLock({
+              model: "Focus",
+            });
+
+            // Handle the result
+            console.log(result);
+          }
+
+          run();
+      - lang: python
+        label: nodes_create_lock
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              res = atoma_sdk.nodes.nodes_create_lock(model="Focus")
+
+              # Handle response
+              print(res)
 components:
   schemas:
     ChatCompletionChoice:
