@@ -655,6 +655,8 @@ paths:
                 $ref: '#/components/schemas/ModelList'
         '500':
           description: Failed to retrieve list of available models
+      security:
+      - bearerAuth: []
       x-codeSamples:
       - lang: typescript
         label: models_list
