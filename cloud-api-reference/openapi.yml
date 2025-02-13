@@ -897,6 +897,7 @@ components:
           items:
             $ref: '#/components/schemas/ChatCompletionChunkChoice'
           description: A list of chat completion chunk choices.
+          example: '[{"index": 0, "delta": {"role": "assistant", "content": "Hello! How can you help me today?"}, "logprobs": null, "finish_reason": null, "stop_reason": null}]'
         created:
           type: integer
           format: int64
@@ -1324,6 +1325,7 @@ components:
             If set to 'auto', and the Project is not Scale tier enabled, the request will be processed using the default service tier with a lower uptime SLA and no latency guarantee.
             If set to 'default', the request will be processed using the default service tier with a lower uptime SLA and no latency guarantee.
             When not set, the default behavior is 'auto'.
+          example: auto
         stop:
           type:
           - array
@@ -1404,6 +1406,7 @@ components:
           items:
             $ref: '#/components/schemas/ChatCompletionChoice'
           description: A list of chat completion choices.
+          example: '[{"index": 0, "message": {"role": "assistant", "content": "Hello! How can you help me today?"}, "finish_reason": null, "stop_reason": null}]'
         created:
           type: integer
           format: int64
@@ -1426,6 +1429,7 @@ components:
           - string
           - 'null'
           description: The service tier of the chat completion.
+          example: auto
         system_fingerprint:
           type:
           - string
