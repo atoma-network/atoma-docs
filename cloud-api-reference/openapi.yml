@@ -1108,6 +1108,7 @@ components:
             - string
             - 'null'
             description: An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+            example: AI expert
           role:
             type: string
             enum:
@@ -1128,6 +1129,7 @@ components:
             - string
             - 'null'
             description: An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+            example: John Doe
           role:
             type: string
             enum:
@@ -1148,6 +1150,7 @@ components:
             - string
             - 'null'
             description: An optional name for the participant. Provides the model information to differentiate between participants of the same role.
+            example: AI
           refusal:
             type:
             - string
@@ -1180,12 +1183,16 @@ components:
           tool_call_id:
             type: string
             description: Tool call that this message is responding to.
+      title: Message
       description: |-
         A message that is part of a conversation which is based on the role
         of the author of the message.
 
         This is used to represent the message in the chat completion request.
         It can be either a system message, a user message, an assistant message, or a tool message.
+      example:
+        role: assistant
+        content: Hello! How can I help you today?
     ChatCompletionNamedFunction:
       type: object
       description: |-
@@ -1242,6 +1249,17 @@ components:
           - 'null'
           items: {}
           description: A list of functions the model may generate JSON inputs for
+          example:
+          - name: get_current_weather
+            description: Get the current weather in a location
+            parameters:
+              type: object
+              properties:
+                location:
+                  type: string
+                  description: The location to get the weather for
+              required:
+              - location
         logit_bias:
           type:
           - object
@@ -1261,6 +1279,9 @@ components:
             type: integer
             format: int32
             minimum: 0
+          example:
+            '1234567890': 0.5
+            '1234567891': -0.5
         max_completion_tokens:
           type:
           - integer
@@ -1281,6 +1302,13 @@ components:
           items:
             $ref: '#/components/schemas/ChatCompletionMessage'
           description: A list of messages comprising the conversation so far
+          example:
+          - role: system
+            content: You are a helpful AI assistant
+          - role: user
+            content: Hello!
+          - role: assistant
+            content: I'm here to help you with any questions you have. How can I assist you today?
         model:
           type: string
           description: ID of the model to use
@@ -1297,6 +1325,7 @@ components:
           - boolean
           - 'null'
           description: Whether to enable parallel tool calls.
+          example: true
         presence_penalty:
           type:
           - number
@@ -1369,6 +1398,19 @@ components:
           items:
             $ref: '#/components/schemas/ChatCompletionToolsParam'
           description: A list of tools the model may call
+          example:
+          - type: function
+            function:
+              name: get_current_weather
+              description: Get the current weather in a location
+              parameters:
+                type: object
+                properties:
+                  location:
+                    type: string
+                    description: The location to get the weather for
+                required:
+                - location
         top_logprobs:
           type:
           - integer
@@ -2098,6 +2140,16 @@ components:
       - text
       - json_object
       - json_schema
+    Role:
+      type: string
+      title: Role
+      description: The role of the message author
+      enum:
+      - system
+      - assistant
+      - user
+      - tool
+      example: system
     StopReason:
       oneOf:
       - type: object
