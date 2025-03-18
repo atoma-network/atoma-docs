@@ -2,17 +2,17 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Atoma",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "/logo/dark_new.svg",
+    "light": "/logo/light_new.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#C969FF",
-    "light": "#C969FF",
-    "dark": "#C969FF",
+    "primary": "#F47757",
+    "light": "#F47757",
+    "dark": "#F47757",
     "anchors": {
-      "from": "#C969FF",
-      "to": "#07C983"
+      "from": "#F47757",
+      "to": "#FFC266"
     }
   },
   "topbarLinks": [
