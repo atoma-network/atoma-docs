@@ -2,8 +2,8 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Atoma",
   "logo": {
-    "dark": "/logo/logo-dark-orange.svg",
-    "light": "/logo/logo-light-orange.svg"
+    "dark": "/logo/dark_new.svg",
+    "light": "/logo/light_new.svg"
   },
   "favicon": "/favicon.svg",
   "colors": {
