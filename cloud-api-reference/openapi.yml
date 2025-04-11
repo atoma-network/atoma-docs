@@ -689,6 +689,24 @@ paths:
 
               # Handle response
               print(res)
+  /v1/open_router/models:
+    get:
+      tags:
+      - Models
+      summary: OpenRouter models listing endpoint
+      description: |-
+        This endpoint returns a list of available models from the OpenRouter
+        models file. The file is expected to be in JSON format and contains
+        information about the models, including their IDs and other metadata.
+      operationId: open_router_models_list
+      responses:
+        '200':
+          description: List of available models
+          content:
+            application/json:
+              schema: {}
+        '500':
+          description: Failed to retrieve list of available models
   /v1/nodes:
     post:
       tags:
@@ -2042,9 +2060,25 @@ components:
       required:
       - model
       properties:
+        max_num_tokens:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: |-
+            The number of tokens to be processed for confidential compute
+            (including input and output tokens)
+          minimum: 0
         model:
           type: string
           description: The model to lock a node for
+        timeout:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: An optional timeout period for the locked compute units, in seconds
+          minimum: 0
     NodesCreateLockResponse:
       type: object
       description: |-
