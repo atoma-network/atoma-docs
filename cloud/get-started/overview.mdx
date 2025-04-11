@@ -22,7 +22,7 @@ ensuring a seamless experience for developers. This means developers can build a
 That said, we prioritize not only the developer experience but also the principles of decentralized technologies. To uphold this, we have open-sourced the Atoma Proxy codebase, allowing anyone to run their own instance of the Atoma Proxy and fully leverage the power of the Atoma Network without depending on our
 native proxy infrastructure.
 
-Finally, the Atoma Proxy preserves the integrity and confidentiality of the data processed by the Atoma Network, by supporting confidential computing, for both private and verifiable AI compute.
+Finally, the Atoma Proxy preserves the integrity and confidentiality of the data processed by Atoma nodes, by supporting confidential computing, for both private and verifiable AI compute.
 This means, that the data processed by the Atoma Network is protected from unauthorized access, including the Atoma Proxy and the Atoma nodes.
 
 ## Interact with Atoma's Proxy Infrastructure
@@ -47,6 +47,7 @@ You can find more information about the API itself in the [API reference](https:
 ### 1. OpenAI Compatibility
 - Drop-in replacement for OpenAI API
 - Supports standard endpoints:
+  - `v1/completions` (legacy)
   - `/v1/chat/completions`
   - `/v1/embeddings` 
   - `/v1/images/generations`
