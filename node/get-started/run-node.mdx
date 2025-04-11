@@ -21,24 +21,24 @@ You can run the node either in confidential compute mode (if you have a TEE enab
 
 ```bash
 # Build and start all services
-COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,confidential docker compose up
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up
 
 # Only start one service
-COMPOSE_PROFILES=chat_completions_vllm,confidential docker compose up
+COMPOSE_PROFILES=chat_completions_vllm docker compose up
 
 # Run in detached mode
-COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,confidential docker compose up -d
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up -d
 ```
 
-Otherwise, you can run the node in non-confidential mode with:
+Otherwise, you can run the node in non- mode with:
 
 ```bash
 # Build and start all services
-COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,non-confidential docker compose up
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up
 
 # Only start one service
-COMPOSE_PROFILES=chat_completions_vllm,non-confidential docker compose up
+COMPOSE_PROFILES=chat_completions_vllm docker compose up
 
 # Run in detached mode
-COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs,non-confidential docker compose up -d
+COMPOSE_PROFILES=chat_completions_vllm,embeddings_tei,image_generations_mistralrs docker compose up -d
 ```
