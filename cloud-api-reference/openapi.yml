@@ -9,6 +9,140 @@ info:
 servers:
 - url: https://api.atoma.network
 paths:
+  /v1/completions:
+    post:
+      tags:
+      - Completions
+      summary: Create completion
+      description: |-
+        This function processes completion requests by using the chat completions endpoint.
+
+        ## Returns
+
+        Returns a Response containing either:
+        - A streaming SSE connection for real-time completions
+        - A single JSON response for non-streaming completions
+
+        ## Errors
+
+        Returns an error status code if:
+        - The request processing fails
+        - The streaming/non-streaming handlers encounter errors
+        - The underlying inference service returns an error
+      operationId: completions_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompletionsRequest'
+        required: true
+      responses:
+        '200':
+          description: Chat completions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompletionsResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+  /v1/confidential/completions:
+    post:
+      tags:
+      - Confidential Completions
+      summary: Confidential completions request handler.
+      description: |-
+        This handler processes completions requests in a confidential manner, providing additional
+        encryption and security measures for sensitive data processing. It supports both streaming and
+        non-streaming responses while maintaining data confidentiality through AEAD encryption and TEE hardware,
+        for full private AI compute.
+
+        ## Returns
+
+        Returns a `Result` containing either:
+        * An HTTP response with the completions result
+        * A streaming SSE connection for real-time completions
+        * An `AtomaProxyError` error if the request processing fails
+
+        ## Errors
+
+        Returns `AtomaProxyError::InvalidBody` if:
+        * The 'stream' field is missing or invalid in the payload
+
+        Returns `AtomaProxyError::InternalError` if:
+        * The inference service request fails
+        * Response processing encounters errors
+        * State manager updates fail
+
+        ## Security Features
+
+        * Utilizes AEAD encryption for request/response data
+        * Supports TEE (Trusted Execution Environment) processing
+        * Implements secure key exchange using X25519
+        * Maintains confidentiality throughout the request lifecycle
+      operationId: confidential_completions_create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfidentialComputeRequest'
+        required: true
+      responses:
+        '200':
+          description: Confidential chat completions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfidentialComputeResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
+  /v1/confidential/completions#stream:
+    post:
+      tags:
+      - Confidential Completions
+      summary: Placeholder for the OpenAPI documentation for the confidential completions endpoint.
+      description: |-
+        This is a placeholder for the OpenAPI documentation for the confidential completions endpoint.
+        It is used to generate the OpenAPI documentation for the confidential completions endpoint.
+
+        # Components
+
+        Includes schemas for:
+        * `ConfidentialComputeRequest` - The structure of incoming confidential completion requests
+        * `ConfidentialComputeStreamResponse` - The response format for completed requests
+      operationId: confidential_completions_create_stream
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConfidentialComputeRequest'
+        required: true
+      responses:
+        '200':
+          description: Chat completions
+          content:
+            text/event-stream:
+              schema:
+                $ref: '#/components/schemas/ConfidentialComputeStreamResponse'
+        '400':
+          description: Bad request
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal server error
+      security:
+      - bearerAuth: []
   /v1/chat/completions:
     post:
       tags:
@@ -689,6 +823,24 @@ paths:
 
               # Handle response
               print(res)
+  /v1/open_router/models:
+    get:
+      tags:
+      - Models
+      summary: OpenRouter models listing endpoint
+      description: |-
+        This endpoint returns a list of available models from the OpenRouter
+        models file. The file is expected to be in JSON format and contains
+        information about the models, including their IDs and other metadata.
+      operationId: open_router_models_list
+      responses:
+        '200':
+          description: List of available models
+          content:
+            application/json:
+              schema: {}
+        '500':
+          description: Failed to retrieve list of available models
   /v1/nodes:
     post:
       tags:
@@ -1536,6 +1688,65 @@ components:
         type:
           type: string
           description: The type of the tool.
+    CompletionChoice:
+      type: object
+      description: A completion choice response
+      required:
+      - text
+      - index
+      - finish_reason
+      properties:
+        finish_reason:
+          type: string
+          description: The reason the model stopped generating tokens
+          example: stop
+        index:
+          type: integer
+          format: int32
+          description: The index of the choice in the list of choices
+          example: 0
+        logprobs:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/LogProbs'
+            description: The log probabilities of the chosen tokens
+        text:
+          type: string
+          description: The generated text
+          example: This is a test
+    CompletionTokensDetails:
+      type: object
+      description: The details of the completion tokens
+      required:
+      - accepted_prediction_tokens
+      - audio_tokens
+      - reasoning_tokens
+      - rejected_prediction_tokens
+      properties:
+        accepted_prediction_tokens:
+          type: integer
+          format: int32
+          description: The number of tokens in the completion
+          example: 10
+          minimum: 0
+        audio_tokens:
+          type: integer
+          format: int32
+          description: The number of audio tokens
+          example: 0
+          minimum: 0
+        reasoning_tokens:
+          type: integer
+          format: int32
+          description: The number of reasoning tokens
+          example: 10
+          minimum: 0
+        rejected_prediction_tokens:
+          type: integer
+          format: int32
+          description: The number of rejected prediction tokens
+          example: 0
+          minimum: 0
     CompletionUsage:
       type: object
       description: |-
@@ -1568,6 +1779,212 @@ components:
           format: int32
           description: Total number of tokens used (prompt + completion).
           example: 21
+    CompletionsPrompt:
+      oneOf:
+      - type: string
+        description: A single string prompt
+      - type: array
+        items:
+          type: string
+        description: An array of strings prompts
+      - type: array
+        items:
+          type: integer
+          format: int32
+          minimum: 0
+        description: An array of tokens
+      - type: array
+        items:
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 0
+        description: An array of token arrays
+    CompletionsRequest:
+      type: object
+      required:
+      - model
+      - prompt
+      properties:
+        best_of:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          default: 1
+          example: 1
+        echo:
+          type:
+          - boolean
+          - 'null'
+          default: false
+          example: false
+        frequency_penalty:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: |-
+            Number between -2.0 and 2.0. Positive values penalize new tokens based on their
+            existing frequency in the text so far
+          example: 0.0
+        logit_bias:
+          type:
+          - object
+          - 'null'
+          description: |-
+            Modify the likelihood of specified tokens appearing in the completion.
+
+            Accepts a JSON object that maps tokens (specified by their token ID in the tokenizer)
+            to an associated bias value from -100 to 100. Mathematically, the bias is added to the logits
+            generated by the model prior to sampling. The exact effect will vary per model, but values
+            between -1 and 1 should decrease or increase likelihood of selection; values like -100 or
+            100 should result in a ban or exclusive selection of the relevant token.
+          additionalProperties:
+            type: number
+            format: float
+          propertyNames:
+            type: string
+          example:
+            '1234567890': 0.5
+            '1234567891': -0.5
+        logprobs:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: An integer between 0 and 20 specifying the number of most likely tokens to return at each token position, each with an associated log probability.
+          example: 1
+        max_tokens:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: The maximum number of tokens to generate in the chat completion
+          default: 16
+          example: 4096
+        model:
+          type: string
+          description: ID of the model to use
+          example: meta-llama/Llama-3.3-70B-Instruct
+        n:
+          type:
+          - integer
+          - 'null'
+          format: int32
+          description: How many chat completion choices to generate for each input message
+          example: 1
+        presence_penalty:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: |-
+            Number between -2.0 and 2.0. Positive values penalize new tokens based on
+            whether they appear in the text so far
+          example: 0.0
+        prompt:
+          $ref: '#/components/schemas/CompletionsPrompt'
+          description: The prompt to generate completions for
+        seed:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: If specified, our system will make a best effort to sample deterministically
+          example: 123
+        stop:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+          description: Up to 4 sequences where the API will stop generating further tokens
+          example: json(["stop", "halt"])
+          default: '[]'
+        stream:
+          type:
+          - boolean
+          - 'null'
+          description: Whether to stream back partial progress
+          example: false
+        stream_options:
+          oneOf:
+          - type: 'null'
+          - $ref: '#/components/schemas/StreamOptions'
+            description: 'Options for streaming response. Only set this when you set stream: true.'
+        suffix:
+          type:
+          - string
+          - 'null'
+          description: The suffix that comes after a completion of inserted text.
+          example: json("\n")
+        temperature:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: What sampling temperature to use, between 0 and 2
+          example: 0.7
+        top_p:
+          type:
+          - number
+          - 'null'
+          format: float
+          description: An alternative to sampling with temperature
+          example: 1.0
+        user:
+          type:
+          - string
+          - 'null'
+          description: A unique identifier representing your end-user
+          example: user-1234
+    CompletionsResponse:
+      type: object
+      required:
+      - choices
+      - usage
+      - created
+      - id
+      - model
+      - object
+      - system_fingerprint
+      properties:
+        choices:
+          type: array
+          items:
+            $ref: '#/components/schemas/CompletionChoice'
+          description: Array of completion choices response
+          example:
+          - text: This is a test
+            index: 0
+            logprobs: null
+            finish_reason: stop
+        created:
+          type: integer
+          format: int64
+          description: The creation time of the request
+          example: 2021-01-01T00:00:00.000Z
+        id:
+          type: string
+          description: The ID of the request
+          example: cmpl-1234567890
+        model:
+          type: string
+          description: The model used for the request
+          example: meta-llama/Llama-3.3-70B-Instruct
+        object:
+          type: string
+          description: The object type
+          example: text_completion
+        system_fingerprint:
+          type: string
+          description: The system fingerprint
+          example: system-fingerprint
+        usage:
+          $ref: '#/components/schemas/Usage'
+          description: The usage information for the request
     ConfidentialComputeRequest:
       type: object
       description: A request for confidential computation that includes encrypted data and associated cryptographic parameters
@@ -1915,6 +2332,54 @@ components:
           - boolean
           - 'null'
           description: Whether to strictly validate the JSON schema.
+    LogProbs:
+      type: object
+      required:
+      - tokens
+      - token_logprobs
+      - top_logprobs
+      - text_offset
+      properties:
+        text_offset:
+          type: array
+          items:
+            type: integer
+            format: int32
+            minimum: 0
+          description: The text offset of the tokens
+          example:
+          - 0
+          - 10
+        token_logprobs:
+          type: array
+          items:
+            type: number
+            format: float
+          description: The log probabilities of the tokens
+          example:
+          - 0.5
+          - -0.5
+        tokens:
+          type: array
+          items:
+            type: string
+          description: The tokens
+          example:
+          - 'Hello '
+          - world
+        top_logprobs:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: number
+              format: float
+            propertyNames:
+              type: string
+          description: The top log probabilities
+          example:
+          - 'Hello ': -0.2
+            world: -0.8
     MessageContent:
       oneOf:
       - type: string
@@ -2042,9 +2507,25 @@ components:
       required:
       - model
       properties:
+        max_num_tokens:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: |-
+            The number of tokens to be processed for confidential compute
+            (including input and output tokens)
+          minimum: 0
         model:
           type: string
           description: The model to lock a node for
+        timeout:
+          type:
+          - integer
+          - 'null'
+          format: int64
+          description: An optional timeout period for the locked compute units, in seconds
+          minimum: 0
     NodesCreateLockResponse:
       type: object
       description: |-
@@ -2098,19 +2579,22 @@ components:
           description: The message of the response
     PromptTokensDetails:
       type: object
-      description: |-
-        Represents the prompt tokens details.
-
-        This is used to represent the prompt tokens details in the chat completion request.
-        It can be either a prompt tokens details or a prompt tokens details choice.
       required:
+      - audio_tokens
       - cached_tokens
       properties:
+        audio_tokens:
+          type: integer
+          format: int32
+          description: The number of audio tokens
+          example: 0
+          minimum: 0
         cached_tokens:
           type: integer
           format: int32
-          description: Number of tokens in the prompt that were cached.
-          example: 1
+          description: The number of cached tokens
+          example: 10
+          minimum: 0
     ResponseFormat:
       type: object
       description: |-
@@ -2285,37 +2769,46 @@ components:
             model will follow the exact schema defined in the parameters field. Only a subset of JSON Schema is supported when strict is true
     Usage:
       type: object
-      description: Represents usage statistics for a confidential compute request
       required:
       - prompt_tokens
+      - completion_tokens
       - total_tokens
+      - completion_tokens_details
+      - prompt_tokens_details
       properties:
         completion_tokens:
-          type:
-          - integer
-          - 'null'
-          format: int64
-          description: |-
-            Number of compute units used
-            NOTE: This is not used for the embeddings endpoint
+          type: integer
+          format: int32
+          description: The number of completion tokens used
+          example: 10
           minimum: 0
         completion_tokens_details:
-          description: Details about the completion tokens
+          $ref: '#/components/schemas/CompletionTokensDetails'
+          description: The details of the completion tokens
         prompt_tokens:
           type: integer
-          format: int64
-          description: Number of compute units used
+          format: int32
+          description: The number of prompt tokens used
+          example: 10
           minimum: 0
+        prompt_tokens_details:
+          $ref: '#/components/schemas/PromptTokensDetails'
+          description: The details of the prompt tokens
         total_tokens:
           type: integer
-          format: int64
-          description: Number of compute units used
+          format: int32
+          description: The total number of tokens used
+          example: 20
           minimum: 0
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
 tags:
+- name: Completions
+  description: OpenAI's API completions v1 endpoint
+- name: Confidential Completions
+  description: Atoma's API confidential completions v1 endpoint
 - name: Chat
   description: OpenAI's API chat completions v1 endpoint
 - name: Confidential Chat
