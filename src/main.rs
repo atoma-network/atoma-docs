@@ -34,6 +34,8 @@ fn apply_monkey_patches(openapi_path: &str) -> Result<()> {
         for (path, value) in paths {
             if path.as_str() != Some("/v1/chat/completions#stream")
                 && path.as_str() != Some("/v1/confidential/chat/completions#stream")
+                && path.as_str() != Some("/v1/completions#stream")
+                && path.as_str() != Some("/v1/confidential/completions#stream")
             {
                 new_paths.insert(path.clone(), value.clone());
             }
@@ -45,7 +47,7 @@ fn apply_monkey_patches(openapi_path: &str) -> Result<()> {
         *paths_obj = Value::Mapping(new_paths);
     }
 
-    // Update code sample labels in the chat completions endpoint
+    // Update code sample labels in the chat completions and completions endpoints
     if let Some(chat_endpoint) = openapi
         .get_mut("paths")
         .and_then(|v| v.get_mut("/v1/chat/completions"))
@@ -86,6 +88,58 @@ fn apply_monkey_patches(openapi_path: &str) -> Result<()> {
                     let new_label = match label {
                         "confidential_chat_completions_create" => "default",
                         "confidential_chat_completions_create_stream" => "streaming",
+                        _ => continue,
+                    };
+
+                    if let Some(label_value) = sample.get_mut("label") {
+                        *label_value = Value::String(new_label.to_string());
+                    }
+                }
+            }
+        }
+    }
+
+    // Update code sample labels in the completions endpoint
+    if let Some(completions_endpoint) = openapi
+        .get_mut("paths")
+        .and_then(|v| v.get_mut("/v1/completions"))
+        .and_then(|v| v.get_mut("post"))
+    {
+        if let Some(samples) = completions_endpoint
+            .get_mut("x-codeSamples")
+            .and_then(|v| v.as_sequence_mut())
+        {
+            for sample in samples {
+                if let Some(label) = sample.get_mut("label").and_then(|v| v.as_str()) {
+                    let new_label = match label {
+                        "completions_create" => "default",
+                        "completions_create_stream" => "streaming",
+                        _ => continue,
+                    };
+
+                    if let Some(label_value) = sample.get_mut("label") {
+                        *label_value = Value::String(new_label.to_string());
+                    }
+                }
+            }
+        }
+    }
+
+    // Update code sample labels in the confidential completions endpoint
+    if let Some(completions_endpoint) = openapi
+        .get_mut("paths")
+        .and_then(|v| v.get_mut("/v1/confidential/completions"))
+        .and_then(|v| v.get_mut("post"))
+    {
+        if let Some(samples) = completions_endpoint
+            .get_mut("x-codeSamples")
+            .and_then(|v| v.as_sequence_mut())
+        {
+            for sample in samples {
+                if let Some(label) = sample.get_mut("label").and_then(|v| v.as_str()) {
+                    let new_label = match label {
+                        "confidential_completions_create" => "default",
+                        "confidential_completions_create_stream" => "streaming",
                         _ => continue,
                     };
 

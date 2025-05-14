@@ -13,7 +13,7 @@ paths:
     post:
       tags:
       - Completions
-      summary: Create completion
+      summary: Create completions
       description: |-
         This function processes completion requests by using the chat completions endpoint.
 
@@ -51,37 +51,85 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-  /v1/completions#stream:
-    post:
-      tags:
-      - Completions
-      operationId: completions_create_stream
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateCompletionsStreamRequest'
-        required: true
-      responses:
-        '200':
-          description: Completions
-          content:
-            text/event-stream:
-              schema:
-                $ref: '#/components/schemas/CompletionsStreamResponse'
-        '400':
-          description: Bad request
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-      security:
-      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: default
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const completion = await atomaSDK.completions.completionsCreate({
+              model: "meta-llama/Llama-3.3-70B-Instruct",
+              prompt: "Hello, world!",
+            });
+
+            console.log(completion.choices[0]);
+          }
+
+          run();
+      - lang: typescript
+        label: streaming
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const completion = await atomaSDK.completions.completionsCreateStream({
+              model: "meta-llama/Llama-3.3-70B-Instruct",
+              prompt: "Hello, world!",
+            });
+
+            for await (const chunk of completion) {
+              console.log(chunk.choices[0].text);
+            }
+          }
+
+          run();
+      - lang: python
+        label: default
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.completions.create(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                prompt="Hello, how are you?"
+              )
+
+              print(completion.choices[0].text)
+      - lang: python
+        label: streaming
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.completions.create_stream(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                prompt="Hello, how are you?"
+              )
+
+              for chunk in completion:
+                print(chunk.data.choices[0].text)
   /v1/confidential/completions:
     post:
       tags:
       - Confidential Completions
-      summary: Confidential completions request handler.
+      summary: Create confidential completions
       description: |-
         This handler processes completions requests in a confidential manner, providing additional
         encryption and security measures for sensitive data processing. It supports both streaming and
@@ -133,37 +181,85 @@ paths:
           description: Internal server error
       security:
       - bearerAuth: []
-  /v1/confidential/completions#stream:
-    post:
-      tags:
-      - Confidential Completions
-      operationId: confidential_completions_create_stream
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ConfidentialComputeRequest'
-        required: true
-      responses:
-        '200':
-          description: Chat completions
-          content:
-            text/event-stream:
-              schema:
-                $ref: '#/components/schemas/ConfidentialComputeStreamResponse'
-        '400':
-          description: Bad request
-        '401':
-          description: Unauthorized
-        '500':
-          description: Internal server error
-      security:
-      - bearerAuth: []
+      x-codeSamples:
+      - lang: typescript
+        label: default
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const completion = await atomaSDK.confidentialCompletions.create({
+              model: "meta-llama/Llama-3.3-70B-Instruct",
+              prompt: "Hello, world!",
+            });
+
+            console.log(completion.choices[0]);
+          }
+
+          run();
+      - lang: typescript
+        label: streaming
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const completion = await atomaSDK.confidentialCompletions.createStream({
+              model: "meta-llama/Llama-3.3-70B-Instruct",
+              prompt: "Hello, world!",
+            });
+
+            for await (const chunk of completion) {
+              console.log(chunk.choices[0].text);
+            }
+          }
+
+          run();
+      - lang: python
+        label: chat_completions_create
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.confidential_completions.create(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                prompt="Hello, how are you?"
+              )
+
+              print(completion.choices[0].text)
+      - lang: python
+        label: streaming
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.confidential_completions.create_stream(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                prompt="Hello, how are you?"
+              )
+
+              for chunk in completion:
+                print(chunk.data.choices[0].text)
   /v1/chat/completions:
     post:
       tags:
       - Chat
-      summary: Create chat completion
+      summary: Create chat completions
       description: |-
         This function processes chat completion requests by determining whether to use streaming
         or non-streaming response handling based on the request payload. For streaming requests,
@@ -250,6 +346,49 @@ paths:
           }
 
           run();
+      - lang: typescript
+        label: streaming
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const completion = await atomaSDK.chat.createStream({
+              messages: [
+                {"role": "developer", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Hello!"}
+              ],
+              model: "meta-llama/Llama-3.3-70B-Instruct"
+            });
+
+            for await (const chunk of completion) {
+              console.log(chunk.choices[0].delta.content);
+            }
+          }
+
+          run();
+      - lang: python
+        label: default
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.chat.create(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                messages=[
+                  {"role": "developer", "content": "You are a helpful assistant."},
+                  {"role": "user", "content": "Hello!"}
+                ]
+              )
+
+              print(completion.choices[0].message)
       - lang: python
         label: default
         source: |-
@@ -289,11 +428,31 @@ paths:
 
               for chunk in completion:
                 print(chunk.data.choices[0].delta)
+      - lang: python
+        label: streaming
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.chat.create_stream(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                messages=[
+                  {"role": "developer", "content": "You are a helpful assistant."},
+                  {"role": "user", "content": "Hello!"}
+                ]
+              )
+
+              for chunk in completion:
+                print(chunk.data.choices[0].delta)
   /v1/confidential/chat/completions:
     post:
       tags:
       - Confidential Chat
-      summary: Create confidential chat completion
+      summary: Create confidential chat completions
       description: |-
         This handler processes chat completion requests in a confidential manner, providing additional
         encryption and security measures for sensitive data processing. It supports both streaming and
@@ -369,6 +528,52 @@ paths:
 
           run();
       - lang: typescript
+        label: default
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const completion = await atomaSDK.confidentialChat.create({
+              messages: [
+                {"role": "developer", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Hello!"}
+              ],
+              model: "meta-llama/Llama-3.3-70B-Instruct"
+            });
+
+            console.log(completion.choices[0]);
+          }
+
+          run();
+      - lang: typescript
+        label: streaming
+        source: |-
+          import { AtomaSDK } from "atoma-sdk";
+
+          const atomaSDK = new AtomaSDK({
+            bearerAuth: process.env["ATOMASDK_BEARER_AUTH"] ?? "",
+          });
+
+          async function run() {
+            const completion = await atomaSDK.confidentialChat.createStream({
+              messages: [
+                {"role": "developer", "content": "You are a helpful assistant."},
+                {"role": "user", "content": "Hello!"}
+              ],
+              model: "meta-llama/Llama-3.3-70B-Instruct"
+            });
+
+            for await (const chunk of completion) {
+              console.log(chunk.choices[0].delta.content);
+            }
+          }
+
+          run();
+      - lang: typescript
         label: streaming
         source: |-
           import { AtomaSDK } from "atoma-sdk";
@@ -411,6 +616,45 @@ paths:
               )
 
               print(completion.choices[0].message)
+      - lang: python
+        label: default
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.confidential_chat.create(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                messages=[
+                  {"role": "developer", "content": "You are a helpful assistant."},
+                  {"role": "user", "content": "Hello!"}
+                ]
+              )
+
+              print(completion.choices[0].message)
+      - lang: python
+        label: streaming
+        source: |-
+          from atoma_sdk import AtomaSDK
+          import os
+
+          with AtomaSDK(
+              bearer_auth=os.getenv("ATOMASDK_BEARER_AUTH", ""),
+          ) as atoma_sdk:
+
+              completion = atoma_sdk.confidential_chat.create_stream(
+                model="meta-llama/Llama-3.3-70B-Instruct",
+                messages=[
+                  {"role": "developer", "content": "You are a helpful assistant."},
+                  {"role": "user", "content": "Hello!"}
+                ]
+              )
+
+              for chunk in completion:
+                print(chunk.choices[0].delta)
       - lang: python
         label: streaming
         source: |-
