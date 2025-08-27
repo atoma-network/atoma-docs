@@ -1,0 +1,131 @@
+---
+title: 'On-Demand AI Services'
+description: 'Confidential generative AI APIs with multi-modal support, RAG capabilities, and composable encryption for enterprise-grade privacy'
+---
+
+## Confidential Generative AI APIs
+
+Atoma's on-demand offerings provide immediate access to state-of-the-art generative AI models through privacy-preserving APIs that guarantee confidentiality for both system prompts and user data. Our platform leverages **composable encryption** technology to enable unprecedented levels of privacy protection, allowing service providers and end-users to maintain control over their respective sensitive information.
+
+### Core Capabilities
+
+**Multi-Modal AI Processing**
+- Text generation and completion (gpt-oss, Llama, Mistral, DeepSeek, Qwen, Kimi models)
+- Image generation and editing (Flux, Stable Diffusion, Midjourney)
+- Audio processing and speech synthesis
+- Video analysis and generation
+- Code generation and completion
+
+**Retrieval-Augmented Generation (RAG)**
+- Private document embedding and indexing
+- Confidential knowledge base querying
+- Secure vector database operations
+- Private semantic search capabilities
+
+**High-Performance Inference**
+- Sub-second response times for most queries
+- Batch processing for large-scale operations
+- Real-time streaming responses
+- Auto-scaling based on demand
+
+## Composable Encryption: Dual Privacy Protection
+
+Atoma's breakthrough **composable encryption** technology enables simultaneous protection of both system-level prompts (service provider IP) and user prompts (customer data), addressing a critical gap in current AI privacy solutions.
+
+### How It Works
+
+<div className="bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border">
+  <h4 className="text-lg font-semibold mb-4">Dual-Layer Privacy Architecture</h4>
+  
+  **Layer 1: System Prompt Protection**
+  - Service providers' proprietary prompts, instructions, and system configurations remain encrypted
+  - AI service companies can protect their prompt engineering IP and competitive advantages
+  - System-level context and fine-tuning parameters are never exposed
+
+  **Layer 2: User Data Protection**  
+  - End-user prompts, documents, and responses are encrypted with user-controlled keys
+  - Customer data remains confidential from both Atoma and the service provider
+  - The combination of advanced cryptographic primitives and trusted execution ensure only the user can decrypt their data
+</div>
+
+### Real-World Use Case: Cursor IDE
+
+Consider how Cursor IDE could leverage Atoma's composable encryption:
+
+**Cursor's Protected Assets:**
+- Proprietary system prompts that make Cursor's AI unique
+- Custom code analysis algorithms and instructions
+- Specialized programming assistance methodologies
+- Training data and model fine-tuning parameters
+
+**Developer's Protected Assets:**
+- Private repository code and intellectual property
+- Confidential business logic and algorithms
+- Sensitive customer data within codebases
+- Personal coding patterns and preferences
+
+**Result:** Cursor can offer AI-powered development assistance while protecting both their competitive AI technology and their customers' proprietary code.
+
+## Enterprise-Grade API Features
+
+### OpenAI-Compatible Interface
+
+```bash
+# Standard OpenAI API call with Atoma's confidential computing
+curl https://api.atoma.network/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $ATOMA_API_KEY" \
+  -d '{
+    "model": "gpt-oss-120b",
+    "messages": [
+      {"role": "system", "content": "Your protected system prompt"},
+      {"role": "user", "content": "User query with private data"}
+    ],
+    "confidential": true,
+    "user_encryption_key": "user_public_key"
+  }'
+```
+
+### Advanced Privacy Controls
+
+**Encryption Key Management**
+- User-controlled encryption keys for data sovereignty
+- Hardware Security Module (HSM) key storage
+- Automatic key rotation and versioning
+- Multi-party key escrow options
+
+**Audit and Compliance**
+- Comprehensive audit logs with cryptographic integrity
+- Close to real-time attestation of secure execution
+- Compliance reporting for GDPR, HIPAA, SOX
+
+**Access Controls**
+- Fine-grained permission management
+- Role-based access to different encryption layers
+- Temporary access tokens with automatic expiration
+- Multi-factor authentication for sensitive operations
+
+## Service Tiers
+
+### Developer Tier
+- **OpenAI-compatible APIs** with basic confidential computing
+- **Models**: Open source models
+- **Encryption**: Standard user data protection
+- **Support**: Community forums and documentation
+
+### Professional Tier  
+- **Advanced multi-modal capabilities** including image, audio, video
+- **Rate limits**: 100,000 requests/day
+- **Models**: Open source models, plus custom fine-tuned models
+- **Encryption**: Composable encryption with system prompt protection
+- **RAG**: Private document processing up to 10GB
+- **Support**: Email support with 24-hour response SLA
+
+### Enterprise Tier
+- **Custom model deployment** and fine-tuning
+- **Unlimited requests** with dedicated infrastructure
+- **Models**: Custom models, private fine-tuning, exclusive access
+- **Encryption**: Full composable encryption with custom key management
+- **RAG**: Unlimited private document processing and vector databases
+- **Integration**: Custom SDK development and white-label solutions
+- **Support**: Dedicated success manager and 4-hour response SLA

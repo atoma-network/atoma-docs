@@ -18,12 +18,12 @@
   "topbarLinks": [
     {
       "name": "Support",
-      "url": "mailto:support@atoma.network"
+      "url": "mailto:support@atoma.ai"
     }
   ],
   "topbarCtaButton": {
     "name": "Atoma Cloud",
-    "url": "https://cloud.atoma.network"
+    "url": "https://cloud.atoma.ai"
   },
   "tabs": [
     {
@@ -31,26 +31,9 @@
       "url": "api-reference"
     },
     {
-      "name": "Cloud",
-      "url": "cloud"
-    },
-    {
       "name": "Cloud API Reference",
       "url": "cloud-api-reference",
       "openapi": "/cloud-api-reference/openapi.yml"
-    },
-    {
-      "name": "Node",
-      "url": "node"
-    },
-    {
-      "name": "Node API Reference",
-      "url": "node-api-reference",
-      "openapi": "https://raw.githubusercontent.com/atoma-network/atoma-node/main/atoma-daemon/docs/openapi.yml"
-    },
-    {
-      "name": "Smart Contract",
-      "url": "smart-contract"
     },
     {
       "name": "Changelog",
@@ -61,7 +44,7 @@
     {
       "name": "Website",
       "icon": "globe",
-      "url": "https://www.atoma.network"
+      "url": "https://www.atoma.ai"
     },
     {
       "name": "Community",
@@ -76,7 +59,7 @@
     {
       "name": "Github",
       "icon": "github",
-      "url": "https://github.com/atoma-network"
+      "url": "https://github.com/atoma-ai"
     }
   ],
   "navigation": [
@@ -84,77 +67,27 @@
       "group": "Get Started",
       "pages": [
         "documentation/get-started/overview",
-        "documentation/get-started/atoma-basics",
-        "documentation/get-started/compute-layer",
-        "documentation/get-started/trust-and-privacy"
+        "documentation/get-started/on-demand-offerings",
+        "documentation/get-started/secured-ai-deployments",
+        "documentation/get-started/technical-architecture"
       ]
     },
     {
-      "group": "Atoma Smart Contract",
-      "pages": [
-        "documentation/atoma-smart-contract/atoma-architecture-overview"
-      ]
-    },
-    {
-      "group": "Get Started",
-      "pages": [
-        "cloud/get-started/overview",
-        "cloud/get-started/quickstart"
-      ]
-    },
-    {
-      "group": "Get Started",
+      "group": "API Reference",
       "pages": [
         "cloud-api-reference/get-started"
       ]
     },
     {
-      "group": "Get Started",
-      "pages": [
-        "node/get-started/overview",
-        "node/get-started/setup-node",
-        "node/get-started/interact-atoma-contract",
-        "node/get-started/configure-node",
-        "node/get-started/run-node"
-      ]
-    },
-    {
-      "group": "Technical Reference",
-      "pages": [
-        "node/technical-reference/overview",
-        "node/technical-reference/inference-services"
-      ]
-    },
-    {
-      "group": "Get Started",
-      "pages": [
-        "node-api-reference/get-started"
-      ]
-    },
-    {
-      "group": "Getting Started",
-      "pages": [
-        "smart-contract/getting-started/interact-atoma-contract"
-      ]
-    },
-    {
-      "group": "Technical Reference",
-      "pages": [
-        "smart-contract/technical-reference/tasks"
-      ]
-    },
-    {
       "group": "Changelog",
       "pages": [
-        "changelog/overview",
-        "changelog/cloud",
-        "changelog/node"
+        "changelog/overview"
       ]
     }
   ],
   "footerSocials": {
-    "x": "https://x.com/Atoma_Network",
-    "github": "https://github.com/atoma-network",
-    "linkedin": "https://www.linkedin.com/company/atoma-network/"
+    "x": "https://x.com/Atoma_AI",
+    "github": "https://github.com/atoma-ai",
+    "linkedin": "https://www.linkedin.com/company/atoma-ai/"
   }
 }

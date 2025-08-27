@@ -1,97 +1,113 @@
 ---
-description: 'Welcome to Atoma - The Decentralized Private AI Network'
+description: 'Enterprise-grade confidential AI infrastructure with cryptographic guarantees for data privacy and model weight protection'
 ---
 
 <img
   className="block dark:hidden"
   src="/images/atoma-banner.png"
-  alt="Hero"
+  alt="Atoma AI - Confidential Computing for Enterprise AI"
 />
 <img
   className="hidden dark:block"
   src="/images/atoma-banner.png"
-  alt="Hero"
+  alt="Atoma AI - Confidential Computing for Enterprise AI"
 />
 
-## Welcome to Atoma
+## Atoma AI: Confidential Computing for Enterprise AI
 
-Atoma is a decentralized private and verifiable AI execution network. It provides the infrastructure for developers and enterprises to use open-source AI models and build AI applications with full privacy.
+Atoma AI delivers enterprise-grade confidential computing infrastructure specifically designed for secure, large-scale AI deployments. Our platform combines Trusted Execution Environments (TEEs), advanced cryptography, and blockchain-based attestation to provide verifiable data privacy and model weight protection that meets the stringent security requirements of enterprises, developers, and AI service providers.
 
-There are several key components to Atoma’s infrastructure: 
+### Core Security Guarantees
 
-- **Decentralized AI Compute**: 
-  - Atoma has a global network of GPUs that register on the network to perform inference requests, referred to as execution nodes. 
-  - Rather than processing requests through a single data centre, Atoma is a fully permissionless network that works with data centres around the world to intelligently distribute AI requests.
+**Data Privacy**: End-to-end encryption with execution-time protection ensures your sensitive data remains confidential throughout the entire AI processing pipeline.
 
-- **Dynamic Marketplace**: 
-  - Node operators set rates for their compute resources. 
-  - Users select nodes based on cost, performance, and privacy preferences.
+**Model Weight Protection**: Proprietary AI models are isolated within hardware-secured enclaves, preventing unauthorized access or extraction of intellectual property.
 
-- **Atoma Proxy**: 
-  - Each request is distributed to the most relevant node based on the hardware spec and whether privacy is requested, for that particular request. 
-  - This ensures cost efficiency and performance. 
+**Verifiable Execution**: Cryptographic attestation provides auditable proof that your AI workloads execute within genuine secure environments without tampering.
 
-- **Privacy and Security**:
-  - Trusted Execution Environments (TEEs) ensure computations are secure and data remains private.
-  - The Sampling Consensus Protocol verifies computation integrity across the network.
-  - Data and model weights are inaccessible to unauthorized parties, protecting user and model provider assets.
+**Compliance Ready**: Our infrastructure supports regulatory compliance frameworks including GDPR, HIPAA, and SOX through comprehensive audit trails and attestation reports.
 
-- **OpenAI API Compatibility**: 
-  - The network supports OpenAI-compatible APIs, allowing developers to integrate decentralized AI capabilities without reworking existing systems.
+## Platform Architecture
 
-- **Community Governance**: 
-  - Atoma's treasury is managed by the community, with transparent reward distribution.
+### Secured AI Deployment Infrastructure
+
+Our enterprise deployment platform provides:
+
+- **Hardware-Level Security**: Intel TDX, AMD SEV-SNP, and NVIDIA Confidential Computing technologies ensure isolation at the chip level
+- **Kubernetes Integration**: Native integration with enterprise Kubernetes clusters through simple CLI commands and automated provisioning
+- **Cryptographic Attestation**: Hardware-rooted attestation validates the integrity of both software and hardware stacks, including co-location verification
+- **Multi-Cloud Compatibility**: Seamless integration with AWS, Azure, GCP, and hybrid cloud environments
+- **Developer-Friendly SDKs**: Drop-in replacements for popular AI frameworks (OpenAI, HuggingFace, LangChain) with confidential computing enabled
+- **Enhanced Trust**: Distributed ledger technology provides transparent and auditable attestation verification and encryption key management
+
+**Supported Workloads:**
+- Large Language Model (LLM) inference and fine-tuning
+- Multi-modal AI (text, image, video, audio)
+- Retrieval-Augmented Generation (RAG) pipelines
+- Custom AI model deployment and optimization
+
+### On-Demand Confidential AI Services
+
+For immediate access to confidential AI capabilities:
+
+- **Confidential API Access**: OpenAI-compatible APIs with cryptographic guarantees for system and user prompts privacy and response confidentiality
+- **Managed Infrastructure**: Access to Atoma's TEE-enabled compute clusters without infrastructure management overhead
+- **Competitive Pricing**: Cost-effective confidential computing with transparent, usage-based pricing models
+
+## Enterprise Use Cases
+
+**Financial Services**: Deploy fraud detection and risk assessment models while maintaining customer data privacy and regulatory compliance.
+
+**Healthcare**: Process sensitive patient data for diagnostic AI while ensuring HIPAA compliance and protecting proprietary medical algorithms.
+
+**Legal & Consulting**: Analyze confidential documents and client data using AI without exposing sensitive information to third parties.
+
+**AI Model Providers**: Protect valuable model weights and training data while offering AI services to enterprise clients with privacy guarantees.
 
 ## Getting Started
 
-Choose your path to get started with Atoma:
+Choose your deployment approach based on your requirements:
 
 <CardGroup cols={2}>
   <Card
-    title="Use the API"
+    title="Managed Confidential AI APIs"
     icon="cloud"
-    href="/cloud/get-started/introduction"
+    href="/documentation/get-started/on-demand-offerings"
   >
-    Access decentralized AI models through our OpenAI-compatible API
+    Access state-of-the-art AI models through privacy-preserving APIs with zero infrastructure management
   </Card>
   <Card
-    title="Run a Node"
+    title="Self-Managed Secure Infrastructure"
     icon="server"
-    href="/node/get-started/setup-node"
+    href="/documentation/get-started/secured-ai-deployments"
   >
-    Deploy your AI models and earn rewards by contributing compute resources to the network
+    Deploy and manage your own confidential AI infrastructure with full control and customization
   </Card>
 </CardGroup>
 
-## Explore Atoma's AI Compute Layer
+## Technical Resources
 
 <CardGroup cols={2}>
   <Card
-    title="Decentralized Infrastructure"
+    title="Architecture Deep Dive"
     icon="network-wired"
-    href="/documentation/architecture/overview"
+    href="/documentation/get-started/technical-architecture"
   >
-    Leverage a distributed network of compute nodes for reliable AI inference
+    Understand Atoma's confidential computing architecture and security model
   </Card>
   <Card
-    title="Multiple Model Support"
-    icon="brain"
-    href="/node/technical-reference/inference-services"
-  >
-    Deploy and access various AI models including LLMs, embeddings, and image generation
-  </Card>
-  <Card
-    title="Smart Contracts"
-    icon="file-contract"
-    href="/smart-contract"
-  >
-    Secure and transparent handling of compute resources and payments
-  </Card>
-  <Card
-    title="Developer Tools"
+    title="API Documentation"
     icon="code"
-    href="/cloud/api-reference/overview"
+    href="/cloud-api-reference/get-started"
   >
-    Comprehensive SDKs and APIs for seamless integration
+    Complete API reference and SDK documentation for developers
   </Card>
 </CardGroup>
+
+## Security & Compliance
+
+**Certifications**: SOC 2 Type II, ISO 27001, FedRAMP (pending)
+
+**Audit Reports**: Regular third-party security audits and attestation reports available for enterprise customers
+
+**Trust & Privacy**: Learn more about our [security model and privacy guarantees](/documentation/get-started/trust-and-privacy)

@@ -1,0 +1,370 @@
+---
+title: 'Secured AI Deployments'
+description: 'Enterprise-grade confidential Kubernetes infrastructure for custom AI deployments with hardware-level security and end-to-end encryption'
+---
+
+## Custom Confidential AI Infrastructure
+
+Atoma's secured AI deployment platform transforms any data center into a confidential computing environment capable of running enterprise-scale AI workloads with hardware-level security guarantees. Our technology stack combines advanced containerization, trusted execution environments, and cryptographic networking to deliver unprecedented security without sacrificing performance or flexibility.
+
+Whether you need to deploy proprietary LLMs, protect sensitive training data, or ensure regulatory compliance, Atoma's infrastructure provides the security foundation that enables enterprises to confidently deploy AI at scale while maintaining complete control over their intellectual property and customer data.
+
+## Core Technology Stack
+
+### Secured Kubernetes Orchestration
+
+Atoma's Kubernetes platform is purpose-built for confidential AI workloads:
+
+- **Hardware-Isolated Pods**: Every pod runs within hardware-secured enclaves using Intel TDX or AMD SEV-SNP
+- **Encrypted Pod-to-Pod Communication**: All inter-pod communication is encrypted with keys accessible only within the trust boundary of each pod
+- **Confidential Container Runtime**: Kata Containers provide VM-level isolation with container-like performance
+- **Attestation-Based Scheduling**: Kubernetes scheduler verifies hardware attestation before placing workloads
+- **Secure Boot Chain**: Complete boot integrity from hardware to application layer
+
+### End-to-End Encrypted Networking
+
+Our networking architecture ensures that data remains encrypted throughout its entire lifecycle:
+
+<div className="bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg border border-blue-200 dark:border-blue-800">
+  <h4 className="text-lg font-semibold mb-4 text-blue-900 dark:text-blue-100">Trust Boundary Architecture</h4>
+  
+  **Pod-Level Encryption Keys**
+  - Each pod generates unique encryption keys within its TEE boundary
+  - Decryption only possible within the specific pod's trusted execution environment
+  - Network traffic remains encrypted until it reaches the destination pod's TEE
+  
+  **Cryptographic Network Fabric**
+  - Layer 4 encryption between all pod communications
+  - Hardware-rooted key derivation and rotation
+  - Zero-knowledge networking - even network administrators cannot decrypt traffic
+</div>
+
+### Hardware-Level Security Technologies
+
+**Intel TDX (Trust Domain Extensions)**
+- CPU-level isolation with encrypted memory protection
+- Hardware-enforced attestation and measurement
+- Protection against privileged software attacks and DMA attacks
+
+**AMD SEV-SNP (Secure Encrypted Virtualization)**
+- Memory encryption with integrity protection
+- Secure nested paging for additional isolation
+- Guest attestation with cryptographic verification
+
+**NVIDIA GPU Confidential Computing**
+- GPU memory encryption for ML workload protection
+- Secure multi-tenancy for shared GPU resources
+- Hardware attestation for GPU-accelerated workloads
+
+**Kata Containers Integration**
+- Lightweight VMs with container API compatibility
+- Hardware-backed isolation between workloads
+- Minimal attack surface with optimized guest kernels
+
+## Enterprise Deployment Capabilities
+
+### Datacenter-Scale Flexibility
+
+Atoma's technology scales from single-node deployments to massive distributed clusters:
+
+- **Multi-Region Deployments**: Confidential workloads across geographically distributed data centers
+- **Hybrid Cloud Integration**: Seamless integration with existing cloud and on-premises infrastructure
+- **Auto-Scaling**: Confidential pods scale based on demand while maintaining security guarantees
+- **Custom Hardware Support**: Optimized for various CPU, GPU, and accelerator configurations
+
+### Bring Your Own Cloud (BYOC) Model
+
+Leverage existing cloud investments while adding confidential computing capabilities:
+
+**Cloud Provider Integration**
+- **AWS**: Native integration with EC2 instances featuring Intel TDX and AMD SEV-SNP
+- **Azure**: Support for Azure Confidential Computing VMs
+- **Google Cloud**: Integration with Confidential GKE and Confidential VMs
+- **Private Cloud**: VMware vSphere, OpenStack, and bare-metal deployments
+
+**Confidential Virtual Machine (CVM) Utilization**
+- Maximize ROI on existing cloud confidential computing investments
+- Seamless migration from standard to confidential workloads
+- Cloud-native security with enhanced confidential computing layers
+
+### AI Workload Optimization
+
+**Model Deployment & Management**
+- Confidential model serving with hardware-protected inference
+- Secure model updates and version management
+- Protected fine-tuning and transfer learning workflows
+- Multi-model serving with isolated execution contexts
+
+**Data Pipeline Security**
+- Encrypted data ingestion from multiple sources
+- Confidential ETL processing within secured containers
+- Protected model training with encrypted datasets
+- Secure model validation and testing environments
+
+## Atoma Registry: Secure Key Discovery
+
+### Distributed Encryption Key Management
+
+Atoma's registry provides a decentralized, secure mechanism for encryption key discovery and management:
+
+**Key Features:**
+- **Distributed Ledger-Based Registry**: Immutable and transparent record of deployment encryption keys and access policies
+- **Zero-Knowledge Discovery**: Find and authenticate encryption keys without exposing sensitive metadata
+- **Automated Key Rotation**: Seamless key updates with backward compatibility for existing connections
+- **Multi-Party Access Control**: Granular permissions for different stakeholders and use cases
+
+### Customer Privacy Expansion
+
+Enable your customers to offer enhanced privacy to their end-users:
+
+<div className="bg-green-50 dark:bg-green-900/20 p-6 rounded-lg border border-green-200 dark:border-green-800">
+  <h4 className="text-lg font-semibold mb-4 text-green-900 dark:text-green-100">Privacy-as-a-Service Model</h4>
+  
+  **For SaaS Providers**
+  - Offer "confidential mode" to enterprise customers
+  - Cryptographically prove data isolation between tenants
+  - Enable customers to maintain control over their encryption keys
+  
+  **For AI Service Companies**
+  - Protect proprietary model weights while serving customers
+  - Offer confidential fine-tuning services
+  - Enable private data processing for regulated industries
+  
+  **Market Differentiation**
+  - Privacy-first positioning expands addressable market
+  - Meet enterprise security requirements that competitors cannot
+  - Enable new business models based on confidential computing
+</div>
+
+## Deployment Architecture Examples
+
+### Financial Services: Confidential Trading Algorithm
+
+```yaml
+# Confidential trading system deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trading-ai-confidential
+  annotations:
+    atoma.ai/tee-required: "true"
+    atoma.ai/attestation-policy: "intel-tdx"
+spec:
+  replicas: 3
+  template:
+    spec:
+      runtimeClassName: kata
+      containers:
+      - name: trading-model
+        image: private-registry/trading-ai:v2.1
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+            atoma.ai/confidential-memory: "16Gi"
+        env:
+        - name: ATOMA_ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: trading-encryption-keys
+              key: model-key
+        volumeMounts:
+        - name: encrypted-data
+          mountPath: /secure-data
+      volumes:
+      - name: encrypted-data
+        csi:
+          driver: atoma.ai/encrypted-storage
+```
+
+### Healthcare: HIPAA-Compliant Medical AI
+
+```yaml
+# Medical imaging AI with HIPAA compliance
+apiVersion: v1
+kind: Service
+metadata:
+  name: medical-ai-service
+  annotations:
+    atoma.ai/compliance: "hipaa"
+    atoma.ai/audit-logging: "enabled"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: medical-ai
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: medical-ai-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: medical-ai
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          role: authorized-client
+    ports:
+    - protocol: TCP
+      port: 8080
+```
+
+## Implementation & Migration
+
+### Deployment Process
+
+**Phase 1: Assessment & Planning**
+- Security requirements analysis
+- Infrastructure compatibility review
+- Custom deployment architecture design
+- Compliance framework mapping
+
+**Phase 2: Infrastructure Setup**
+- Confidential computing cluster deployment
+- Network security configuration
+- Key management system integration
+- Monitoring and logging setup
+
+**Phase 3: Application Migration**
+- Containerization with confidential computing support
+- Security policy implementation
+- Performance optimization and testing
+- Staff training and documentation
+
+**Phase 4: Production & Operations**
+- Live deployment with security monitoring
+- Ongoing attestation and compliance verification
+- Regular security updates and patches
+- 24/7 support and incident response
+
+### Professional Services
+
+**Consulting & Architecture**
+- Confidential computing strategy development
+- Custom security policy design
+- Compliance framework implementation
+- Performance optimization consulting
+
+**Implementation Support**
+- Dedicated engineering team for complex deployments
+- Custom integration development
+- Migration project management
+- Training and knowledge transfer
+
+**Ongoing Management**
+- Managed security operations center (SOC)
+- Continuous compliance monitoring
+- Threat detection and response
+- Regular security assessments and updates
+
+## Security Guarantees & Compliance
+
+### Technical Assurances
+
+- **Hardware Attestation**: Cryptographic proof of secure execution environment
+- **Memory Encryption**: All data encrypted in memory with hardware keys
+- **Network Isolation**: Encrypted communication with pod-level key management
+- **Audit Trails**: Immutable logs of all security-relevant events
+- **Zero-Trust Architecture**: Every component verified before processing sensitive data
+
+### Regulatory Compliance
+
+- **GDPR**: EU data protection with data residency controls (in progress)
+- **HIPAA**: Healthcare data protection with BAA support (in progress)
+- **SOX**: Financial data integrity and audit requirements (in progress)
+- **FedRAMP**: Federal security authorization (in progress)
+- **ISO 27001**: Information security management certification (in progress)
+
+## Pricing & Licensing
+
+### Flexible Licensing Models
+
+**Per-Node Licensing**
+- Pay per confidential computing node deployed
+- Includes full software stack and basic support
+- Volume discounts for large deployments
+
+**Enterprise Site License**
+- Unlimited nodes within specified data centers
+- Priority support and professional services
+- Custom SLA and compliance reporting
+
+**Cloud Marketplace**
+- Available through AWS, Azure, and GCP marketplaces
+- Bring-your-own-license (BYOL) options
+- Pay-as-you-go with committed use discounts
+
+### Professional Services
+
+- **Implementation**: $50k-$500k depending on deployment complexity
+- **Training**: $10k per training engagement (up to 20 participants)
+- **Ongoing Support**: 15-25% of license cost annually
+- **Custom Development**: Time and materials basis
+
+## Get Started with Secured Deployments
+
+<CardGroup cols={2}>
+  <Card
+    title="Schedule Architecture Review"
+    icon="calendar"
+    href="mailto:enterprise@atoma.network?subject=Secured Deployment Architecture Review"
+  >
+    Free consultation to design your confidential AI infrastructure
+  </Card>
+  <Card
+    title="Pilot Deployment"
+    icon="flask"
+    href="/node/get-started/setup-node"
+  >
+    Start with a proof-of-concept deployment in your environment
+  </Card>
+  <Card
+    title="Technical Documentation"
+    icon="book"
+    href="/node/technical-reference/overview"
+  >
+    Deep dive into Atoma's confidential computing architecture
+  </Card>
+  <Card
+    title="Request Demo"
+    icon="presentation-screen"
+    href="https://calendar.atoma.network/demo"
+  >
+    See Atoma's secured deployments in action with live demonstration
+  </Card>
+</CardGroup>
+
+## Success Stories
+
+### Global Bank: Confidential Credit Risk Models
+
+**Challenge**: Deploy proprietary credit risk algorithms while maintaining regulatory compliance and protecting customer data.
+
+**Solution**: Atoma's secured Kubernetes platform with Intel TDX isolation and encrypted networking.
+
+**Results**: 
+- 99.9% uptime with hardware-level security guarantees
+- 40% reduction in compliance audit costs
+- Ability to process sensitive customer data in multi-cloud environment
+
+### Healthcare AI Company: HIPAA-Compliant Medical Imaging
+
+**Challenge**: Scale medical imaging AI while ensuring HIPAA compliance and protecting proprietary algorithms.
+
+**Solution**: Custom deployment with AMD SEV-SNP, encrypted storage, and comprehensive audit logging.
+
+**Results**:
+- Full HIPAA compliance with cryptographic guarantees
+- 3x faster deployment cycles compared to traditional secure infrastructure
+- Expanded customer base to include tier-1 healthcare providers
+
+---
+
+*Ready to transform your AI infrastructure with confidential computing? Contact our enterprise team to design a custom deployment that meets your specific security, compliance, and performance requirements.*
