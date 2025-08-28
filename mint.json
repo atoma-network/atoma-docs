@@ -2,10 +2,10 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Atoma",
   "logo": {
-    "dark": "/logo/atoma-ai-logo.svg",
-    "light": "/logo/atoma-ai-logo.svg"
+    "dark": "/logo/atoma-ai-favicon-blue-2.svg",
+    "light": "/logo/atoma-ai-favicon-blue-2.svg"
   },
-  "favicon": "/logo/atoma-ai-favicon.svg",
+  "favicon": "/logo/atoma-ai-favicon-2.svg",
   "colors": {
     "primary": "#87CEFA",
     "light": "#87CEFA",
