@@ -2,17 +2,17 @@
   "$schema": "https://mintlify.com/schema.json",
   "name": "Atoma",
   "logo": {
-    "dark": "/logo/dark_new.svg",
-    "light": "/logo/light_new.svg"
+    "dark": "/logo/atoma-ai-favicon-blue-2.svg",
+    "light": "/logo/atoma-ai-favicon-blue-2.svg"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo/atoma-ai-favicon-2.svg",
   "colors": {
-    "primary": "#F47757",
-    "light": "#F47757",
-    "dark": "#F47757",
+    "primary": "#87CEFA",
+    "light": "#87CEFA",
+    "dark": "#87CEFA",
     "anchors": {
-      "from": "#F47757",
-      "to": "#FFC266"
+      "from": "#87CEFA",
+      "to": "#ADD8E6"
     }
   },
   "topbarLinks": [
@@ -21,10 +21,6 @@
       "url": "mailto:support@atoma.ai"
     }
   ],
-  "topbarCtaButton": {
-    "name": "Atoma Cloud",
-    "url": "https://cloud.atoma.ai"
-  },
   "tabs": [
     {
       "name": "API Reference",

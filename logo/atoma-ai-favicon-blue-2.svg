@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_Шар_1" data-name="Шар 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        fill: #90d1d1;
+      }
+    </style>
+  </defs>
+  <rect class="cls-2" y="0" width="2000" height="2000"/>
+  <g>
+    <circle class="cls-1" cx="721.21" cy="717.06" r="263.69"/>
+    <circle class="cls-1" cx="1278.79" cy="717.06" r="263.69"/>
+    <circle class="cls-1" cx="721.21" cy="1282.94" r="263.69"/>
+    <circle class="cls-1" cx="1278.79" cy="1282.94" r="263.69"/>
+  </g>
+</svg>
